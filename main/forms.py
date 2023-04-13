@@ -2,13 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm, Textarea
 from django.contrib.auth.forms import UserCreationForm
-from accounts.models import CustomerUser, Tracker,CredentialCategory,Credential
-from management.models import Whatsapp
+from accounts.models import CustomerUser
 from django.utils.translation import gettext_lazy as _
-
-# from .models import Expenses
-from data.models import DSU
-
 # from django.db import transaction
 
 class RegistrationForm(forms.ModelForm):
@@ -75,7 +70,7 @@ class RegistrationForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
     class Meta:
-        model = DSU
+        # model = DSU
         fields = [
             "trained_by",
             "client_name",
@@ -106,26 +101,3 @@ class ContactForm(forms.ModelForm):
         self.fields['task'].required=False
         self.fields['plan'].required=False
         self.fields['challenge'].required=False
-        # self.fields['uploaded'].required=False
-
-class WhatsappForm(forms.ModelForm):
-    class Meta:
-        model = Whatsapp
-        fields = [
-                    "group_name",
-                    "group_id",
-                    "image_url",
-                    "message",
-                    "product_id",
-                    "screen_id",
-                    "token",
-        ]
-        labels = {
-                    "group_name":"Enter Whatsapp Group",
-                    "group_id ":"Enter Whatsapp Group id",
-                    "image_url":"Enter url Image",
-                    "message":"Describe the message to be posted",
-                    "product_id ":"Enter Product ID",
-                    "screen_id":"Enter Screen ID",
-                    "token":"Enter token",
-        }

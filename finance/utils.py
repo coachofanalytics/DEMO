@@ -1,15 +1,10 @@
 import requests
 from datetime import datetime
-import dateutil.relativedelta
 from django.contrib.auth import get_user_model
 from django.db.models import Sum, Max
 from django.shortcuts import get_object_or_404,render
 from django.contrib import messages
 from .models import TrainingLoan, Transaction
-from management.models import TaskHistory
-# from coda_project.settings import exchange_api_key
-from getdata.views import uploaddata
-from main.utils import Finance,Data,Management
 from accounts.models import Department
 
 
@@ -90,31 +85,6 @@ def upload_csv(request):
     if request.method == 'GET':
         return render(request, "getdata/uploaddata.html", context)
 
-    # form = CsvImportForm()
-    # data = {"form": form}
-    # return render(request, "admin/csv_upload.html", data)
-
-# def EOQ():
-#     today = datetime.date.today()
-#     lastMonth = today + dateutil.relativedelta.relativedelta(months=-3)
-#     task_max_point = TaskHistory.objects.filter(
-#         date__gte=lastMonth
-#     ).aggregate(Max('point'))['point__max']
-#     if(task_max_point > 0):
-#         return TaskHistory.objects.filter(point=task_max_point)
-#     return False
-#
-# def EOY():
-#     today = datetime.date.today()
-#     lastYear = today + dateutil.relativedelta.relativedelta(years=-1)
-#     task_max_point = TaskHistory.objects.filter(
-#         date__gte=lastYear
-#     ).aggregate(Max('point'))['point__max']
-#     if(task_max_point > 0):
-#         return TaskHistory.objects.filter(point=task_max_point)
-#     return False
-
-
 def check_default_fee(Default_Payment_Fees,username):
     try:
         default_fee = get_object_or_404(Default_Payment_Fees, user=username)
@@ -140,20 +110,6 @@ def get_exchange_rate(base, target):
     # print(data)
     return data['rates'][target]
 
-# ====================================================================
-#DYC Implementation
-def DYCpay():
-    context_dict = {
-        "student": {'cost': 100, 'message': 'if in error kindly go back'},
-        "business": {'cost': 200, 'message': 'if in error kindly go back'},
-        "greencard": {'cost': 300, 'message': 'if in error kindly go back'},
-        
-    }
-    for usertype, values in context_dict.items():
-        if usertype=='student':
-            cost= values["cost"]
-    return cost
-    
 # ==================================================
 def DYCDefaultPayments():
     context_dict = {

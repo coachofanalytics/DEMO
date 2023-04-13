@@ -34,16 +34,7 @@ INSTALLED_APPS = [
     "main.apps.MainConfig",
     #'users.apps.UsersConfig',
     "accounts.apps.AccountsConfig",
-    "codablog.apps.CodablogConfig",
-    "data.apps.DataConfig",
-    "application.apps.ApplicationConfig",
-    "getdata.apps.GetdataConfig",
-    "projectmanagement.apps.ProjectmanagementConfig",
-    "investing.apps.InvestingConfig",
-    "management.apps.ManagementConfig",
-    "globalsearch.apps.GlobalsearchConfig",
     "finance.apps.FinanceConfig",
-    "store",
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -61,7 +52,6 @@ INSTALLED_APPS = [
     #'dbbackup',
     # "django_extensions",
     "django_crontab",
-    'testing.apps.TestingConfig',
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
@@ -81,7 +71,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'Middleware.MiddlewareFile.MailMiddleware'
+    # 'Middleware.MiddlewareFile.MailMiddleware'
 
 ]
 
@@ -105,15 +95,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "main.context_processors.images",
                 "main.context_processors.googledriveurl",
-                "management.context_processors.categories",
-                "management.context_processors.departments",
-                "data.context_processors.roles",
-                "data.context_processors.categories",
-                "data.context_processors.subcategories",
             ],
-            'libraries': {
-                'customfilters': 'application.templatetags.customfilters',
-            }
+            # 'libraries': {
+            #     'customfilters': 'application.templatetags.customfilters',
+            # }
         },
     },
 ]
@@ -127,15 +112,19 @@ def dba_values():
         password = os.environ.get('HEROKU_PROD_PASS')
     elif os.environ.get('ENVIRONMENT') == 'testing':
         # In Heroku/Postgres it is Heroku_UAT
-        host = '' #os.environ.get('HEROKU_DEV_HOST')
-        dbname = '' #os.environ.get('HEROKU_DEV_NAME')
-        user = '' #os.environ.get('HEROKU_DEV_USER')
-        password = '' #os.environ.get('HEROKU_DEV_PASS')
+        host = os.environ.get('HEROKU_DEV_HOST')
+        dbname = os.environ.get('HEROKU_DEV_NAME')
+        user = os.environ.get('HEROKU_DEV_USER')
+        password = os.environ.get('HEROKU_DEV_PASS')
     else:
-        host = 'localhost'
-        dbname = "CODA_DEV" #os.environ.get('POSTGRES_DB_NAME') 
-        user = "postgres" #os.environ.get('POSTGRESDB_USER')
-        password ="MANAGER2030" #os.environ.get('POSTGRESSPASS') 
+        host = os.environ.get('HEROKU_DEV_HOST')
+        dbname = os.environ.get('HEROKU_DEV_NAME')
+        user = os.environ.get('HEROKU_DEV_USER')
+        password = os.environ.get('HEROKU_DEV_PASS')
+        # host = 'localhost'
+        # dbname = "CODA_DEV" #os.environ.get('POSTGRES_DB_NAME') 
+        # user = "postgres" #os.environ.get('POSTGRESDB_USER')
+        # password ="MANAGER2030" #os.environ.get('POSTGRESSPASS') 
     return host,dbname,user,password  
 
 WSGI_APPLICATION = "coda_project.wsgi.application"
@@ -298,7 +287,6 @@ def payment_details(request):
     cashapp = os.environ.get('CASHAPP'),
     venmo= os.environ.get('VENMO'),
     account_no = os.environ.get('STANBIC_ACCOUNT_NO'),
-    # print(phone_number,email_info,cashapp,venmo,account_no)
     return (phone_number,email_info,cashapp,venmo,account_no)
 
 

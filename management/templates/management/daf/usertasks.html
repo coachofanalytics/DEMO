@@ -1,6 +1,0 @@
-
-{% if user.sub_category == 3 or user.is_superuser %}
-{% include 'management/daf/usertasks/employeetasks.html' %}
-{% else %}
-{% include 'management/daf/usertasks/contractualtasks.html' %}
-{% endif %}

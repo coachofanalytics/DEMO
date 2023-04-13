@@ -27,12 +27,10 @@ from .models import (
 		DC48_Inflow
 	)
 from .forms import LoanForm,TransactionForm,InflowForm
-from mail.custom_email import send_email
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
-from main.filters import FoodFilter
 from main.models import Service
-from .utils import check_default_fee,get_exchange_rate,DYCpay
+from .utils import check_default_fee,get_exchange_rate
 from main.utils import countdown_in_month
 
 
