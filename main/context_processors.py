@@ -1,5 +1,4 @@
 from .models import Service,Assets
-from data.models import FeaturedCategory,FeaturedSubCategory
 from .utils import image_view
 
 #availabity of images in this app

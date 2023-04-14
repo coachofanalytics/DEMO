@@ -27,15 +27,8 @@
             <a class="dropdown-item" href="{% url 'main:team' %}"
               >Team</a
             >
-            <a class="dropdown-item" href="{% url 'application:career' %}"
+            <a class="dropdown-item" href="#"
             >Career</a
-          >
-            <!-- <a class="dropdown-item" href="{% url 'main:appointment_letter' %}"
-            >Letter</a
-          > -->
-          <!-- <a class="dropdown-item" href="{%url 'codablog:success'%}"
-          >Success Stories</a
-        > -->
           </div>
         </li>
 
@@ -62,7 +55,7 @@
               >Data Analysis Training</a
             >
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'investing:home' %}"
+            <a class="dropdown-item" href="#"
               >Stocks & Options Training</a
             >
           </div>
@@ -82,10 +75,10 @@
                   <a class="dropdown-item" href="https://public.tableau.com/app/profile/coda2331/viz/EmployeeProductivityVersion08/LandingPageReport?publish=yes"
                       target="_blank" >Human Resource Report</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'management:assess' %}"
+                      <a class="dropdown-item" href="#"
                       target="" >Weekly Assessment </a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'main:it' %}"
+                      <a class="dropdown-item" href="#"
                           target="" >IT Department</a>
               </div>
         </li>
@@ -100,18 +93,18 @@
             >Account</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropDown">
                     {% if user.is_admin or user.is_superuser %}
-                          <a class="dropdown-item" href="{% url 'management:companyagenda'%}" target="" >My Account</a >
+                          <a class="dropdown-item" href="#" target="" >My Account</a >
                             <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'accounts:accounts-users'%}" target="" >Users</a>
+                          <a class="dropdown-item" href="#" target="" >Users</a>
                             <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'account-logout' %}" target="" >Logout</a>
+                          <a class="dropdown-item" href="#" target="" >Logout</a>
                     {% elif user.category == 4 or user.is_superuser %}
-                    <a class="dropdown-item" href="{% url 'management:dckdashboard'%}" target="" >My Account</a >
+                    <a class="dropdown-item" href="#" target="" >My Account</a >
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
+                      <a class="dropdown-item" href="#" target="" >Logout</a>
                       <div class="dropdown-divider"></div>
                       {% else %}
-                      <a class="dropdown-item" href="{% url 'management:companyagenda'%}" target="" >My Account</a >
+                      <a class="dropdown-item" href="#" target="" >My Account</a >
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
                         <div class="dropdown-divider"></div>
@@ -126,7 +119,7 @@
                     {% if user.is_admin or  user.is_employee or  user.is_superuser %}
                           <a class="dropdown-item"href="{% url 'main:layout' %}" target="" >Help?</a >
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'management:requirements-active' %}" target="" >Active Requirements</a>
+                            <a class="dropdown-item" href="#" target="" >Active Requirements</a>
                               <div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Internal Justification </a>
                               <div class="dropdown-divider"></div>
@@ -134,16 +127,16 @@
                               <div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Justfication(Excel)</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'getdata:upload-data'%}" target="" >Data/Assets</a>
+                              <a class="dropdown-item" href="#" target="" >Data/Assets</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'getdata:generate-data'%}" target="" >Big Data</a>
+                              <a class="dropdown-item" href="#" target="" >Big Data</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'testing:all_logs'%}" target="" >Logs</a>
+                              <a class="dropdown-item" href="#" target="" >Logs</a>
                               <div class="dropdown-divider"></div>
                               {% else %}
                               <a class="dropdown-item" href="{% url 'main:layout' %}" target="" >Help?</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'management:requirements-active' %}" target="" >Active Requirements</a>
+                              <a class="dropdown-item" href="#" target="" >Active Requirements</a>
                               <div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Clients Justfication</a>
                               <div class="dropdown-divider"></div>

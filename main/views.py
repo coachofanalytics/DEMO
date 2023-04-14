@@ -94,7 +94,7 @@ from django.shortcuts import get_object_or_404
 
 
 def layout(request):
-    return render(request, "main/home_templates/newlayout.html", context)
+    return render(request, "main/home_templates/newlayout.html")
 
 
 # =====================DC_KENYA VIEWS=======================================
