@@ -101,7 +101,7 @@ def layout(request):
 def dclayout(request):
     # advertisement()
     
-    posts=Post.objects.all()
+    posts=posts.objects.all()
     services=Service.objects.all()
 
     context={
@@ -257,8 +257,8 @@ class UserProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         form.instance.username = self.request.user
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse("management:companyagenda")
+    # def get_success_url(self):
+    #     return reverse("management:companyagenda")
 
     def test_func(self):
         # profile = self.get_object()
