@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-steel sticky-top">
   <div class="container">
-    <a class="navbar-brand mr-4" href="{% url 'main:layout' %}">CODA</a>
+    <a class="navbar-brand mr-4" href="{% url 'main:layout' %}"></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -35,7 +35,7 @@
             <a class="dropdown-item" href="{% url 'main:team' %}"
               >Team</a
             >
-            <a class="dropdown-item" href="{% url 'application:career' %}"
+            <a class="dropdown-item" href="#"
             >Career</a
           >
           </div>
@@ -60,37 +60,37 @@
               >Management & Consultancy</a
             >
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'data:home' %}"
+            <a class="dropdown-item" href="#"
               >Data Analysis Training</a
             >
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'investing:home' %}"
+            <a class="dropdown-item" href="#"
               >Stocks & Options Training</a
             >
           </div>
         </li>
         {% if user.is_authenticated %}
         {% if user.is_admin or  user.is_employee or  user.is_superuser%}
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
             >Reports</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropDown">
                   <!-- <a class="dropdown-item" href="https://drive.google.com/file/d/1UsSmmJv5_83ZRegObGhgGE3C5eIJ-4E1/view"
                        target="" >Company Agenda</a >
                         <div class="dropdown-divider"></div> -->
-                  <a class="dropdown-item" href="{% url 'main:finance' %}" 
+                  <!-- <a class="dropdown-item" href="#" 
                        target="" >Finance Report</a>
                         <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="https://public.tableau.com/app/profile/coda2331/viz/EmployeeProductivityVersion08/LandingPageReport?publish=yes"
                       target="_blank" >Human Resource Report</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'management:assess' %}"
+                      <a class="dropdown-item" href="#"
                       target="" >Weekly Assessment </a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'main:it' %}"
-                          target="" >IT Department</a>
+                      <a class="dropdown-item" href="#"
+                          target="" >IT Department</a> -->
               </div>
-        </li>
+        </li> -->
         {% endif %}
         {% endif %}
       </ul>
@@ -101,13 +101,13 @@
             >Account</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropDown">
                     {% if user.is_admin or user.is_superuser %}
-                          <a class="dropdown-item" href="{% url 'management:companyagenda'%}" target="" >My Account</a >
+                          <a class="dropdown-item" href="#" >My Account</a >
                             <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'accounts:accounts-users'%}" target="" >Users</a>
                             <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'account-logout' %}" target="" >Logout</a>
                     {% else %}
-                    <a class="dropdown-item" href="{% url 'management:companyagenda'%}" target="" >My Account</a >
+                    <a class="dropdown-item" href="#" target="" >My Account</a >
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'account-logout' %}" target="" >Logout</a>
                     {% endif %}
@@ -121,17 +121,17 @@
                     {% if user.is_admin or  user.is_employee or  user.is_superuser %}
                           <a class="dropdown-item"href="{% url 'main:layout' %}" target="" >Help?</a >
                             <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'management:requirements-active' %}" target="" >Active Requirements</a>
+                          <a class="dropdown-item" href="#" target="" >Active Requirements</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Excel Requirements</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Requirements Justification</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'getdata:upload-data'%}" target="" >Data/Assets</a>
+                            <a class="dropdown-item" href="#" target="" >Data/Assets</a>
                               <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'getdata:generate-data'%}" target="" >Big Data</a>
+                            <a class="dropdown-item" href="#" target="" >Big Data</a>
                               <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'testing:all_logs'%}" target="" >Logs</a>
+                            <a class="dropdown-item" href="#" target="" >Logs</a>
                               <div class="dropdown-divider"></div>
                     {% else %}
                     <a class="dropdown-item" href="{% url 'main:layout' %}" target="" >Help?</a>
@@ -152,11 +152,6 @@
         >
         {% else %}
         {% endif %}
-        <!------
-        <div class="col-12 col-md-8 mr-auto ">
-          {% include 'globalsearch/snippets/search-form.html' %}
-        </div>
-        --->
       </div>
     </div>
   </div>

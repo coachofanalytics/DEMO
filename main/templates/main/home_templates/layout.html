@@ -1,6 +1,7 @@
 {%extends "main/base_templates/new_base.html"%} {% block content %}
+{% load static %}
 <!--------------------------Slider Section--------------------------------->
-<section id="service-slider">
+<!-- <section id="service-slider">
   <div class="service-slider text-center">
           <div id="headerSlider" class="carousel slide" data-ride="carousel">
               <ol class="carousel-indicators">
@@ -17,14 +18,14 @@
                       {%endif%}
                   {% endfor %}
                   >
-                  <!-- <div class="carousel-caption">
-                      <a href="{% url 'data:home' %}" target="_blank">
+                  <div class="carousel-caption">
+                      <a href="#" target="_blank">
                             <button type="button" class="btn btn-primary btn-lg">Data Analysis</button>
                         </a>
-                        <a href="{% url 'data:home' %}" target="_blank">
+                        <a href="#" target="_blank">
                           <button type="button" class="btn btn-primary btn-lg">More</button>
                       </a>
-                  </div> -->
+                  </div>
                 </div>
                 <div class="carousel-item ">
                   <img 
@@ -61,10 +62,10 @@
                   >
                   <div class="carousel-caption">
                       <h1 class="display-2"></h1>
-                      <a href="{% url 'investing:home' %}" target="_blank">
+                      <a href="#" target="_blank">
                         <button type="button" class="btn btn-primary btn-lg">Finance & Investment</button>
                      </a>
-                     <a href="{% url 'investing:home' %}" target="_blank">
+                     <a href="#" target="_blank">
                       <button type="button" class="btn btn-primary btn-lg">Join</button>
                      </a>
                      
@@ -81,16 +82,48 @@
               </a>
             </div>
 </div>
+</section> -->
+<!-- <section id="hero" class="d-flex align-items-center">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+        <h1>Better Solutions For Your Business</h1>
+        <h2>We are committed to providing our clients with the support and resources they need to succeed in the highly competitive entertainment industry.
+        </h2>
+        <div class="d-flex justify-content-center justify-content-lg-start">
+          <a href="{% url 'accounts:join' %}" target="_blank">
+            <button type="button" class="btn btn-primary btn-lg">Get Started</button>
+          </a>
+          <a href="#"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+        </div>
+      </div>
+      <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+        <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+      </div>
+    </div>
+  </div> -->
+
+  <div class="card bg-dark text-white">
+    <img src="{% static 'image/banner.jpg' %}" class="card-img" alt="...">
+    <div class="card-img-overlay">
+      <h5 class="card-title">Better Solutions For Your Business</h5>
+      <p class="card-text">We are committed to providing our clients with the support and resources they need to succeed in the highly competitive entertainment industry.</p>
+      <a href="{% url 'accounts:join' %}" target="_blank">
+        <button type="button" class="btn btn-primary btn-lg">Get Started</button>
+      </a>
+    </div>
+  </div>
+
 </section>
 
 <!----------------------------Jumbtron Section-------------------------------->
 
-<div class="container-fluid">
+<!-- <div class="container-fluid">
   <div class="row jumbotron">
     <div id="j-section" class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
       <p class="lead">
-        Our goal is to empower individuals and organizations by training Business and Data analysis. We also specialize in 
-        offering high Class Management & consultancy Services to diaspora market at affordable rates.
+        Welcome to our management company, where we specialize in representing content creators, artists, and entertainers worldwide. As the International Coordinator and Concept Creator, we provide comprehensive support and guidance to our clients to help them reach their full potential.
       </p>
     </div> 
 
@@ -100,10 +133,41 @@
     </a>
   </div>
   </div>      
-</div> 
+</div>  -->
+<br>
+<section id="about" class="about">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title">
+      <h1 class="display-4 text-center">About Us</h2>
+    </div>
+
+    <div class="row content">
+      <div class="col-lg-6">
+        <p>
+          Welcome to our management company, where we specialize in representing content creators, artists, and entertainers worldwide. As the International Coordinator and Concept Creator, we provide comprehensive support and guidance to our clients to help them reach their full potential.
+        </p>
+        <ul>
+          <li><i class="ri-check-double-line"></i>we create innovative and creative concepts for our clients' performances</li>
+          <li><i class="ri-check-double-line"></i>We work closely with them to develop unique and memorable ideas that capture their audience's attention</li>
+          <li><i class="ri-check-double-line"></i>We are committed to providing our clients with the support and resources they need to succeed in the highly competitive entertainment industry</li>
+        </ul>
+      </div>
+      <div class="col-lg-6 pt-4 pt-lg-0">
+        <p>
+          At our management company, we believe that creativity and talent should be celebrated and supported. We are passionate about helping our clients achieve their dreams, and we are dedicated to providing them with the guidance and support they need to succeed. Contact us today to learn more about our services and start your journey to success in the entertainment industry.
+        </p>
+        <a href="{% url 'accounts:join' %}" target="_blank">
+          <button type="button" class="btn btn-primary btn-lg">Get Started</button>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
 <!-------------------Our Services Section---------------------->
 <!-------------------WHAT WE DO Section------------------------->
-<div class="container-fluid padding">
+<!-- <div class="container-fluid padding">
   <div class="row welcome text-center">
     <div class="col-12">
       <h1 class="display-4">WHAT WE DO</h1>
@@ -111,46 +175,46 @@
     <hr/>
     <div class="col-12">
       <p class="lead">
-          Meet all your needs by getting high class services at affordable rates.
-      </p>
+        Our company offers various services, including artist and entertainment management contract negotiations, event planning and coordination, marketing and promotion, and more. We are committed to providing our clients with the support and resources they need to succeed in the highly competitive entertainment industry.
+  </p>
     </div> 
   </div> 
-  </div>
+  </div> -->
 
     <!-------------------Cards-Category Section----------------------->
-<div class="container-fluid padding">
+<!-- <div class="container-fluid padding">
   <div class="row padding text-center">
     <div class="col-md-4" id="bada">
       <div class="card">
-       <!-- <img src="\media\home\project2.jpg" class="card-img-top">--->
-        <div class="card-body">
+       <img src="\media\home\project2.jpg" class="card-img-top">--->
+        <!-- <div class="card-body">
           <h4><b>Busines & Data Analysis</b></h4>
           <p class="pay_fig">$2995</p>
           <hr/>
           <p class="bd">
             We offer 3 month Project based training in both web development and Data Analysis.
           </p>
-          <a href="{% url 'data:home' %}" >
+          <a href="#" >
             <button type="button" class="btn btn-primary">GET MORE INFORMATION</button>
         </a>
         </div>
       </div>
     </div>
-    <hr>
-
+    <hr> -->
+<!-- 
     <div class="col-md-4" id="fina">
-      <div class="card">
+      <div class="card"> -->
         <!-- <img src="\media\home\project2.jpg" class="card-img-top">--->
 
    
-        <div class="card-body">
+        <!-- <div class="card-body">
           <h4><b>Financial & Investment</b></h4>
           <p class="pay_fig">$1496</p>
           <hr/>
           <p class="fi">
             Investment training sessions in stocks and options.Understand tips and tricks for low risk high returns on capital.
           </p>
-          <a href="{% url 'investing:home' %}" >
+          <a href="#" >
             <button type="button" class="btn btn-primary">GET MORE INFORMATION</button>
         </a>
         </div>
@@ -158,9 +222,9 @@
     </div>
     <hr>
     <div class="col-md-4" id="cota">
-      <div class="card">
+      <div class="card"> -->
         <!-- <img src="\media\home\project2.jpg" class="card-img-top">--->
-        <div class="card-body">
+        <!-- <div class="card-body">
           <h4><b>Consultancy Services</b></h4>
           <p class="pay_fig">$1</p>
           <hr/>
@@ -174,11 +238,11 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
 
 
  <!--------------------------WHY US Section--------------------------------->
- <section id="service-why">
+ <!-- <section id="service-why">
   <div class="service-why text-center container-fluid">
       <div class="row welcome text-center">
         <div class="col-12">
@@ -187,11 +251,11 @@
         <hr/>
         <div class="col-12">
           <p class="lead">
-            Building Customer Relationships is our number one priority. 
+            At our management company, we believe that creativity and talent should be celebrated and supported. We are passionate about helping our clients achieve their dreams.
           </p>
         </div> 
-      </div> 
-  <div id="headerSlider" class="carousel slide" data-ride="carousel">
+      </div>  -->
+  <!-- <div id="headerSlider" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#headerSlider" data-slide-to="0" class="active"></li>
         <li data-target="#headerSlider" data-slide-to="1"></li>
@@ -213,8 +277,7 @@
         </div>
         <div class="carousel-item">
           <div class="row text-center commit">
-            <div class="col-md-3">
-              <!--   
+            <div class="col-md-3"> 
               <img
                 src="..\media\background\commitment_v1.jpg"
                 class="team-img"
@@ -222,15 +285,15 @@
                 height="150px"
               />
               -->
-              <h3>Commitment</h3>
+              <!-- <h3>Commitment</h3>
               <p>
                 A 24/7 management system committed to meeting the needs of our clients.
               </p>
               <a href="#" target="_blank">
                 <button type="button" class="btn btn-primary">Understand Our Way</button>
               </a>
-            </div>
-            <div class="col-md-3">
+            </div> -->
+            <!-- <div class="col-md-3"> -->
               
               <!--<img
                 src="..\media\background\cost_v1.jpg"
@@ -238,39 +301,39 @@
                 width="100px"
                 height="150px"
               />-->
-              <h3>Cost Effectiveness</h3>
+              <!-- <h3>Cost Effectiveness</h3>
               <p>
                You get all you need to know in investment,and Data Analysis Courses for just $2999.
               </p>
-              <a href="{% url 'main:coach' %}" target="_blank">
+              <a href="#" target="_blank">
                 <button type="button" class="btn btn-primary">Sign Up!</button>
               </a>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3"> -->
               <!--<img
                 src="..\media\background\delivery_v1.jpg"
                 class="team-img"
                 width="100px"
                 height="150px"
               />-->
-              <h3>We Deliver</h3>
+              <!-- <h3>We Deliver</h3>
               <p>
                 Utilization of Agile methodology to deliver high quality services to our customers.
               </p>
-              <a href="{% url 'data:finance' %}" target="_blank">
+              <a href="#" target="_blank">
                 <button type="button" class="btn btn-primary">See Our deliverables</button>
               </a>
             </div>
             <div class="col-md-3">
-              <!--<img
+              <img
                 src="..\media\background\teamwork_v1.jpg"
                 class="team-img"
                 width="100px"
                 height="150px"
               />-->
-              <h3>Team Work</h3>
+              <!-- <h3>Team Work</h3>
               <p>
-               Over 20 years of experience in all our services.You can trust the quality of our work.
+                we are dedicated to providing them with the guidance and support they need to succeed. Contact us today to learn more about our services and start your journey to success in the entertainment industry.
               </p>
               <a href="{% url 'main:team' %}" target="_blank">
                 <button type="button" class="btn btn-primary">Meet the team</button>
@@ -287,10 +350,10 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
-</div>
-</section>
+</div> -->
+<!-- </section> -->
+<br>
 
 <!-------------------CONTACT US------------------------->
 {% include 'main/contact/contact.html' %}
-{% include 'main/footer_templates/footer.html' %}
 {% endblock content %}
