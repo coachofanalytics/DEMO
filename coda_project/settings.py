@@ -56,6 +56,10 @@ INSTALLED_APPS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
+STATICFILES_DIR =[
+    BASE_DIR, "main/static"
+]
+
 CRONJOBS = [
     # ("*/1 * * * *", "coda_project.cron.my_backup"),
     ("* * * * *", "application.msg_send_cron.SendMsgApplicatUser"),

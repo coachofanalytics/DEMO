@@ -1,158 +1,160 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-steel sticky-top">
-  <div class="container">
-    <a class="navbar-brand mr-4" href="{% url 'main:layout' %}"></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarToggle"
-      aria-controls="navbarToggle"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+  <div class="container-fluid">
+      <a class="navbar-brand logo-text" href="{% url 'main:layout'%}">DYC</a>
+      <button class="navbar-toggler nav-btn" type="button" data-bs-toggle="coll apse"
+          data-bs-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto w-100 justify-content-end">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'main:layout' %}"
+          >Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          About
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropDown">
+          <a class="dropdown-item" href="#"
+            >Team</a
+          >
+          <a class="dropdown-item" href="#"
+          >Career</a
+        </div>
+      </li>
 
-    <div class="collapse navbar-collapse" id="navbarToggle">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'main:layout' %}"
-            >Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Services
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropDown">
           <a
-            class="nav-link dropdown-toggle"
+            class="dropdown-item"
             href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
+            >Management & Consultancy</a
           >
-            About
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-            <a class="dropdown-item" href="{% url 'main:team' %}"
-              >Team</a
-            >
-            <a class="dropdown-item" href="#"
-            >Career</a
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"
+            >Data Analysis Training</a
           >
-          </div>
-        </li>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"
+            >Stocks & Options Training</a
+          >
+        </div>
+      </li>
+      <!-- {% if user.is_authenticated %}
+      {% if user.is_admin or  user.is_employee or  user.is_superuser%}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
+          >Reports</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropDown"> -->
+                <!-- <a class="dropdown-item" href="https://drive.google.com/file/d/1UsSmmJv5_83ZRegObGhgGE3C5eIJ-4E1/view"
+                     target="" >Company Agenda</a >
+                      <div class="dropdown-divider"></div> -->
+                <!-- <a class="dropdown-item" href="#" 
+                     target="" >Finance Department</a>
+                      <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="https://public.tableau.com/app/profile/coda2331/viz/EmployeeProductivityVersion08/LandingPageReport?publish=yes"
+                    target="_blank" >Human Resource Report</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"
+                    target="" >Weekly Assessment </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"
+                        target="" >IT Department</a>
+            </div>
+      </li>
+      {% endif %}
+      {% endif %} -->
+    </ul>
 
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Services
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-            <a
-              class="dropdown-item"
-              href="{% url 'main:layout' %}"
-              >Management & Consultancy</a
-            >
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#"
-              >Data Analysis Training</a
-            >
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#"
-              >Stocks & Options Training</a
-            >
-          </div>
-        </li>
-        {% if user.is_authenticated %}
-        {% if user.is_admin or  user.is_employee or  user.is_superuser%}
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
-            >Reports</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                  <!-- <a class="dropdown-item" href="https://drive.google.com/file/d/1UsSmmJv5_83ZRegObGhgGE3C5eIJ-4E1/view"
-                       target="" >Company Agenda</a >
-                        <div class="dropdown-divider"></div> -->
-                  <!-- <a class="dropdown-item" href="#" 
-                       target="" >Finance Report</a>
-                        <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="https://public.tableau.com/app/profile/coda2331/viz/EmployeeProductivityVersion08/LandingPageReport?publish=yes"
-                      target="_blank" >Human Resource Report</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#"
-                      target="" >Weekly Assessment </a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#"
-                          target="" >IT Department</a> -->
-              </div>
-        </li> -->
-        {% endif %}
-        {% endif %}
-      </ul>
-      <div class="navbar-nav">
-        {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
-            >Account</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                    {% if user.is_admin or user.is_superuser %}
-                          <a class="dropdown-item" href="#" >My Account</a >
-                            <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'accounts:accounts-users'%}" target="" >Users</a>
-                            <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'account-logout' %}" target="" >Logout</a>
+    <div class="navbar-nav">
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
+          >Account</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropDown">
+                  {% if user.is_admin or user.is_superuser %}
+                        <a class="dropdown-item" href="#" target="" >My Account</a >
+                          <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" target="" >Users</a>
+                          <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" target="" >Logout</a>
+                  {% elif user.category == 4 or user.is_superuser %}
+                  <a class="dropdown-item" href="#" target="" >My Account</a >
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" target="" >Logout</a>
+                    <div class="dropdown-divider"></div>
                     {% else %}
                     <a class="dropdown-item" href="#" target="" >My Account</a >
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'account-logout' %}" target="" >Logout</a>
-                    {% endif %}
-              </div>
-        </li>
+                      <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
+                      <div class="dropdown-divider"></div>
+                  {% endif %}
+            </div>
+      </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
-            >Support</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                    {% if user.is_admin or  user.is_employee or  user.is_superuser %}
-                          <a class="dropdown-item"href="{% url 'main:layout' %}" target="" >Help?</a >
-                            <div class="dropdown-divider"></div>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
+          >Support</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropDown">
+                  {% if user.is_admin or  user.is_employee or  user.is_superuser %}
+                        <a class="dropdown-item"href="{% url 'main:layout' %}" target="" >Help?</a >
+                          <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="#" target="" >Active Requirements</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Excel Requirements</a>
+                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Internal Justification </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Requirements Justification</a>
+                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Clients Justfication</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Justfication(Excel)</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" target="" >Data/Assets</a>
-                              <div class="dropdown-divider"></div>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" target="" >Big Data</a>
-                              <div class="dropdown-divider"></div>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" target="" >Logs</a>
-                              <div class="dropdown-divider"></div>
-                    {% else %}
-                    <a class="dropdown-item" href="{% url 'main:layout' %}" target="" >Help?</a>
-                    {% endif %}
-              </div>
-        </li>
-        {% else %}
-        <a class="nav-item nav-link" href="{% url 'accounts:account-login' %}"
-          >Login</a
-        >
-        <a class="nav-item nav-link" href="{% url 'accounts:join' %}"
-          >Register</a
-        >
-        {% endif %}
-        {% if request.user.is_client or request.user.is_employee or request.user.is_applicant and request.user.is_authenticated  and request.user.customer_payment_history.payment_fees < 3000 %}
-          <a class="nav-item nav-link" href="{% url 'finance:pay' %}"
-          >Make Payment {{request.user.customer_payment_history.payment_fees}}</a>
-        >
-        {% else %}
-        {% endif %}
-      </div>
+                            <div class="dropdown-divider"></div>
+                            {% else %}
+                            <a class="dropdown-item" href="{% url 'main:layout' %}" target="" >Help?</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" target="" >Active Requirements</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Clients Justfication</a>
+                            <div class="dropdown-divider"></div>
+                  {% endif %}
+            </div>
+      </li>
+      {% else %}
+      <a class="nav-item nav-link" href="{% url 'accounts:account-login' %}"
+        >Login</a
+      >
+      <a class="nav-item nav-link" href="{% url 'accounts:join' %}"
+        >Register</a
+      >
+      {% endif %}
+   
     </div>
+
+
+      </div>
   </div>
 </nav>
