@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerUser
+from .models import User
 from django.utils.translation import gettext_lazy as _
 
 
@@ -7,48 +7,48 @@ class UserForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Repeat Password", widget=forms.PasswordInput)
     class Meta:
-        model = CustomerUser
+        model = User
         fields = [
-            "category",
-            "sub_category",
+            # "category",
+            # "sub_category",
             "first_name",
             "last_name",
             "username",
             "password1",
             "password2",
-            "phone",
-            "gender",
-            "email",
-            "address",
-            "city",
-            "state",
-            "country",
-            "resume_file",
-            "is_employee",
+            # "phone",
+            # "gender",
+            # "email",
+            # "address",
+            # "city",
+            # "state",
+            # "country",
+            # "resume_file",
+            # "is_staff",
             "is_applicant",
         ]
         labels = {
-            "sub_category": "",
+            # "sub_category": "",
             "first_name": "",
             "last_name": "",
             "username": "",
             "email": "",
-            "gender": "",
-            "phone": "",
-            "address": "",
-            "city": "",
-            "state": "",
-            "country": "",
+            # "gender": "",
+            # "phone": "",
+            # "address": "",
+            # "city": "",
+            # "state": "",
+            # "country": "",
         }
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         # self.fields['category'].required= True
         # set category initial=1 and added category
-        self.fields["category"].initial = 1
-        self.fields["sub_category"].initial = 1
-        self.fields["gender"].required = True
-        self.fields["country"].required = True
+        # self.fields["category"].initial = 1
+        # self.fields["sub_category"].initial = 1
+        # self.fields["gender"].required = True
+        # self.fields["country"].required = True
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

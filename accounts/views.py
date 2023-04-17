@@ -16,7 +16,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from .models import CustomerUser,CustomUser, Department,UserProfile
+from .models import User,CustomUser, Department,UserProfile
 from .forms import UserForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
@@ -37,7 +37,7 @@ def thank(request):
 # ---------------ACCOUNTS VIEWS----------------------
 def join(request):
     if request.method == "POST":
-        previous_user = CustomerUser.objects.filter(email = request.POST.get("email"))
+        previous_user = User.objects.filter(email = request.POST.get("email"))
         if len(previous_user) > 0:
             messages.success(request, f'User already exist with this email')
             form = UserForm()
@@ -101,7 +101,7 @@ def join(request):
             if form.is_valid():
                 # print("category", form.cleaned_data.get("category"))
                 if form.cleaned_data.get("category") == 2:
-                    form.instance.is_employee = True
+                    form.instance.is_staff = True
                 elif form.cleaned_data.get("category") == 3:
                     form.instance.is_client = True
                 else:
@@ -118,7 +118,7 @@ def join(request):
 
 # ---------------ACCOUNTS VIEWS----------------------
 def CreateProfile():
-    users = CustomerUser.objects.filter(profile=None)
+    users = User.objects.filter(profile=None)
     for user in users:
         UserProfile.objects.create(user=user)
 
@@ -135,7 +135,7 @@ def login_view(request):
             CreateProfile()
             # If Category is Staff/employee
             if account is not None and account.category == 2:
-                if account.is_employee and not account.is_employee_contract_signed:
+                if account.is_staff and not account.is_employee_contract_signed:
                     login(request, account)
                     return redirect("management:employee_contract")
 
@@ -213,8 +213,8 @@ def login_view(request):
 
 # ================================USERS SECTION================================
 def users(request):
-    users = CustomerUser.objects.filter(is_active=True).order_by("-date_joined")
-    queryset = CustomerUser.objects.filter(is_active=True).order_by("-date_joined")
+    users = User.objects.filter(is_active=True).order_by("-date_joined")
+    queryset = User.objects.filter(is_active=True).order_by("-date_joined")
     userfilters=UserFilter(request.GET,queryset=users)
 
     # Use the Paginator to paginate the queryset
@@ -237,7 +237,7 @@ def users(request):
         return redirect("main:layout")
 
 class SuperuserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = CustomerUser
+    model = User
     success_url = "/accounts/users"
     fields = [
         "category",
@@ -255,7 +255,7 @@ class SuperuserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         "country",
         "is_superuser",
         "is_admin",
-        "is_employee",
+        "is_staff",
         "is_client",
         "is_applicant",
         "is_active",
@@ -281,7 +281,7 @@ class SuperuserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = CustomerUser
+    model = User
     success_url = "/accounts/users"
     # fields=['category','address','city','state','country']
     fields = [
@@ -298,7 +298,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         "state",
         "country",
         "is_admin",
-        "is_employee",
+        "is_staff",
         "is_client",
         "is_applicant",
     ]
@@ -323,7 +323,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 @method_decorator(login_required, name="dispatch")
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = CustomerUser
+    model = User
     success_url = "/accounts/users"
 
     def test_func(self):
@@ -340,13 +340,13 @@ def PasswordResetCompleteView(request):
 
 ''' 
 class PasswordsChangeView(PasswordChangeView):
-    #model=CustomerUser
+    #model=User
     from_class=PasswordChangeForm
     template_name='accounts/registration/password_change_form.html'
     success_url=reverse_lazy('accounts:account-login')
 
 class PasswordsSetView(PasswordChangeView):
-    #model=CustomerUser
+    #model=User
     from_class=SetPasswordForm
     success_url=reverse_lazy('accounts:account-login')
 
@@ -370,23 +370,23 @@ def Employeelist(request):
 # ================================CLIENT SECTION================================
 
 def clientlist(request):
-    students = CustomerUser.objects.filter(
+    students = User.objects.filter(
                                              Q(category=3), Q(sub_category=2),
                                              Q(is_client=True),Q(is_active=True)
                                           ).order_by("-date_joined")
-    jobsupport = CustomerUser.objects.filter(
+    jobsupport = User.objects.filter(
                                              Q(category=3), Q(sub_category=1),
                                              Q(is_client=True),Q(is_active=True)
                                           ).order_by("-date_joined")
-    interview = CustomerUser.objects.filter(
+    interview = User.objects.filter(
                                              Q(category=3), Q(sub_category=2),
                                              Q(is_client=True),Q(is_active=True)
                                           ).order_by("-date_joined")
-    dck_users = CustomerUser.objects.filter(
+    dck_users = User.objects.filter(
                                              Q(category=4), Q(sub_category=6),
                                              Q(is_applicant=True),Q(is_active=True)
                                           ).order_by("-date_joined")
-    past = CustomerUser.objects.filter(
+    past = User.objects.filter(
                                              Q(category=3)|Q(is_client=True),
                                              Q(is_active=False)
                                           ).order_by("-date_joined")
@@ -404,11 +404,11 @@ def clientlist(request):
 
 def clientlist(request):
     clients = {
-        'students': CustomerUser.objects.filter(Q(category=3), Q(sub_category=2), Q(is_client=True), Q(is_active=True)).order_by('-date_joined'),
-        'jobsupport': CustomerUser.objects.filter(Q(category=3), Q(sub_category=1), Q(is_client=True), Q(is_active=True)).order_by('-date_joined'),
-        'interview': CustomerUser.objects.filter(Q(category=3), Q(sub_category=2), Q(is_client=True), Q(is_active=True)).order_by('-date_joined'),
-        'dck_users': CustomerUser.objects.filter(Q(category=4), Q(sub_category=6), Q(is_applicant=True), Q(is_active=True)).order_by('-date_joined'),
-        'past': CustomerUser.objects.filter(Q(category=3) | Q(is_client=True), Q(is_active=False)).order_by('-date_joined'),
+        'students': User.objects.filter(Q(category=3), Q(sub_category=2), Q(is_client=True), Q(is_active=True)).order_by('-date_joined'),
+        'jobsupport': User.objects.filter(Q(category=3), Q(sub_category=1), Q(is_client=True), Q(is_active=True)).order_by('-date_joined'),
+        'interview': User.objects.filter(Q(category=3), Q(sub_category=2), Q(is_client=True), Q(is_active=True)).order_by('-date_joined'),
+        'dck_users': User.objects.filter(Q(category=4), Q(sub_category=6), Q(is_applicant=True), Q(is_active=True)).order_by('-date_joined'),
+        'past': User.objects.filter(Q(category=3) | Q(is_client=True), Q(is_active=False)).order_by('-date_joined'),
     }
 
     template_name = "accounts/clients/clientlist.html"
@@ -424,12 +424,12 @@ def clientlist(request):
 @method_decorator(login_required, name="dispatch")
 class ClientDetailView(DetailView):
     template_name = "accounts/clients/client_detail.html"
-    model = CustomerUser
+    model = User
     ordering = ["-date_joined "]
 
 @method_decorator(login_required, name="dispatch")
 class ClientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = CustomerUser
+    model = User
     success_url = "/accounts/clients"
     fields = ["category", "address", "city", "state", "country"]
     form = UserForm
@@ -458,7 +458,7 @@ class ClientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 @method_decorator(login_required, name="dispatch")
 class ClientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = CustomerUser
+    model = User
     success_url = "/accounts/clients"
 
     def test_func(self):

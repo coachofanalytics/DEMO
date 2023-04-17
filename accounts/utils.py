@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from accounts.models import CustomerUser
+from accounts.models import User
 from finance.utils import DYCDefaultPayments
 
 def agreement_data(request):
@@ -71,10 +71,10 @@ def dyc_compute_default_fee(category,subcategory,dyc_default_amounts, Default_Pa
 
 # ================================USERS========================================
 def employees():
-    active_employees = CustomerUser.objects.filter(
-                                             Q(is_employee=True),Q(is_active=True)
+    active_employees = User.objects.filter(
+                                             Q(is_staff=True),Q(is_active=True)
                                           ).order_by("-date_joined")
-    employees_categories_list = CustomerUser.objects.values_list(
+    employees_categories_list = User.objects.values_list(
                     'sub_category', flat=True).distinct()
     employees_categories = [subcat for subcat in employees_categories_list if subcat in (3,4)]
     employee_subcategories=list(set(employees_categories))

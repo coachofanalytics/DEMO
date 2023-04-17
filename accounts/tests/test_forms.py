@@ -1,6 +1,6 @@
 from django.test import TestCase
 from accounts.forms import UserForm,CredentialForm
-from accounts.models import CustomerUser, Department, Credential, CredentialCategory, TaskGroups, Tracker
+from accounts.models import User, Department, Credential, CredentialCategory, TaskGroups, Tracker
 
 class TestForms(TestCase):
 
@@ -34,12 +34,12 @@ class TestCredentialForm(TestCase):
 
     def test_user_form_valid_data(self):
         self.category = CredentialCategory.objects.create(category='Test Category',slug='test-category',description='Test Description')
-        self.user =  CustomerUser.objects.create(
+        self.user =  User.objects.create(
             first_name='John',
             last_name='Doe',
             email= 'johndoe@gmail.com',
             gender='1',
-            is_employee=True,
+            is_staff=True,
             is_active=True,
             )
         self.credential = Credential.objects.create(

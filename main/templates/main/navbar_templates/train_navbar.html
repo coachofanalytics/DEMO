@@ -28,7 +28,7 @@
                   </a>
                  
                   <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                    {% if user.is_admin or  user.is_employee or  user.is_superuser %}
+                    {% if user.is_admin or  user.is_staff or  user.is_superuser %}
                       {% for category in categories %}
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{{category.get_url}}"
@@ -59,7 +59,7 @@
                   </a>
                   
                   <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                    {% if user.is_admin or  user.is_employee or  user.is_superuser %}
+                    {% if user.is_admin or  user.is_staff or  user.is_superuser %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'data:interview' %}"
                     >Interview</a>

@@ -3,7 +3,7 @@ import string
 from django.views.generic import DeleteView, ListView, TemplateView, UpdateView
 from accounts.forms import UserForm
 from django.http import HttpResponseRedirect, Http404, JsonResponse,HttpResponse
-from accounts.models import CustomerUser
+from accounts.models import User
 from coda_project.settings import SITEURL
 from .models import Service,Assets
 import datetime

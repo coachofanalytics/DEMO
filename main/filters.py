@@ -1,5 +1,5 @@
 import django_filters 
-from accounts.models import CustomerUser
+from accounts.models import User
 from finance.models import Food
 
 
@@ -11,5 +11,5 @@ class UserFilter(django_filters.FilterSet):
     date_joined = django_filters.DateFilter(label='Entry date', lookup_expr='exact')
 
     class Meta:
-        model = CustomerUser
+        model = User
         fields = ['email', 'first_name', 'last_name', 'username','date_joined']

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import Textarea
 from django.db.models import Q
 from pyexpat import model
-from accounts.models import CustomerUser
+from accounts.models import User
 
 from .models import (
     TrainingLoan,
@@ -97,6 +97,6 @@ class LoanForm(forms.ModelForm):
         }
     def __init__(self, **kwargs):
         super(LoanForm, self).__init__(**kwargs)
-        self.fields["user"].queryset = CustomerUser.objects.filter(
-            Q(is_admin=True) | Q(is_employee=True)| Q(is_client=True)
+        self.fields["user"].queryset = User.objects.filter(
+            Q(is_admin=True) | Q(is_staff=True)| Q(is_client=True)
         )

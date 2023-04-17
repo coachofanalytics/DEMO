@@ -15,12 +15,11 @@ from django.views.generic import (
     UpdateView,
 )
 from .models import Service,Plan,Assets
-from accounts.models import CustomerUser,UserProfile
+from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from accounts.utils import employees
-from accounts.forms import LoginForm
-from accounts.forms import LoginForm
-from .forms import RegistrationForm,ContactForm
+from accounts.forms import LoginForm,UserForm
+from main.forms import ContactForm
 from accounts.views import CreateProfile
 from PIL import Image
 from django.contrib.auth import get_user_model
@@ -101,22 +100,23 @@ def layout(request):
 def dclayout(request):
     # advertisement()
     
-    posts=posts.objects.all()
+    # posts=posts.objects.all()
     services=Service.objects.all()
 
     context={
             "services":services,
-            "posts":posts,
+            # "posts":posts,
             "title": "DCKENYA"
         }
-    return render(request, "main/dc48kenya/dc_layout.html",context)
+    
+    return render(request, "main/DYC/dc_layout.html",context)
 
 def register(request):
     if request.method == "POST":
         previous_user = User.objects.filter(email = request.POST.get("email"))
         if len(previous_user) > 0:
             messages.success(request, f'User already exist with this email')
-            form = RegistrationForm()
+            form = UserForm()
             return redirect("/password-reset")
         else:
             if form.is_valid():
@@ -128,7 +128,7 @@ def register(request):
                 return redirect('main:dc_login')
     else:
         msg = "error validating form"
-        form = RegistrationForm()
+        form = UserForm()
     return render(request, "main/dc48kenya/dc_register.html", {"form": form,"msg":msg})
 
 

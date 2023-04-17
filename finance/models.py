@@ -21,7 +21,7 @@ User = get_user_model()
 class Payment_Information(models.Model):
     # id = models.AutoField(primary_key=True)
     customer_id = models.ForeignKey(
-        "accounts.CustomerUser",
+        "accounts.User",
         verbose_name=("Client Name"),
         on_delete=models.CASCADE,
         related_name="customer")
@@ -224,7 +224,7 @@ class Transaction(models.Model):
          related_name="sender", 
          null=True, blank=True,
          on_delete=models.SET_NULL,
-         limit_choices_to={"is_employee": True, "is_active": True},
+         limit_choices_to={"is_staff": True, "is_active": True},
          )
     department = models.ForeignKey(
         to=Department, on_delete=models.CASCADE, default=None
@@ -358,7 +358,7 @@ class Inflow(models.Model):
         default=Other,
     )
 
-    sender = models.ForeignKey("accounts.CustomerUser", on_delete=models.CASCADE, related_name="inflows")
+    sender = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="inflows")
     receiver = models.CharField(max_length=100, null=True, default=None)
     phone = models.CharField(max_length=50, null=True, default=None)
     transaction_date = models.DateTimeField(default=timezone.now)
@@ -477,7 +477,7 @@ class DC48_Inflow(models.Model):
         default="Other",
     )
     sender = models.ForeignKey(
-        "accounts.CustomerUser", 
+        "accounts.User", 
         on_delete=models.CASCADE, 
         limit_choices_to=(Q(sub_category=6) |Q(sub_category=7)|Q(is_superuser=True)),
         # limit_choices_to={"category": 4, "is_active": True },
@@ -551,7 +551,7 @@ class Supplier(models.Model):
         null=True,
         blank=True,
         on_delete=models.RESTRICT,
-        limit_choices_to={"is_employee": True, "is_active": True},
+        limit_choices_to={"is_staff": True, "is_active": True},
     )
     supplier = models.CharField(
         max_length=255,

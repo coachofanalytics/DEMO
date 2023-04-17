@@ -25,7 +25,8 @@ ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = ['127.0.0.1','localhost','codatrainingapp.herokuapp.com','www.codanalytics.net','codanalytics.net']
 # ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = "accounts.CustomerUser"
+# AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = (("django.contrib.auth.backends.ModelBackend"),)
 
@@ -121,14 +122,14 @@ def dba_values():
         user = os.environ.get('HEROKU_DEV_USER')
         password = os.environ.get('HEROKU_DEV_PASS')
     else:
-        host = os.environ.get('HEROKU_DEV_HOST')
-        dbname = os.environ.get('HEROKU_DEV_NAME')
-        user = os.environ.get('HEROKU_DEV_USER')
-        password = os.environ.get('HEROKU_DEV_PASS')
-        # host = 'localhost'
-        # dbname = "CODA_DEV" #os.environ.get('POSTGRES_DB_NAME') 
-        # user = "postgres" #os.environ.get('POSTGRESDB_USER')
-        # password ="MANAGER2030" #os.environ.get('POSTGRESSPASS') 
+        # host = os.environ.get('HEROKU_DEV_HOST')
+        # dbname = os.environ.get('HEROKU_DEV_NAME')
+        # user = os.environ.get('HEROKU_DEV_USER')
+        # password = os.environ.get('HEROKU_DEV_PASS')
+        host = 'localhost'
+        dbname = "DYC_DEV" #os.environ.get('POSTGRES_DB_NAME') 
+        user = "postgres" #os.environ.get('POSTGRESDB_USER')
+        password ="MANAGER2030" #os.environ.get('POSTGRESSPASS') 
     return host,dbname,user,password  
 
 WSGI_APPLICATION = "coda_project.wsgi.application"

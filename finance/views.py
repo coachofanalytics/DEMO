@@ -19,7 +19,7 @@ from django.views.generic import (
 )
 import json
 from accounts.forms import UserForm
-from accounts.models import CustomerUser
+from accounts.models import User
 from .models import (
 		LoanUsers, Payment_Information,Payment_History,
 		Default_Payment_Fees,TrainingLoan,
@@ -58,7 +58,7 @@ def contract_form_submission(request):
 			student_dict_data = QueryDict(user_student_data)
 			username = student_dict_data.get('username')
 			try:
-				customer=CustomerUser.objects.get(username=username)
+				customer=User.objects.get(username=username)
 				ss= customer.id
 				payment = Payment_Information.objects.filter(
             			customer_id=request.user.id
@@ -73,14 +73,14 @@ def contract_form_submission(request):
 				if form.cleaned_data.get('category') == 1:
 					form.instance.is_applicant = True
 				elif form.cleaned_data.get('category') == 2:
-					form.instance.is_employee = True 
+					form.instance.is_staff = True 
 				elif form.cleaned_data.get('category') == 3:
 					form.instance.is_client = True 
 				else:
 					form.instance.is_admin = True 
 				if form.is_valid():
 					form.save()
-			customer=CustomerUser.objects.get(username=username)
+			customer=User.objects.get(username=username)
 			payment_fees = int(request.POST.get('duration'))*1000
 			down_payment = int(request.POST.get('down_payment'))
 			student_bonus_amount = request.POST.get('bonus')
@@ -156,7 +156,7 @@ def contract_form_submission(request):
 
 def mycontract(request, *args, **kwargs):
 	username = kwargs.get('username')
-	client_data=CustomerUser.objects.get(username=username)
+	client_data=User.objects.get(username=username)
 	check_default_fee = Default_Payment_Fees.objects.all()
 	if check_default_fee:
 		default_fee = Default_Payment_Fees.objects.filter().first()
@@ -205,7 +205,7 @@ def mycontract(request, *args, **kwargs):
 def newcontract(request, *args, **kwargs):
 	username = kwargs.get('username')
 	#Gets client/user information from the custom user table
-	client_data=CustomerUser.objects.get(username=username)
+	client_data=User.objects.get(username=username)
 	print('CLIENTS DATA',client_data)
 	#Gets any payment default values from the Default table
 	check_default_fee = Default_Payment_Fees.objects.all()
@@ -625,7 +625,7 @@ class LoanCreateView(LoginRequiredMixin, CreateView):
 def admin_loan_data_modified(form, username, user_data):
 	previous_balance_amount = user_data.order_by('-id')[0].balance_amount
 	try:
-		employee = CustomerUser.objects.get(username=username)
+		employee = User.objects.get(username=username)
 	except:
 		employee=None
 	data = form.cleaned_data

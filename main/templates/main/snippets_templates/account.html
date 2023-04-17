@@ -1,5 +1,5 @@
 <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-    {% if user.is_employee %}
+    {% if user.is_staff %}
           <a class="dropdown-item"href="{% url 'main:team' %}" target="" >My Account</a >
             <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'management:user_task' request.user %}" target="" >My DAF</a>

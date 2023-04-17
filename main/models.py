@@ -128,7 +128,7 @@ class Plan(models.Model):
         on_delete=models.CASCADE,
         default=1,
         limit_choices_to=Q(is_active=True)
-        and (Q(is_employee=True) | Q(is_admin=True) | Q(is_superuser=True)),
+        and (Q(is_staff=True) | Q(is_admin=True) | Q(is_superuser=True)),
     )
     task = models.CharField(max_length=255, default="CODA")
     duration = models.IntegerField(null=False, default=4)  # how long will it take
