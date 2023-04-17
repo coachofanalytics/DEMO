@@ -29,8 +29,8 @@ class UserCategory(models.Model):
         Other = 4
     user= models.ForeignKey(
         "accounts.User",
-        verbose_name=("DYC"),
-        related_name="DYCUser",
+        verbose_name=("UserCategories"),
+        related_name="UserCategory",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -48,8 +48,8 @@ class UserCategory(models.Model):
 class Location(models.Model):
     user= models.ForeignKey(
         "accounts.User",
-        verbose_name=("DYC"),
-        related_name="DYCUser",
+        verbose_name=("Locations"),
+        related_name="Location",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -68,20 +68,3 @@ class UserProfile(models.Model):
 
 class Department(models.Model):
     pass
-
-
-
-    # class Employee(models.Model):
-    #  first_Name=models.CharField(verbose_name=("First Name"), help_text=("Required "), max_length=1000)
-    #  last_Name=models.CharField(verbose_name=("Last Name"), help_text=("Required "), max_length=1000)
-    #  email=models.CharField(verbose_name=("Employee Email"), help_text=("Required "), max_length=1000)
-    #  contact=models.CharField(verbose_name=("Employee contact"), help_text=("Required "), max_length=20, default=25475893847)
-    #  entry_date=models.DateTimeField(verbose_name=_("Date"), auto_now=True,editable=True)
-    # gender = models.IntegerField(choices=Score.choices, blank=True, null=True)
-     
-    #  class meta:
-    #       verbose_name=_('Employee')
-    #       verbose_name_plural=_('Employees')
-     
-    #  def _str_(self):
-    #     return self.email

@@ -14,7 +14,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Service,Plan,Assets
+from .models import Service,Assets
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from accounts.utils import employees
