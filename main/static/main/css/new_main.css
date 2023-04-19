@@ -666,7 +666,10 @@ body {
 
 .login-div .other-detail {
   padding: 0px 80px;
+  border-right: 2px solid #dba64b;
 }
+
+
 
 .login-div .other-detail h2 {
   color: #dba64b;

@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User,UserCategory
 from django.utils.translation import gettext_lazy as _
 
 
@@ -71,3 +71,22 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
+
+
+class CategoryForm(forms.Form):
+    class Meta:
+            model = UserCategory
+            fields = [
+                "category",
+                "sub_category",
+
+            ]
+            labels = {
+                "category",
+                "sub_category",
+            }
+
+    def __init__(self, *args, **kwargs):
+        super(CategoryForm, self).__init__(*args, **kwargs)
+        # self.fields['category'].required= True
+        # set category initial=1 and added category

@@ -17,7 +17,7 @@ from django.views.generic import (
     UpdateView,
 )
 from .models import User,CustomUser, Department,UserProfile
-from .forms import UserForm,LoginForm
+from .forms import UserForm,LoginForm,CategoryForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
 from finance.utils import DYCDefaultPayments
@@ -35,6 +35,27 @@ def thank(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
+def user_category(request):
+    form=CategoryForm(request.POST or None)
+    print("form",form)
+    if form.is_valid():
+        # print("category", form.cleaned_data.get("category"))
+        if form.cleaned_data.get("category") == 2:
+            form.instance.is_staff = True
+        elif form.cleaned_data.get("category") == 3:
+            form.instance.is_client = True
+        else:
+            form.instance.is_applicant = Tru
+        form.save()
+        # messages.success(request, f'Account created for {username}!')
+        return redirect('accounts:account-login')
+    else:
+        msg = "error validating form"
+        form = CategoryForm()
+    return render(request, "accounts/registration/DYC/select_category.html", {"form": form})
+
+
+
 def join(request):
     if request.method == "POST":
         previous_user = User.objects.filter(email = request.POST.get("email"))
@@ -114,7 +135,7 @@ def join(request):
         msg = "error validating form"
         form = UserForm()
         print(msg)
-    return render(request, "accounts/registration/coda/join.html", {"form": form})
+    return render(request, "accounts/registration/DYC/join.html", {"form": form})
 
 # ---------------ACCOUNTS VIEWS----------------------
 def CreateProfile():

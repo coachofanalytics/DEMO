@@ -1,0 +1,50 @@
+{%extends "main/base_templates/new_base.html"%}
+{%load crispy_forms_tags%}{% block content %}
+<div class="login-div">
+	<div class="user_card">
+		<div class="d-flex justify-content-center">
+			<!-- <h4 id="form-title">LOGIN</h4> -->
+	    </div>
+			<div class="d-flex justify-content-center">
+				<font size="3"
+					color="white">
+					<!-- {{msg}} -->
+				  </font>
+			</div>
+		<div class="row">
+			<div class="col-md-6 other-detail">
+				<div class="container">
+					<h2>WELCOME TO DYC PLATFORM</h2>
+					<h3>Select Category and Sub Category on the right</h3>
+					<div class="down-detail">
+						<p>For any issues please click below for help!</p>
+						<a href="{% url 'accounts:join' %}" class="btn btn-primary">HELP?</a>
+					</div>
+				</div>
+			</div>
+
+            <div class="col-md-6 form-div">
+				<div class="container">
+					<h2>CATEGORY</h2>
+					<form method="post">
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="">Select Your Category</label>
+							{{ form.category }}
+						</div>
+						<div class="form-group">
+							<label for="">Select Your SubCategory</label>
+							{{ form.subcategory }}
+						</div>
+					<div class="form-group form-checkbox d-flex mb-3">
+						<input type="checkbox" name="" id="" />
+						<label for="" class="align-items-center">Remember Me</label>
+					</div>
+					<button type="submit" class="btn btn-primary">Proceed</button>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content%}

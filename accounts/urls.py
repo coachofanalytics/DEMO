@@ -9,6 +9,7 @@ urlpatterns = [
     #=============================USERS VIEWS=====================================
     path('', views.home, name='home'),
     path('join/', views.join, name='join'),
+    path('select_category/', views.user_category, name='select_category'),
     path('login/', views.login_view, name='account-login'),
     path('profile/', views.profile, name='account-profile'),
     path('users/', views.users, name='accounts-users'),
