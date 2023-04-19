@@ -111,49 +111,6 @@ def dclayout(request):
     
     return render(request, "main/DYC/dc_layout.html",context)
 
-def register(request):
-    if request.method == "POST":
-        previous_user = User.objects.filter(email = request.POST.get("email"))
-        if len(previous_user) > 0:
-            messages.success(request, f'User already exist with this email')
-            form = UserForm()
-            return redirect("/password-reset")
-        else:
-            if form.is_valid():
-                if form.cleaned_data.get("category") == 4:
-                    form.instance.is_applicant = True
-                form.save()
-                username = form.cleaned_data.get('username')
-                messages.success(request, f'Account created for {username}!')
-                return redirect('main:dc_login')
-    else:
-        msg = "error validating form"
-        form = UserForm()
-    return render(request, "main/dc48kenya/dc_register.html", {"form": form,"msg":msg})
-
-
-def dc48login(request):
-    form = LoginForm(request.POST or None)
-    msg = f'account with that username and password does not exist!'
-    if request.method == "POST":
-        if form.is_valid():
-            request.session["siteurl"] = settings.SITEURL
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            account = authenticate(username=username, password=password)
-            CreateProfile()
-            # If Category is DC48KENYA User
-            if account is not None and account.category == 4:
-                if account.sub_category == 6:  # contractual
-                    login(request, account)
-                    return redirect("finance:list-inflow")
-                else:  # parttime (agents) & Fulltime
-                    login(request, account)
-                    # return redirect("management:user_task", username=request.user)
-                    return redirect("main:dc_home")
-    return render(
-       request, "main/dc48kenya/dc_login.html", {"form": form, "msg": msg})
-    
 
 # =====================SERVICE VIEWS=======================================
 class ServiceCreateView(LoginRequiredMixin, CreateView):

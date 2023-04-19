@@ -35,10 +35,10 @@
                         >{{category.title|capfirst}}</a>
                       {% endfor%}
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'data:training-list'%}"
+                      <a class="dropdown-item" href="#"
                       >Add/Edit</a>
                       {% else%}
-                      <a class="dropdown-item" href="{% url 'data:train'%}"
+                      <a class="dropdown-item" href="#"
                       >training</a>
                       {% endif %}
                   </div>
@@ -61,7 +61,7 @@
                   <div class="dropdown-menu" aria-labelledby="navbarDropDown">
                     {% if user.is_admin or  user.is_staff or  user.is_superuser %}
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'data:interview' %}"
+                    <a class="dropdown-item" href="#"
                     >Interview</a>
                       {% for role in roles %}
                       <div class="dropdown-divider"></div>
@@ -69,23 +69,23 @@
                         >{{role.question_type|capfirst}}</a>
                       {% endfor%}
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'data:jobroles' %}"
+                      <a class="dropdown-item" href="#"
                       >Add/Edit</a>
                       {% else%}
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'data:interview'%}"
+                      <a class="dropdown-item" href="#"
                       >interview</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'data:interviewlist'%}"
+                      <a class="dropdown-item" href="#"
                       >Transcripts</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'management:user_session' request.user %}"
+                      <a class="dropdown-item" href="#"
                       >Practice Session</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'data:prepquestions'%}"
+                      <a class="dropdown-item" href="#"
                       >Prep Questions</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'data:prep_reponses' %}"
+                      <a class="dropdown-item" href="#"
                       >Interview Responses</a>
                       {% endif %}
                   </div>
@@ -100,7 +100,7 @@
               </li>
               <li class="nav-item">
                   <div>
-                    <a class="nav-link" href="{% url 'management:companyagenda'%}">
+                    <a class="nav-link" href="#">
                       <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
                     </a>
                   </div>

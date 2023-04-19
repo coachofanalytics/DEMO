@@ -17,7 +17,7 @@ from django.views.generic import (
     UpdateView,
 )
 from .models import User,CustomUser, Department,UserProfile
-from .forms import UserForm
+from .forms import UserForm,LoginForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
 from finance.utils import DYCDefaultPayments
@@ -130,6 +130,7 @@ def login_view(request):
         if form.is_valid():
             request.session["siteurl"] = settings.SITEURL
             username = form.cleaned_data.get("username")
+            # email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             account = authenticate(username=username, password=password)
             CreateProfile()
@@ -204,12 +205,11 @@ def login_view(request):
                 # messages.success(request, f"Invalid credentials.Kindly Try again!!")
                 msg=f"Invalid credentials.Kindly Try again!!"
                 return render(
-                        request, "accounts/registration/login_page.html", {"form": form, "msg": msg}
+                        request, "accounts/registration/DYC/login_page.html", {"form": form, "msg": msg}
                     )
     return render(
-        request, "accounts/registration/login_page.html", {"form": form, "msg": msg}
+        request, "accounts/registration/DYC/login_page.html", {"form": form, "msg": msg}
     )
-
 
 # ================================USERS SECTION================================
 def users(request):

@@ -17,9 +17,9 @@ urlpatterns = [
     path('update/<int:pk>/', views.ServiceUpdateView.as_view(template_name='main/form.html'), name='update_service'),
     path('delete/<int:id>/', views.delete_service, name='delete_service'),
     #==============DC48KENYA==============================================
-    path('dchome', views.dclayout, name='dc_layout'),
-    path('dclogin', views.dc48login, name='dc_login'),
-    path('dcregister', views.register, name='dc_register'),
+    # path('dchome', views.dclayout, name='dc_layout'),
+    # path('dclogin', views.dc48login, name='dc_login'),
+    # path('dcregister', views.register, name='dc_register'),
 
     #==============DEPARTMENTS==============================================
         #--------------------------MANAGEMENT--------------------#
