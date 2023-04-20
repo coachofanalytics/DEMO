@@ -5,7 +5,6 @@ from django.db.models import Sum, Max
 from django.shortcuts import get_object_or_404,render
 from django.contrib import messages
 from .models import TrainingLoan, Transaction
-from accounts.models import Department
 
 
 CustomUser = get_user_model()
@@ -70,7 +69,7 @@ def upload_csv(request):
                     qty=fields[4],
                     amount=fields[5],
                     payment_method=fields[6],
-                    department=Department.objects.filter(id=fields[7]).first(),
+                    department=fields[7],
                     category=fields[8],
                     type=fields[9],
                     description=fields[10],

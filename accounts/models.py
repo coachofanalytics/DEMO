@@ -61,12 +61,12 @@ class Location(models.Model):
     state = models.CharField(blank=True, null=True, max_length=100)
     country = CountryField(blank=True, null=True)
 
-class CustomUser(models.Model):
-    pass
+# class CustomUser(models.Model):
+#     pass
 
 class UserProfile(models.Model):
     pass
 
 
-class Department(models.Model):
-    pass
+# class Department(models.Model):
+#     pass

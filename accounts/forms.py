@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
         fields = [
             "first_name",
             "last_name",
-            "username",
+            # "username",
             "password1",
             "password2",
             "email",
@@ -21,7 +21,7 @@ class UserForm(forms.ModelForm):
         labels = {
             "first_name": "",
             "last_name": "",
-            "username": "",
+            # "username": "",
             "password1": "",
             "password2": "",
             "email": "",

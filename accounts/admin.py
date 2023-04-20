@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
-from .models import User,UserCategory,Department # , Profile
+from .models import User,UserCategory #,Department # , Profile
 
 
 # admin.site.register(User)
@@ -63,4 +63,4 @@ from .models import User,UserCategory,Department # , Profile
 # Now register the new UserAdmin...
 admin.site.register(User)
 admin.site.register(UserCategory)
-admin.site.register(Department)
+# admin.site.register(Department)

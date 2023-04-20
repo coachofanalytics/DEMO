@@ -16,7 +16,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from .models import User,CustomUser, Department,UserProfile,UserCategory
+from .models import User,UserProfile,UserCategory
 from .forms import UserForm,LoginForm,CategoryForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
@@ -66,12 +66,55 @@ class UserCategoryCreateView(CreateView):
 
 
 
+# def join(request):
+#     if request.method == "POST":
+#         previous_user = User.objects.filter(email = request.POST.get("email"))
+#         if len(previous_user) > 0:
+#             messages.success(request, f'User already exist with this email')
+#             form = UserForm()
+#             return redirect("/password-reset")
+#         else:
+#             contract_data,contract_date=agreement_data(request)
+#             default_amounts = Default_Payment_Fees.objects.all()
+#             latest_category = UserCategory.objects.order_by('-entry_date').first()
+#             category = latest_category.category if latest_category else None
+#             subcategory = latest_category.sub_category if latest_category else None
+#             print("category=====>",category)
+#             print("subcategory====>",subcategory)
+#             default_fee=compute_default_fee(category, default_amounts,Default_Payment_Fees)
+#             context={"job_support_data": contract_data,
+#                      "contract_date": contract_date,
+#                      "payment_data": default_fee
+#                      }
+#             # if category == "2" and subcategory == "4":
+#             if category == 4 and subcategory == 99:
+#                 return render(request,"management/contracts/supportcontract_form.html",context)
+#             else:
+#                 form = UserForm(request.POST, request.FILES)
+#                 if form.is_valid():
+#                     if form.cleaned_data.get("category") == 2:
+#                         form.instance.is_staff = True
+#                     elif form.cleaned_data.get("category") == 3:
+#                         form.instance.is_client = True
+#                     else:
+#                         form.instance.is_applicant = True
+
+#                     form.save()
+#                     # messages.success(request, f'Account created for {username}!')
+#                     return redirect('accounts:account-login')
+#     else:
+#         msg = "error validating form"
+#         form = UserForm()
+#         print(msg)
+#     return render(request, "accounts/registration/DYC/signup.html", {"form": form})
+
+
 def join(request):
+    form = UserForm()
     if request.method == "POST":
         previous_user = User.objects.filter(email = request.POST.get("email"))
         if len(previous_user) > 0:
             messages.success(request, f'User already exist with this email')
-            form = UserForm()
             return redirect("/password-reset")
         else:
             contract_data,contract_date=agreement_data(request)
@@ -86,31 +129,25 @@ def join(request):
                      "contract_date": contract_date,
                      "payment_data": default_fee
                      }
-            # if category == "2" and subcategory == "4":
-            if category == 2 and subcategory == 4:
-                print("TRUE")
+            if category == 4 and subcategory == 99:
                 return render(request,"management/contracts/supportcontract_form.html",context)
             else:
                 form = UserForm(request.POST, request.FILES)
                 if form.is_valid():
-                    print("category", form.cleaned_data.get("category"))
-
-            if form.is_valid():
-                if form.cleaned_data.get("category") == 2:
-                    form.instance.is_staff = True
-                elif form.cleaned_data.get("category") == 3:
-                    form.instance.is_client = True
+                    if subcategory == 2:
+                        form.instance.is_staff = True
+                    else:
+                        form.instance.is_client = True
+                    first_name=form.instance.first_name
+                    last_name=form.instance.last_name
+                    username = (first_name[0] + last_name).lower()
+                    form.instance.username = username
+                    form.save()
+                    return redirect('accounts:account-login')
                 else:
-                    form.instance.is_applicant = True
-
-                form.save()
-                # messages.success(request, f'Account created for {username}!')
-                return redirect('accounts:account-login')
-    else:
-        msg = "error validating form"
-        form = UserForm()
-        print(msg)
+                    msg = "error validating form"
     return render(request, "accounts/registration/DYC/signup.html", {"form": form})
+
 
 # ---------------ACCOUNTS VIEWS----------------------
 def CreateProfile():

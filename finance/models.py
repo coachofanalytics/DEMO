@@ -11,7 +11,6 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import pre_save, post_save
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from accounts.models import Department
 # from finance.utils import get_exchange_rate
 User = get_user_model()
 
@@ -218,6 +217,13 @@ class Transaction(models.Model):
         ("Check", "Check"),
         ("Other", "Other"),
     ]
+    # Method of Payment
+    DEPT_CHOICES = [
+        ("HR", "HR"),
+        ("IT", "IT"),
+        ("HEALTH", "HEALTH"),
+        ("Other", "Other"),
+    ]
     sender = models.ForeignKey(
          User,
          verbose_name=_("sender"),
@@ -226,13 +232,8 @@ class Transaction(models.Model):
          on_delete=models.SET_NULL,
          limit_choices_to={"is_staff": True, "is_active": True},
          )
-    department = models.ForeignKey(
-        to=Department, on_delete=models.CASCADE, default=None
-        )
-    # sender = models.CharField(max_length=100, null=True, default=None)
     receiver = models.CharField(max_length=100, null=True, default=None)
     phone = models.CharField(max_length=50, null=True, default=None)
-    # department = models.CharField(max_length=100, default=None)
     type = models.CharField(max_length=100, default=None, null=True)
     activity_date = models.DateTimeField(default=timezone.now)
     receipt_link = models.CharField(max_length=100, blank=True, null=True)
@@ -245,6 +246,11 @@ class Transaction(models.Model):
     )
     description = models.TextField(max_length=1000, default=None)
 
+    department = models.CharField(
+        max_length=25,
+        choices=DEPT_CHOICES,
+        default="Other",
+    )
     payment_method = models.CharField(
         max_length=25,
         choices=PAY_CHOICES,
