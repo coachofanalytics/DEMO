@@ -9,36 +9,24 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            # "category",
-            # "sub_category",
             "first_name",
             "last_name",
             "username",
             "password1",
             "password2",
-            # "phone",
-            # "gender",
-            # "email",
-            # "address",
-            # "city",
-            # "state",
-            # "country",
-            # "resume_file",
-            # "is_staff",
-            "is_applicant",
+            "email",
+            "phone",
+            "gender",
         ]
         labels = {
-            # "sub_category": "",
             "first_name": "",
             "last_name": "",
             "username": "",
+            "password1": "",
+            "password2": "",
             "email": "",
-            # "gender": "",
-            # "phone": "",
-            # "address": "",
-            # "city": "",
-            # "state": "",
-            # "country": "",
+            "gender": "",
+            "phone": "",
         }
 
     def __init__(self, *args, **kwargs):

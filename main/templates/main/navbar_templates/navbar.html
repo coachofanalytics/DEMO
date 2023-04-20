@@ -56,7 +56,7 @@
           >
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#"
-            >Entertainment-Spark</a
+            >Entertainment-Sparks</a
           >
         </div>
       </li>
@@ -97,11 +97,11 @@
                           <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" target="" >Users</a>
                           <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" target="" >Logout</a>
+                        <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
                   {% elif user.category == 4 or user.is_superuser %}
                   <a class="dropdown-item" href="#" target="" >My Account</a >
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" target="" >Logout</a>
+                    <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
                     <div class="dropdown-divider"></div>
                     {% else %}
                     <a class="dropdown-item" href="#" target="" >My Account</a >
@@ -116,38 +116,15 @@
         <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
           >Support</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                  {% if user.is_admin or  user.is_staff or  user.is_superuser %}
-                        <a class="dropdown-item"href="{% url 'main:layout' %}" target="" >Help?</a >
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="#" target="" >Active Requirements</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Internal Justification </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1gTia0pMaLGDW7bBBTxTDcqnCA8sqCcrzKrKZEItWmH4/edit#gid=1318432858" target="_blank" >Clients Justfication</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Justfication(Excel)</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" target="" >Data/Assets</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" target="" >Big Data</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" target="" >Logs</a>
-                            <div class="dropdown-divider"></div>
-                            {% else %}
                             <a class="dropdown-item" href="{% url 'main:layout' %}" target="" >Help?</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" target="" >Active Requirements</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="https://docs.google.com/spreadsheets/d/1TsCcmsebLOONpiJRnyruG9iRS6sxzpxBFaSL_QnR3tU/edit#gid=965191431" target="_blank" >Clients Justfication</a>
-                            <div class="dropdown-divider"></div>
-                  {% endif %}
             </div>
       </li>
       {% else %}
       <a class="nav-item nav-link" href="{% url 'accounts:account-login' %}"
         >Login</a
       >
-      <a class="nav-item nav-link" href="{% url 'accounts:join' %}"
+      <a class="nav-item nav-link" href="{% url 'accounts:select_category' %}"
         >Register</a
       >
       {% endif %}

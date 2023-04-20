@@ -16,7 +16,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from .models import User,CustomUser, Department,UserProfile
+from .models import User,CustomUser, Department,UserProfile,UserCategory
 from .forms import UserForm,LoginForm,CategoryForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
@@ -35,24 +35,34 @@ def thank(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
-def user_category(request):
-    form=CategoryForm(request.POST or None)
-    print("form",form)
-    if form.is_valid():
-        # print("category", form.cleaned_data.get("category"))
-        if form.cleaned_data.get("category") == 2:
-            form.instance.is_staff = True
-        elif form.cleaned_data.get("category") == 3:
-            form.instance.is_client = True
-        else:
-            form.instance.is_applicant = Tru
-        form.save()
-        # messages.success(request, f'Account created for {username}!')
-        return redirect('accounts:account-login')
-    else:
-        msg = "error validating form"
-        form = CategoryForm()
-    return render(request, "accounts/registration/DYC/select_category.html", {"form": form})
+class UserCategoryCreateView(CreateView):
+    model=UserCategory
+    template_name='accounts/registration/DYC/select_category.html'
+    fields='__all__'
+    success_url='/accounts/join'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+
+# def user_category(request):
+#     form=CategoryForm(request.POST or None)
+#     print("form",form)
+#     if form.is_valid():
+#         # print("category", form.cleaned_data.get("category"))
+#         if form.cleaned_data.get("category") == 2:
+#             form.instance.is_staff = True
+#         elif form.cleaned_data.get("category") == 3:
+#             form.instance.is_client = True
+#         else:
+#             form.instance.is_applicant = True
+#         form.save()
+#         # messages.success(request, f'Account created for {username}!')
+#         return redirect('accounts:join')
+#     else:
+#         msg = "error validating form"
+#         form = CategoryForm()
+#     return render(request, "accounts/registration/DYC/select_category.html", {"form": form})
 
 
 
@@ -65,62 +75,27 @@ def join(request):
             return redirect("/password-reset")
         else:
             contract_data,contract_date=agreement_data(request)
-            dyc_total_amount,dyc_down_payment,early_registration_bonus=DYCDefaultPayments()
-            if request.POST.get("category") == "3":
-                check_default_fee = Default_Payment_Fees.objects.all()
-                if check_default_fee:
-                    # default_fee = Default_Payment_Fees.objects.get(id=1)
-                    default_fee = Default_Payment_Fees.objects.all().first()
-                else:
-                    default_payment_fees = Default_Payment_Fees(
-                        job_down_payment_per_month=1000,
-                        job_plan_hours_per_month=40,
-                        student_down_payment_per_month=500,
-                        student_bonus_payment_per_month=100,
-                    )
-                    default_payment_fees.save()
-                    default_fee = Default_Payment_Fees.objects.all().first()
-                if (
-                    request.POST.get("category") == "3"
-                    and request.POST.get("sub_category") == "1"
-                ):
-                    return render(
-                        request,
-                        "management/contracts/supportcontract_form.html",
-                        {
-                            "job_support_data": contract_data,
-                            "contract_date": contract_date,
-                            "payment_data": default_fee,
-                        },
-                    )
-                if (
-                    request.POST.get("category") == "3"
-                    and request.POST.get("sub_category") == "2"
-                ):
-                    return render(
-                        request,
-                        "management/contracts/trainingcontract_form.html",
-                        {
-                            "contract_data": contract_data,
-                            "contract_date": contract_date,
-                            "payment_data": default_fee,
-                        },
-                    )
-                if (request.POST.get("category") == "4"):
-                    context={
-                                    'job_support_data': contract_data,
-                                    'student_data': contract_data,
-                                    'contract_date':contract_date,
-                                    'payments':default_fee
-                                }
-                    return render(request, 'management/contracts/dyc_contracts/student_contract.html',context)
+            default_amounts = Default_Payment_Fees.objects.all()
+            latest_category = UserCategory.objects.order_by('-entry_date').first()
+            category = latest_category.category if latest_category else None
+            subcategory = latest_category.sub_category if latest_category else None
+            print("category=====>",category)
+            print("subcategory====>",subcategory)
+            default_fee=compute_default_fee(category, default_amounts,Default_Payment_Fees)
+            context={"job_support_data": contract_data,
+                     "contract_date": contract_date,
+                     "payment_data": default_fee
+                     }
+            # if category == "2" and subcategory == "4":
+            if category == 2 and subcategory == 4:
+                print("TRUE")
+                return render(request,"management/contracts/supportcontract_form.html",context)
             else:
                 form = UserForm(request.POST, request.FILES)
                 if form.is_valid():
                     print("category", form.cleaned_data.get("category"))
 
             if form.is_valid():
-                # print("category", form.cleaned_data.get("category"))
                 if form.cleaned_data.get("category") == 2:
                     form.instance.is_staff = True
                 elif form.cleaned_data.get("category") == 3:
@@ -135,7 +110,7 @@ def join(request):
         msg = "error validating form"
         form = UserForm()
         print(msg)
-    return render(request, "accounts/registration/DYC/join.html", {"form": form})
+    return render(request, "accounts/registration/DYC/signup.html", {"form": form})
 
 # ---------------ACCOUNTS VIEWS----------------------
 def CreateProfile():

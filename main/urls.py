@@ -5,8 +5,8 @@ from . import views
 
 app_name = 'main'
 urlpatterns = [
-    # path('', views.layout, name='layout'),
-    path('', views.dclayout, name='layout'),
+    path('', views.layout, name='layout'),
+    # path('', views.dclayout, name='layout'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('team/', views.about, name='team'),

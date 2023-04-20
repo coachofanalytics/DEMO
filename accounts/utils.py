@@ -27,7 +27,7 @@ def agreement_data(request):
     contract_date = today.strftime("%d %B, %Y")
     return contract_data,contract_date
 
-def compute_default_fee(category, default_amounts, Default_Payment_Fees):
+def compute_default_fee(category, default_amounts,Default_Payment_Fees):
     if default_amounts:
         default_fee = default_amounts.first()
     else:

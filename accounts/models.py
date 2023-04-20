@@ -23,9 +23,9 @@ class UserCategory(models.Model):
     # added this column here
     class SubCategory(models.IntegerChoices):
         No_selection = 0
-        DYC_Business = 1
-        DYC_Staff = 2
-        DYC_Student = 3
+        Business = 1
+        Staff = 2
+        Student = 3
         Other = 4
     user= models.ForeignKey(
         "accounts.User",
@@ -44,6 +44,8 @@ class UserCategory(models.Model):
     class Meta:
         ordering = ["-entry_date"]
 
+    def __str__(self):
+        return self.category
 
 class Location(models.Model):
     user= models.ForeignKey(

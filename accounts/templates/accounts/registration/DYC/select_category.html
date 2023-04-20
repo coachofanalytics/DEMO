@@ -18,7 +18,7 @@
 					<h3>Select Category and Sub Category on the right</h3>
 					<div class="down-detail">
 						<p>For any issues please click below for help!</p>
-						<a href="{% url 'accounts:join' %}" class="btn btn-primary">HELP?</a>
+						<a href="{% url 'main:contact' %}" class="btn btn-primary">HELP?</a>
 					</div>
 				</div>
 			</div>
@@ -30,11 +30,16 @@
 						{% csrf_token %}
 						<div class="form-group">
 							<label for="">Select Your Category</label>
-							{{ form.category }}
+                            <div>
+                                {{ form.category }}
+                            </div>
 						</div>
 						<div class="form-group">
 							<label for="">Select Your SubCategory</label>
-							{{ form.subcategory }}
+                            <div>
+                                {{ form.sub_category }}
+                            </div>
+							
 						</div>
 					<div class="form-group form-checkbox d-flex mb-3">
 						<input type="checkbox" name="" id="" />
