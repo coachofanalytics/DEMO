@@ -1,4 +1,4 @@
-{%extends "main/DYC/dyc_base.html"%}
+{%extends "main/base_templates/new_base.html"%}
 {%block content %}
 <style type="text/css">
   .signature
@@ -38,21 +38,21 @@
     <fieldset class="form-group">
       <div class="row">
         <div class="col-md-6">
-            Student Name: <br>
-            Student Address: <br>
-            Student Phone: <br>
-            Student Email: 
+            Name: <br>
+            Address: <br>
+            Phone: <br>
+            Email: 
         </div>
         <div class="col-md-6">
-            {{contract_data.first_name}} {{contract_data.last_name}} <br>
-            {%if contract_data.address %}{{contract_data.address}}{% else %} - {% endif %} <br>
-            {{contract_data.phone}} <br>
-            {{contract_data.email}}
+            {{client_data.first_name}} {{client_data.last_name}} <br>
+            {%if client_data.address %}{{client_data.address}}{% else %} - {% endif %} <br>
+            {{client_data.phone}} <br>
+            {{client_data.email}}
         </div>
       </div>
       <legend class="border-bottom  border-top text-center">
         <p class="lead  text-center">
-            STUDENT CONTRACT
+            CLIENT CONTRACT
         </p>
       </legend>
       <hr style="height:1px;border:none;color:rgb(102, 102, 105);background-color:rgb(106, 106, 155);" />
@@ -79,7 +79,7 @@
           </div>
             <div class="col-md-4">
                 Total Amount: KSH.<span class="fees">NULL</span> <br>
-                Student Down payment: KSH.<input type="text" name="down_payment" value="{{payments.student_down_payment_per_month}}" id="down_payment"> <br>
+                Down payment: KSH.<input type="text" name="down_payment" value="{{payments.student_down_payment_per_month}}" id="down_payment"> <br>
                 Early Registration Bonus: KSH. <input type="text" name="bonus" value="{{payments.student_bonus_payment_per_month}}" id="bonus"><br>
                 Balance: KSH.  <span id="balance">NULL</span>
             </div>
@@ -103,7 +103,7 @@
       <hr style="height:1px;border:none;color:rgb(102, 102, 105);background-color:rgb(106, 106, 155);" />
           <div class="row" >
             <div class="col-md-6">
-                Student signature:<input type="text" name="client_sign" class="signature" value="{{contract_data.username}}" required><br>
+                client signature:<input type="text" name="client_sign" class="signature" value="{{contract_data.username}}" required><br>
             </div>
             <div class="col-md-6">
                 Company Rep:      <input type="text" name="rep_name" class="signature" value="coda" required><br>

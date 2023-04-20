@@ -6,6 +6,29 @@ from datetime import date
 from accounts.models import User
 from finance.utils import DYCDefaultPayments
 
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def user_categories(user,UserCategory):
+    # get the current logged in user
+    # user = request.user
+
+    # filter UserCategory objects by the current user
+    user_categories = UserCategory.objects.filter(user=user)
+
+    # create an empty dictionary to store the category and subcategory names
+    categories = {}
+
+    # iterate over the user_categories queryset and populate the categories dictionary
+    for category in user_categories:
+        category_name = UserCategory.Category(category.category).name
+        subcategory_name = UserCategory.SubCategory(category.sub_category).name if category.sub_category else ""
+        categories[category_name] = subcategory_name
+
+    # render the categories in a template or return a JSON response
+    return categories
+
 def agreement_data(request):
     contract_data = {}
     contract_data["first_name"] = request.POST.get("first_name")
@@ -19,10 +42,10 @@ def agreement_data(request):
     contract_data["email"] = request.POST.get("email")
     contract_data["phone"] = request.POST.get("phone")
     contract_data["gender"] = request.POST.get("gender")
-    contract_data["city"] = request.POST.get("city")
-    contract_data["state"] = request.POST.get("state")
-    contract_data["country"] = request.POST.get("country")
-    contract_data["resume_file"] = request.POST.get("resume_file")
+    # contract_data["city"] = request.POST.get("city")
+    # contract_data["state"] = request.POST.get("state")
+    # contract_data["country"] = request.POST.get("country")
+    # contract_data["resume_file"] = request.POST.get("resume_file")
     today = date.today()
     contract_date = today.strftime("%d %B, %Y")
     return contract_data,contract_date

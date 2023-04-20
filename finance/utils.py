@@ -4,85 +4,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Sum, Max
 from django.shortcuts import get_object_or_404,render
 from django.contrib import messages
-from .models import TrainingLoan, Transaction
+from .models import  Transaction
 
-
-CustomUser = get_user_model()
-def calculate_loan(user):
-    debit = TrainingLoan.objects.filter(
-        user=user,
-        category=TrainingLoan.DEBIT
-    ).aggregate(Sum('value'))
-    if debit['value__sum'] == None:
-        debit['value__sum'] = 0
-    credit = TrainingLoan.objects.filter(
-        user=user,
-        category=TrainingLoan.CREDIT
-    ).aggregate(Sum('value'))
-    if credit['value__sum'] == None:
-        credit['value__sum'] = 0
-    loan = debit['value__sum'] - credit['value__sum']
-    return loan
-
-def balance_loan(user):
-    debit = TrainingLoan.objects.filter(
-        user=user,
-        category=TrainingLoan.DEBIT
-    ).aggregate(Sum('value'))
-    if debit['value__sum'] == None:
-        debit['value__sum'] = 0
-    credit = TrainingLoan.objects.filter(
-        user=user,
-        category=TrainingLoan.CREDIT
-    ).aggregate(Sum('value'))
-    if credit['value__sum'] == None:
-        credit['value__sum'] = 0
-    balloan = debit['value__sum'] - credit['value__sum']
-    return balloan
-
-
-def upload_csv(request):
-    context = {
-        "Finance": Finance,
-        "Data": Data,
-        "Management": Management,
-    }
-    if request.method == "POST":
-        csv_file = request.FILES.get("csv_upload")
-        if not csv_file.name.endswith(".csv"):
-            # return HttpResponseRedirect(request.path_info)
-            messages.warning(request, "Not a CSV file")
-            return render(request, "getdata/uploaddata.html", context)
-        # file= csv_file.read().decode("utf-8")
-        try:
-            file = csv_file.read().decode("ISO-8859-1")
-            file_data = file.split("\n")
-            csv_data = [line for line in file_data if line.strip() != ""]
-            for x in csv_data:
-                fields = x.split(",")
-                date = datetime.strptime(str(fields[0]), '%m/%d/%Y').date()
-                created = Transaction.objects.update_or_create(
-                    activity_date=date,
-                    sender=CustomUser.objects.filter(first_name=fields[0]).first(),
-                    receiver=fields[2],
-                    phone=fields[3],
-                    qty=fields[4],
-                    amount=fields[5],
-                    payment_method=fields[6],
-                    department=fields[7],
-                    category=fields[8],
-                    type=fields[9],
-                    description=fields[10],
-                    receipt_link=fields[11],
-                )
-            # url = reverse("admin:index")
-            messages.info(request, "data populated successsfully")
-            return render(request, "getdata/uploaddata.html", context)
-        except Exception as e:
-            messages.warning(request, e)
-            return render(request, "getdata/uploaddata.html", context)
-    if request.method == 'GET':
-        return render(request, "getdata/uploaddata.html", context)
 
 def check_default_fee(Default_Payment_Fees,username):
     try:
@@ -96,7 +19,6 @@ def check_default_fee(Default_Payment_Fees,username):
         default_payment_fees.save()
         default_fee = Default_Payment_Fees.objects.get(id=1)
     return default_fee
-
 
 #This function obtains exchange rate information
 def get_exchange_rate(base, target):

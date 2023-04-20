@@ -61,7 +61,7 @@ class LoginForm(forms.Form):
     )
 
 
-class CategoryForm(forms.Form):
+class UserCategoryForm(forms.Form):
     class Meta:
             model = UserCategory
             fields = [
@@ -74,7 +74,7 @@ class CategoryForm(forms.Form):
                 "sub_category",
             }
 
-    def __init__(self, *args, **kwargs):
-        super(CategoryForm, self).__init__(*args, **kwargs)
-        # self.fields['category'].required= True
-        # set category initial=1 and added category
+    # def __init__(self, *args, **kwargs):
+    #     super(UserCategoryForm, self).__init__(*args, **kwargs)
+    #     # self.fields['category'].required= True
+    #     # set category initial=1 and added category

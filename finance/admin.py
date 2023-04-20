@@ -8,14 +8,11 @@ from datetime import datetime
 # Register your models here.
 from django.urls import path, reverse
 from .models import (
-    LoanUsers,
     Payment_History,
     Default_Payment_Fees,
     Payment_Information,
     Transaction,Inflow,
-    TrainingLoan
 )  # , DocUpload
-
 
 class Payment_HistoryAdmin(admin.ModelAdmin):
     list_display = (
@@ -33,5 +30,4 @@ admin.site.register(Payment_History, Payment_HistoryAdmin)
 admin.site.register(Inflow)
 admin.site.register(Payment_Information)
 admin.site.register(Default_Payment_Fees)
-admin.site.register(TrainingLoan)
-admin.site.register(LoanUsers)
+

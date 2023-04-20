@@ -19,14 +19,13 @@ from django.views.generic import (
 )
 import json
 from accounts.forms import UserForm
-from accounts.models import User
+from accounts.models import User,UserCategory
 from .models import (
-		LoanUsers, Payment_Information,Payment_History,
-		Default_Payment_Fees,TrainingLoan,
-		Inflow,Transaction,PayslipConfig,Supplier,Food,
-		DC48_Inflow
-	)
-from .forms import LoanForm,TransactionForm,InflowForm
+		Payment_Information,Payment_History,
+		Default_Payment_Fees,
+		Inflow,Transaction,
+		)
+from .forms import TransactionForm,InflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
 from main.models import Service
@@ -204,7 +203,16 @@ def mycontract(request, *args, **kwargs):
 @login_required
 def newcontract(request, *args, **kwargs):
 	username = kwargs.get('username')
+	# get the current logged in user
+	user = request.user
+	user_categories = UserCategory.objects.filter(user=user)
+	for cat in user_categories:
+		category=cat.category
+		sub_category=cat.sub_category
+		print(f'category==>{category},subcat===>{sub_category}')
+
 	#Gets client/user information from the custom user table
+	# categories=UserCategory.objects.get(user=username)
 	client_data=User.objects.get(username=username)
 	print('CLIENTS DATA',client_data)
 	#Gets any payment default values from the Default table
@@ -212,7 +220,6 @@ def newcontract(request, *args, **kwargs):
 	print(check_default_fee)
 	if check_default_fee:
 		default_fee = Default_Payment_Fees.objects.filter().first()
-		print(default_fee)
 	else:
 		default_payment_fees = Default_Payment_Fees(job_down_payment_per_month=500,
 				job_plan_hours_per_month=40,
@@ -225,61 +232,63 @@ def newcontract(request, *args, **kwargs):
 	today = date.today()
 	contract_date = today.strftime("%d %B, %Y")
 	context={
-			'job_support_data': client_data,
-			'student_data': client_data,
-			'contract_data': client_data,
+			'client_data': client_data,
 			'contract_date':contract_date,
 			'payments':default_fee
 			}
-	if client_data.category == 3 and client_data.sub_category == 1 or request.user.is_superuser:
-		return render(request, 'management/contracts/supportcontract_form.html',context)
-	if client_data.category == 3 and client_data.sub_category == 2 or request.user.is_superuser:
-		return render(request, 'management/contracts/trainingcontract_form.html',context)
-	if client_data.category == 4 or request.user.is_superuser:
-		return render(request, 'management/contracts/dyc_contracts/student_contract.html',context)
+	if category == 1 and sub_category == 2 or request.user.is_superuser:
+		# return render(request, 'main/home_templates/newlayout.html',context)
+		return render(request, 'main/contracts/client_contract.html',context)
 	else:
-		message=f'Hi {request.user},this page is only available for clients,kindly contact adminstrator'
-		context={"title": "CONTRACT", 
-				"message": message}
-		return render(request, "management/contracts/contract_error.html", context)
+		return render(request, 'main/contracts/student_contract.html',context)
+
+	# if client_data.category == 3 and client_data.sub_category == 2 or request.user.is_superuser:
+	# 	return render(request, 'management/contracts/trainingcontract_form.html',context)
+	# if client_data.category == 4 or request.user.is_superuser:
+	# 	return render(request, 'management/contracts/dyc_contracts/student_contract.html',context)
+	# else:
+	# 	message=f'Hi {request.user},this page is only available for clients,kindly contact adminstrator'
+	# 	context={"title": "CONTRACT", 
+	# 			"message": message}
+	# 	return render(request, "management/contracts/contract_error.html", context)
 
 # ==================PAYMENT CONFIGURATIONS VIEWS=======================
-class PaymentConfigCreateView(LoginRequiredMixin, CreateView):
-	model = PayslipConfig
-	success_url = "/finance/paymentconfigs/"
-	fields = "__all__"
+# class PaymentConfigCreateView(LoginRequiredMixin, CreateView):
+# 	model = PayslipConfig
+# 	success_url = "/finance/paymentconfigs/"
+# 	fields = "__all__"
 
-	def form_valid(self, form):
-		form.instance.user = self.request.user
-		return super().form_valid(form)
+# 	def form_valid(self, form):
+# 		form.instance.user = self.request.user
+# 		return super().form_valid(form)
 
-class PaymentConfigListView(ListView):
-	model = PayslipConfig
-	template_name = "finance/payments/paymentconfigs.html"
-	context_object_name = "payconfigs"
+# class PaymentConfigListView(ListView):
+# 	model = PayslipConfig
+# 	template_name = "finance/payments/paymentconfigs.html"
+# 	context_object_name = "payconfigs"
 
 
-class PaymentConfigUpdateView(UpdateView):
-	model = PayslipConfig
-	success_url = "/finance/paymentconfigs/"
+# class PaymentConfigUpdateView(UpdateView):
+# 	model = PayslipConfig
+# 	success_url = "/finance/paymentconfigs/"
 	
-	fields = "__all__"
+# 	fields = "__all__"
 
-	def form_valid(self, form):
-		# form.instance.author=self.request.user
-		if self.request.user.is_superuser:
-			return super().form_valid(form)
-		else:
-			# return redirect("management:tasks")
-			return render(request,"management/contracts/supportcontract_form.html")
+# 	def form_valid(self, form):
+# 		# form.instance.author=self.request.user
+# 		if self.request.user.is_superuser:
+# 			return super().form_valid(form)
+# 		else:
+# 			# return redirect("management:tasks")
+# 			return render(request,"management/contracts/supportcontract_form.html")
 
-	def test_func(self):
-		# task = self.get_object()
-		if self.request.user.is_superuser:
-			return True
-		# elif self.request.user == task.employee:
-		#     return True
-		return False
+# 	def test_func(self):
+# 		# task = self.get_object()
+# 		if self.request.user.is_superuser:
+# 			return True
+# 		# elif self.request.user == task.employee:
+# 		#     return True
+# 		return False
 
 
 # ==================PAYMENTVIEWS=======================
@@ -612,308 +621,5 @@ class InflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 # ============LOAN VIEWS========================
-class LoanCreateView(LoginRequiredMixin, CreateView):
-	model = PayslipConfig
-	success_url = "/finance/loans"
-	fields = "__all__"
-	form = LoanForm()
-
-	def form_valid(self, form):
-		form.instance.user = self.request.user
-		return super().form_valid(form)
-
-def admin_loan_data_modified(form, username, user_data):
-	previous_balance_amount = user_data.order_by('-id')[0].balance_amount
-	try:
-		employee = User.objects.get(username=username)
-	except:
-		employee=None
-	data = form.cleaned_data
-	if previous_balance_amount != data['balance_amount']:
-		loan_data = TrainingLoan(
-			user=employee,
-			category="Debit",
-			amount=data['amount'],
-			# created_at,
-			# updated_at=2022-10-10,
-			# is_active,
-			training_loan_amount=data['training_loan_amount'],
-			total_earnings_amount=data['total_earnings_amount'],
-			# deduction_date,
-			deduction_amount=data['deduction_amount'],
-			balance_amount=data['balance_amount'],
-		)
-		loan_data.save()
-		return loan_data
-	return None
-
-class LoanUpdateView(UpdateView):
-	model = TrainingLoan
-	success_url = "/finance/loans"
-	fields="__all__"
-
-	def form_valid(self, form):
-		# form.instance.user=self.request.user
-		if self.request.user.is_superuser:
-			user_data = TrainingLoan.objects.filter(id=self.kwargs['pk'], is_active=True)
-			username=user_data.order_by('-id')[0].user.username
-			admin_loan_data_modified(form=form, username=username, user_data=user_data)
-			return redirect("finance:trainingloans")
-		else:
-			return redirect("finance:trainingloans")
-			# return render(request,"management/contracts/supportcontract_form.html")
-
-	def test_func(self):
-		# task = self.get_object()
-		if self.request.user.is_superuser:
-			return True
-		# elif self.request.user == task.employee:
-		#     return True
-		return False
-
-class LoanListView(ListView):
-	model = TrainingLoan
-	template_name = "finance/payments/loans.html"
-	context_object_name = "payments"
-	ordering = ['created_at']
-
-class userLoanListView(ListView):
-	model = LoanUsers
-	template_name = "finance/payments/loanpage.html"
-	context_object_name = "loans"
-
-
 # ==================================TESTING FOOD VIEWS==========================
-@method_decorator(login_required, name="dispatch")
-class FoodCreateView(LoginRequiredMixin, CreateView):
-    model = Food
-    success_url = "/finance/food"
-    fields = "__all__"
-
-    def form_valid(self, form):
-        if self.request.user:
-            return super().form_valid(form)
-
-class SupplierCreateView(LoginRequiredMixin, CreateView):
-    model = Supplier
-    success_url = "/finance/food"
-    fields = "__all__"
-
-    def form_valid(self, form):
-        if self.request.user:
-            return super().form_valid(form)
-
-
-@method_decorator(login_required, name="dispatch")
-class SupplierUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Supplier
-    success_url = "/finance/food"
-    # fields=['group','category','employee','activity_name','description','point','mxpoint','mxearning']
-    fields = "__all__"
-
-    def form_valid(self, form):
-        # form.instance.author=self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        Supplier = self.get_object()
-        if self.request.user.is_superuser:
-            return True
-        elif self.request.user == Supplier.added_by:
-            return True
-        return redirect("finance:supplies")
-
-
-@method_decorator(login_required, name="dispatch")
-class FoodUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Food
-    success_url = "/finance/food"
-    fields = "__all__"
-
-    def form_valid(self, form):
-        # form.instance.author=self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        Food = self.get_object()
-        if self.request.user.is_superuser:
-            return True
-        # elif self.request.user == Food.added_by:
-        elif self.request.user:
-            return True
-        return redirect("finance:supplies")
-
-
-class SupplierListView(ListView):
-    model = Supplier
-    template_name = "finance/payments/food.html"
-	
-    context_object_name = "suppliers"
-    ordering = ["-created_at"]
-    
-
-def foodlist(request):
-    supplies = Food.objects.all().order_by("-id")
-    food_filters=FoodFilter(request.GET,queryset=supplies)
-
-    total_amt = 0
-    for supply in supplies:
-        total_amt = total_amt + supply.total_amount
-
-    total_add_amount = 0
-    for supply in supplies:
-        total_add_amount = total_add_amount + supply.additional_amount
-
-    context={
-        "total_add_amount": total_add_amount,
-        "total_amt": total_amt,
-        "supplies": supplies,
-        "food_filters": food_filters
-    }
-    return render(request,"finance/payments/food.html",context)
-
 # =========================DC 48 KENYA===================================
-@method_decorator(login_required, name="dispatch")
-class DC48InflowCreateView(LoginRequiredMixin, CreateView):
-    model = DC48_Inflow
-    success_url = "/finance/listinflow"
-    template_name="finance/payments/inflow_form.html"
-    # fields =("receiver",
-    #         "phone",
-    #         "category",
-    #         "task",
-    #         "method",
-    #         "period",
-    #         "qty",
-    #         "amount",
-    #         "transaction_cost",
-    #         "description",
-	#    )
-    fields ="__all__"
-    exclude='transaction_date'
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        return super().form_valid(form)
-
-@method_decorator(login_required, name="dispatch")
-class DC48InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = DC48_Inflow
-    template_name="finance/payments/inflow_form.html"
-    success_url = "/finance/listinflow"
-    # fields=['group','category','employee','activity_name','description','point','mxpoint','mxearning']
-    # fields =("receiver",
-    #         "phone",
-    #         "category",
-    #         "task",
-    #         "method",
-    #         "period",
-    #         "qty",
-    #         "amount",
-    #         "transaction_cost",
-    #         "description",
-	#    )
-    fields ="__all__"
-    def form_valid(self, form):
-        # form.instance.author=self.request.user
-        return super().form_valid(form)
-    def test_func(self):
-        # DC48_Inflow = self.get_object()
-        if self.request.user.is_superuser or self.request.user:
-            return True
-        return redirect("data:training-list")
-
-@method_decorator(login_required, name="dispatch")
-class DC48InflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = DC48_Inflow
-    success_url = "/finance/listinflow/"
-    template_name="finance/payments/inflow_confirm_delete.html"
-    def test_func(self):
-        # timer = self.get_object()
-        # if self.request.user == timer.author:
-        # if self.request.user.is_superuser:
-        if self.request.user.is_superuser:
-            return True
-        return False
-    
-@login_required
-def clientinflows(request, user=None, *args, **kwargs):
-	try:
-		client = get_object_or_404(User, username=kwargs.get("username"))
-		transactions = DC48_Inflow.objects.filter(sender=client, is_active=True)
-		total_members = transactions.count()
-		paid_members = transactions.filter(has_paid=True).count()
-		total_amt = 0
-		total_paid = 0
-		for transact in transactions:
-			print("clients_category",transact.clients_category)
-			total_amt += transact.total_payment
-			if transact.has_paid:
-				total_paid += transact.total_paid
-		
-		pledged = total_amt - total_paid
-		amount_ksh = total_amt * rate  # Initialize amount_ksh outside the if block
-		context = {
-			"message":"Kindly contact adminstrator info@codanalytics.net",
-			"transactions": transactions,
-			"total_count": total_members,
-			"paid_count": paid_members,
-			"total_amt": total_amt,
-			"amount_ksh": amount_ksh,
-			"total_paid": total_paid,
-			"pledged": pledged,
-			"rate": rate,
-			"remaining_days": remaining_days,
-			"remaining_seconds ": int(remaining_seconds % 60),
-			"remaining_minutes ": int(remaining_minutes % 60),
-			"remaining_hours": int(remaining_hours % 24),
-		}
-		return render(request, "finance/payments/dcinflows.html", context)
-	except:
-		return render(request, "main/errors/template_error.html",context)
-    
-@login_required
-def dcinflows(request):
-    (remaining_days, remaining_seconds, remaining_minutes, remaining_hours) = countdown_in_month()
-    usd_to_kes = get_exchange_rate('USD', 'KES')
-    rate = round(Decimal(usd_to_kes), 2)
-    
-    if request.user.sub_category == 7 or request.user.is_superuser:
-        transactions = DC48_Inflow.objects.filter(clients_category="DYC")
-        total_members = transactions.filter(clients_category="DYC").count()
-        paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
-        total_amt = 0
-        total_paid = 0
-    else:
-        transactions = DC48_Inflow.objects.filter(clients_category="DC48KENYA")
-        total_members = transactions.filter(clients_category="DC48KENYA").count()
-        paid_members = transactions.filter(clients_category="DC48KENYA", has_paid=True).count()
-        total_amt = 0
-        total_paid = 0
-        
-    amount_ksh = 0  # Assign a default value of 0
-    
-    for transact in transactions:
-        # print("clients_category",transact.clients_category)
-        total_amt += transact.total_payment
-        if transact.has_paid:
-            total_paid += transact.total_paid
-    
-    pledged = total_amt - total_paid
-    amount_ksh = total_amt * rate  # Initialize amount_ksh outside the if block
-    
-    context = {
-        "transactions": transactions,
-        "total_count": total_members,
-        "paid_count": paid_members,
-        "total_amt": total_amt,
-        "amount_ksh": amount_ksh,
-        "total_paid": total_paid,
-        "pledged": pledged,
-        "rate": rate,
-        "remaining_days": remaining_days,
-        "remaining_seconds ": int(remaining_seconds % 60),
-        "remaining_minutes ": int(remaining_minutes % 60),
-        "remaining_hours": int(remaining_hours % 24),
-    }
-    return render(request, "finance/payments/dcinflows.html", context)
-

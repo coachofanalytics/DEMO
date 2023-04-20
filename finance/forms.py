@@ -5,7 +5,6 @@ from pyexpat import model
 from accounts.models import User
 
 from .models import (
-    TrainingLoan,
     Transaction,
     Inflow
 )
@@ -13,7 +12,6 @@ from .models import (
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-
         fields = [
             "id",
             "sender",
@@ -82,21 +80,3 @@ class InflowForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InflowForm, self).__init__(*args, **kwargs)
         self.fields["method"].empty_label = "Select"
-
-class LoanForm(forms.ModelForm):
-    class Meta:
-        model = TrainingLoan
-        # fields = [ "user","category","amount","is_active"]
-        fields = "__all__"
-        
-        labels = {
-            "user":"user",
-            "category":"category",
-            "amount":"amount",
-            "is_active":"is_active",
-        }
-    def __init__(self, **kwargs):
-        super(LoanForm, self).__init__(**kwargs)
-        self.fields["user"].queryset = User.objects.filter(
-            Q(is_admin=True) | Q(is_staff=True)| Q(is_client=True)
-        )

@@ -1,6 +1,7 @@
 import string, random
 from django.core.paginator import Paginator
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -16,8 +17,9 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
+from django.views.generic.edit import FormView
 from .models import User,UserProfile,UserCategory
-from .forms import UserForm,LoginForm,CategoryForm
+from .forms import UserForm,LoginForm,UserCategoryForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
 from finance.utils import DYCDefaultPayments
@@ -35,102 +37,49 @@ def thank(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
+class userslistview(ListView):
+    model=User
+    fields="__all__"
+    template_name="accounts/admin/adminpage.html"
+
+    
 class UserCategoryCreateView(CreateView):
-    model=UserCategory
-    template_name='accounts/registration/DYC/select_category.html'
-    fields='__all__'
-    success_url='/accounts/join'
+    model = UserCategory
+    template_name = 'accounts/registration/DYC/select_category.html'
+    fields = '__all__'
+    success_url = '/accounts/join'
+    queryset = UserCategory.objects.none()  # add this line
 
     def form_valid(self, form):
+        # do not save to database
+        self.object = form.save(commit=False)
+        category = form.cleaned_data.get('category')
+        subcategory = form.cleaned_data.get('sub_category')
+        self.request.session['category'] = category
+        self.request.session['subcategory'] = subcategory
+        # self.object.save()
+        print('Instance saved:', self.object.pk)
         return super().form_valid(form)
-
-
-# def user_category(request):
-#     form=CategoryForm(request.POST or None)
-#     print("form",form)
-#     if form.is_valid():
-#         # print("category", form.cleaned_data.get("category"))
-#         if form.cleaned_data.get("category") == 2:
-#             form.instance.is_staff = True
-#         elif form.cleaned_data.get("category") == 3:
-#             form.instance.is_client = True
-#         else:
-#             form.instance.is_applicant = True
-#         form.save()
-#         # messages.success(request, f'Account created for {username}!')
-#         return redirect('accounts:join')
-#     else:
-#         msg = "error validating form"
-#         form = CategoryForm()
-#     return render(request, "accounts/registration/DYC/select_category.html", {"form": form})
-
-
-
-# def join(request):
-#     if request.method == "POST":
-#         previous_user = User.objects.filter(email = request.POST.get("email"))
-#         if len(previous_user) > 0:
-#             messages.success(request, f'User already exist with this email')
-#             form = UserForm()
-#             return redirect("/password-reset")
-#         else:
-#             contract_data,contract_date=agreement_data(request)
-#             default_amounts = Default_Payment_Fees.objects.all()
-#             latest_category = UserCategory.objects.order_by('-entry_date').first()
-#             category = latest_category.category if latest_category else None
-#             subcategory = latest_category.sub_category if latest_category else None
-#             print("category=====>",category)
-#             print("subcategory====>",subcategory)
-#             default_fee=compute_default_fee(category, default_amounts,Default_Payment_Fees)
-#             context={"job_support_data": contract_data,
-#                      "contract_date": contract_date,
-#                      "payment_data": default_fee
-#                      }
-#             # if category == "2" and subcategory == "4":
-#             if category == 4 and subcategory == 99:
-#                 return render(request,"management/contracts/supportcontract_form.html",context)
-#             else:
-#                 form = UserForm(request.POST, request.FILES)
-#                 if form.is_valid():
-#                     if form.cleaned_data.get("category") == 2:
-#                         form.instance.is_staff = True
-#                     elif form.cleaned_data.get("category") == 3:
-#                         form.instance.is_client = True
-#                     else:
-#                         form.instance.is_applicant = True
-
-#                     form.save()
-#                     # messages.success(request, f'Account created for {username}!')
-#                     return redirect('accounts:account-login')
-#     else:
-#         msg = "error validating form"
-#         form = UserForm()
-#         print(msg)
-#     return render(request, "accounts/registration/DYC/signup.html", {"form": form})
-
 
 def join(request):
     form = UserForm()
     if request.method == "POST":
-        previous_user = User.objects.filter(email = request.POST.get("email"))
+        previous_user = User.objects.filter(email=request.POST.get("email"))
         if len(previous_user) > 0:
-            messages.success(request, f'User already exist with this email')
+            messages.success(request, f'User already exists with this email')
             return redirect("/password-reset")
         else:
-            contract_data,contract_date=agreement_data(request)
+            contract_data, contract_date = agreement_data(request)
             default_amounts = Default_Payment_Fees.objects.all()
-            latest_category = UserCategory.objects.order_by('-entry_date').first()
-            category = latest_category.category if latest_category else None
-            subcategory = latest_category.sub_category if latest_category else None
-            print("category=====>",category)
-            print("subcategory====>",subcategory)
-            default_fee=compute_default_fee(category, default_amounts,Default_Payment_Fees)
-            context={"job_support_data": contract_data,
-                     "contract_date": contract_date,
-                     "payment_data": default_fee
-                     }
+            category = request.session.get('category')
+            subcategory = request.session.get('subcategory')
+            default_fee = compute_default_fee(category, default_amounts, Default_Payment_Fees)
+            context = {"job_support_data": contract_data,
+                       "contract_date": contract_date,
+                       "payment_data": default_fee
+                       }
             if category == 4 and subcategory == 99:
-                return render(request,"management/contracts/supportcontract_form.html",context)
+                return render(request, "management/contracts/supportcontract_form.html", context)
             else:
                 form = UserForm(request.POST, request.FILES)
                 if form.is_valid():
@@ -138,11 +87,15 @@ def join(request):
                         form.instance.is_staff = True
                     else:
                         form.instance.is_client = True
-                    first_name=form.instance.first_name
-                    last_name=form.instance.last_name
+                    first_name = form.instance.first_name
+                    last_name = form.instance.last_name
                     username = (first_name[0] + last_name).lower()
                     form.instance.username = username
                     form.save()
+                    user = User.objects.get(username=username)
+                    user_category = UserCategory(category=category, sub_category=subcategory, user=user, entry_date=timezone.now())
+                    user_category.save()
+
                     return redirect('accounts:account-login')
                 else:
                     msg = "error validating form"
@@ -150,6 +103,18 @@ def join(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
+# @login_required
+# def my_view(request):
+#     try:
+#         user_category = UserCategory.objects.filter(user=request.user).latest("entry_date")
+#         category = user_category.category
+#         subcategory = user_category.sub_category
+#         # do something with category and subcategory
+#     except UserCategory.DoesNotExist:
+#         # handle case where user has no category or subcategory
+#         pass
+
+
 def CreateProfile():
     users = User.objects.filter(profile=None)
     for user in users:
@@ -166,74 +131,43 @@ def login_view(request):
             # email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             account = authenticate(username=username, password=password)
-            CreateProfile()
+            user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
+            category = user_category.category
+            subcategory = user_category.sub_category
+            print(f'accountid==>{account.id},username===>{account.username},"category==>{category},subcategory==>{subcategory}')
+            # CreateProfile()
             # If Category is Staff/employee
-            if account is not None and account.category == 2:
+            if account is not None and subcategory == 2:
                 if account.is_staff and not account.is_employee_contract_signed:
                     login(request, account)
-                    return redirect("management:employee_contract")
-
-                if account.sub_category == 2:  # contractual
+                    return redirect("accounts:userdashboard")
+                if subcategory == 2:  # contractual
                     login(request, account)
-                    return redirect("management:requirements-active")
+                    return redirect("accounts:userdashboard")
                 else:  # parttime (agents) & Fulltime
                     login(request, account)
                     # return redirect("management:user_task", username=request.user)
-                    return redirect("management:companyagenda")
+                    return redirect("accounts:userdashboard")
 
             # If Category is client/customer
             elif account is not None and account.category == 3:
-                if account.sub_category == 1:  # Job Support
+                if subcategory == 1:  # Job Support
                     login(request, account)
                     # return redirect("accounts:user-list", username=request.user)
-                    return redirect('management:companyagenda')
+                    return redirect('accounts:userdashboard')
                 else:  # Student
                     login(request, account)
-                    return redirect('management:companyagenda')
+                    return redirect('accounts:userdashboard')
 
             elif account is not None and account.category == 4:
                     login(request, account)
-                    return redirect("management:dckdashboard")
+                    return redirect("accounts:userdashboard")
            
             # If Category is applicant
-            elif account is not None and account.profile.section is not None:
-                if account.profile.section == "A":
-                    login(request, account)
-                    return redirect("application:section_a")
-                elif account.profile.section == "B":
-                    login(request, account)
-                    return redirect("application:section_b")
-                elif account.profile.section == "C":
-                    login(request, account)
-                    return redirect("application:policies")
-                else:
-                    login(request, account)
-                    return redirect("application:interview")
-            elif account is not None and account.category == 1:
-                if account.country in ("KE", "UG", "RW", "TZ"):  # Male
-                    if account.gender == 1:
-                        login(request, account)
-                        return redirect("application:interview")
-                    if account.account_profile.section == "A":
-                        login(request, account)
-                        return redirect("application:sectionA")
-                    elif account.account_profile.section == "B":
-                        login(request, account)
-                        return redirect("application:sectionB")
-                    elif account.account_profile.section == "C":
-                        login(request, account)
-                        return redirect("application:policies")
-                    else:
-                        login(request, account)
-                        return redirect("application:interview")
-                else:
-                    login(request, account)
-                    return redirect("application:interview")
-
             elif account is not None and account.is_admin:
                 login(request, account)
                 # return redirect("main:layout")
-                return redirect("management:agenda")
+                return redirect("accounts:userdashboard")
             else:
                 # messages.success(request, f"Invalid credentials.Kindly Try again!!")
                 msg=f"Invalid credentials.Kindly Try again!!"
@@ -244,7 +178,14 @@ def login_view(request):
         request, "accounts/registration/DYC/login_page.html", {"form": form, "msg": msg}
     )
 
+
+
 # ================================USERS SECTION================================
+def userdashboard(request):
+    # departments = Department.objects.filter(is_active=True)
+    # return render(request, "management/departments/agenda/dck_dashboard.html", {'title': "DCK DASHBOARD"})
+    return render(request, "accounts/dashboard/userdashboard.html", {'title': "DCK DASHBOARD"})
+
 def users(request):
     users = User.objects.filter(is_active=True).order_by("-date_joined")
     queryset = User.objects.filter(is_active=True).order_by("-date_joined")

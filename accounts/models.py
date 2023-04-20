@@ -14,6 +14,15 @@ class User(AbstractUser):
     is_applicant = models.BooleanField("Is applicant", default=False)
     is_employee_contract_signed = models.BooleanField(default=False)
 
+    class meta:
+        # ordering = ["username"]
+        ordering = ["-date_joined"]
+
+    @property
+    def full_name(self):
+        full_name=self.first_name +' ' + self.last_name
+        return full_name
+
 
 class UserCategory(models.Model):
     # added this column here
@@ -41,11 +50,13 @@ class UserCategory(models.Model):
         choices=SubCategory.choices, blank=True, null=True
     )
     entry_date = models.DateTimeField("entered on", auto_now_add=True, editable=True)
+
     class Meta:
         ordering = ["-entry_date"]
 
     def __str__(self):
-        return self.category
+        return str(self.user)
+
 
 class Location(models.Model):
     user= models.ForeignKey(
@@ -61,12 +72,6 @@ class Location(models.Model):
     state = models.CharField(blank=True, null=True, max_length=100)
     country = CountryField(blank=True, null=True)
 
-# class CustomUser(models.Model):
-#     pass
 
 class UserProfile(models.Model):
     pass
-
-
-# class Department(models.Model):
-#     pass

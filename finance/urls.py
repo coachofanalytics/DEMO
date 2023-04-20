@@ -6,7 +6,7 @@ from .views import (
                     TransactionUpdateView,TransactionDeleteView,
                     UserInflowListView,InflowDetailView,InflowUpdateView,InflowDeleteView,
                     DefaultPaymentUpdateView,DefaultPaymentListView,
-                    LoanListView,LoanUpdateView,LoanCreateView,userLoanListView
+                    
 )
 app_name = 'finance'
 urlpatterns = [
@@ -27,14 +27,7 @@ urlpatterns = [
     path('inflow/<int:pk>/', InflowDetailView.as_view(), name='inflow-detail'),
     path('inflow/<int:pk>/delete/', InflowDeleteView.as_view(), name='inflow-delete'),
     path('inflow/<int:pk>/update/', InflowUpdateView.as_view(), name='inflow-update'),
-    #=============================DC 48 CASHFLOW=====================================
-    path('newinflow/', views.DC48InflowCreateView.as_view(), name='dcinflow'),
-    path('updateinflow/<int:pk>/update/', views.DC48InflowUpdateView.as_view(), name='dcinflow-update'),
-    path('deleteinflow/<int:pk>/delete/', views.DC48InflowDeleteView.as_view(), name='dcinflow-delete'),
-    path('clientinflows/<str:username>/', views.clientinflows, name='userclientinflows'),
-    path('listinflow/', views.dcinflows, name='dcklist'),
     #=============================CLIENT CONTRACT FORM SUBMISSIONS=====================================
-    
     path('contract_form/', views.contract_form_submission, name='finance-contract_form_submission'),
     path('mycontract/<str:username>/', views.mycontract, name='mycontract'),
     path('new_contract/<str:username>/', views.newcontract, name='newcontract'),
@@ -51,34 +44,8 @@ urlpatterns = [
     path('newpayment/', PaymentCreateView.as_view(template_name='finance/payments/payment_form.html'), name='newpayment'),
     path('payment/<int:pk>/update/', DefaultPaymentUpdateView.as_view(template_name='finance/payments/payment_form.html'), name='payment-update'),
     #Pay configs URLS
-    path('newpaymentconfigs/',views.PaymentConfigCreateView.as_view(template_name='finance/payments/payment_form.html'), name='newpaymentconfigs'),
-    path('paymentconfigs/', views.PaymentConfigListView.as_view(), name='paymentconfigs'),
-    path('paymentconfigs/<int:pk>/update/', views.PaymentConfigUpdateView.as_view(template_name='finance/payments/payment_form.html'), name='paymentconfigs-update'),
-    #Loans URLS
-    path('loans/', LoanListView.as_view(template_name='finance/payments/loans.html'), name='trainingloans'),
-    # path('newpay/', views.loan, name='newpay'),
-    path('newpay/', LoanCreateView.as_view(template_name='finance/payments/payment_form.html'), name='newpay'),
-    path('loanuser/', views.userLoanListView, name='loanuser'),
-    path('loan/<int:pk>/update/', LoanUpdateView.as_view(template_name='finance/payments/payment_form.html'), name='loan-update'),
-     #FOOD & SUPPLIERS
-    path(
-        "newsupplies/",
-        views.FoodCreateView.as_view(
-            template_name='main/snippets_templates/generalform.html'
-        ),
-        name="newsupplies",
-    ),
-    path(
-        "newsupplier/",
-        views.SupplierCreateView.as_view(
-            template_name='main/snippets_templates/generalform.html'
-        ),
-        name="newsupplier",
-    ),
-    path("supplier/update/<int:pk>/",views.SupplierUpdateView.as_view(template_name='main/snippets_templates/generalform.html'),name="update-supplier"),
-    path("food/<int:pk>/update",views.FoodUpdateView.as_view(template_name='main/snippets_templates/generalform.html'),name="update-food"),
-    path("suppliers/",views.SupplierListView.as_view(),name="suppliers"),
-    path("food/",views.foodlist,name="supplies"),
+    # path('newpaymentconfigs/',views.PaymentConfigCreateView.as_view(template_name='finance/payments/payment_form.html'), name='newpaymentconfigs'),
+    # path('paymentconfigs/', views.PaymentConfigListView.as_view(), name='paymentconfigs'),
+    # path('paymentconfigs/<int:pk>/update/', views.PaymentConfigUpdateView.as_view(template_name='finance/payments/payment_form.html'), name='paymentconfigs-update'),
 
-    #Testing DYC
 ]
