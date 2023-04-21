@@ -99,7 +99,7 @@ def join(request):
                     return redirect('accounts:account-login')
                 else:
                     msg = "error validating form"
-    return render(request, "accounts/registration/DYC/signup.html", {"form": form})
+    return render(request, "accounts/registration/DYC/register.html", {"form": form})
 
 
 # ---------------ACCOUNTS VIEWS----------------------

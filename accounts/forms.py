@@ -2,6 +2,22 @@ from django import forms
 from .models import User,UserCategory
 from django.utils.translation import gettext_lazy as _
 
+# class UserForm(forms.ModelForm):
+#     password1 = forms.CharField(widget=forms.PasswordInput)
+#     password2 = forms.CharField(widget=forms.PasswordInput, label="", placeholder="Repeat Password")
+#     class Meta:
+#         model = User
+#         fields = [
+#             "first_name",
+#             "last_name",
+#             "password1",
+#             "password2",
+#             "email",
+#             "phone",
+#             "gender",
+#         ]
+
+
 
 class UserForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
@@ -11,7 +27,6 @@ class UserForm(forms.ModelForm):
         fields = [
             "first_name",
             "last_name",
-            # "username",
             "password1",
             "password2",
             "email",
@@ -21,9 +36,8 @@ class UserForm(forms.ModelForm):
         labels = {
             "first_name": "",
             "last_name": "",
-            # "username": "",
-            "password1": "",
-            "password2": "",
+            # "password1": "",
+            # "password2": "",
             "email": "",
             "gender": "",
             "phone": "",
@@ -52,6 +66,7 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
 
 class LoginForm(forms.Form):
     # email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
