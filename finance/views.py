@@ -237,7 +237,6 @@ def newcontract(request, *args, **kwargs):
 			'payments':default_fee
 			}
 	if category == 1 and sub_category == 2 or request.user.is_superuser:
-		# return render(request, 'main/home_templates/newlayout.html',context)
 		return render(request, 'main/contracts/client_contract.html',context)
 	else:
 		return render(request, 'main/contracts/student_contract.html',context)

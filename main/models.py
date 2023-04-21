@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from accounts.models import User
 
 # from tableauhyperapi import DatabaseName
 
@@ -77,3 +78,32 @@ class Assets(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+# class Feedback(models.Model):
+#     user= models.ForeignKey(
+#         "accounts.User",
+#         verbose_name=("UserCategories"),
+#         related_name="UserCategory",
+#         null=True,
+#         blank=True,
+#         on_delete=models.SET_NULL,
+#     )
+#     category= models.ForeignKey(
+#         "accounts.UserCategory",
+#         verbose_name=("UserCategories"),
+#         related_name="UserCategory",
+#         null=True,
+#         blank=True,
+#         on_delete=models.SET_NULL,
+#     )
+#     title = models.CharField(max_length=254)
+#     description = models.TextField(null=True, blank=True)
+#     category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
+#     subcategory = models.CharField(default='Full Course', max_length=200, null=True, blank=True)
+#     price = models.FloatField()
+#     is_active = models.BooleanField(default=True)
+
+#     def __str__(self):
+#         return self.title
+

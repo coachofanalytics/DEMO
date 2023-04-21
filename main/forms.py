@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 class ContactForm(forms.ModelForm):
     class Meta:
-        # model = DSU
+        # model = Feedback
         fields = [
             "trained_by",
             "client_name",
