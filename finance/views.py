@@ -56,6 +56,9 @@ def contract_form_submission(request):
 			user_student_data = request.POST.get('usr_data')
 			student_dict_data = QueryDict(user_student_data)
 			username = student_dict_data.get('username')
+			print("user_student_data=====>",user_student_data)
+			# print("student_dict_data",student_dict_data)
+			# print("username",username)
 			try:
 				customer=User.objects.get(username=username)
 				ss= customer.id
@@ -68,7 +71,7 @@ def contract_form_submission(request):
 				payment = None
 			if not payment:
 				form=UserForm(student_dict_data)
-				print("form --->",form)
+				# print("form --->",form)
 				if form.cleaned_data.get('category') == 1:
 					form.instance.is_applicant = True
 				elif form.cleaned_data.get('category') == 2:
@@ -145,7 +148,7 @@ def contract_form_submission(request):
 				messages.success(request, f'Account created for {username}!')
 				return redirect('finance:pay')
 	except Exception as e:
-		print("Student Form Creation Error ==>",print(e))
+		# print("Student Form Creation Error ==>",print(e))
 		message=f'Hi,{request.user}, there is an issue on our end kindly contact us directly at info@codanalytics.net'
 		context={
                   "title": "CONTRACT", 
