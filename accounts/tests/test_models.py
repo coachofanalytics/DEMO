@@ -3,6 +3,70 @@ from accounts.models import User, Department, Credential, CredentialCategory, Ta
 from django.urls import reverse
 import datetime 
 
+from django.contrib.auth import get_user_model
+
+class UserModelTest(TestCase):
+
+    def setUp(self):
+        self.User = get_user_model()
+
+    def test_create_user(self):
+        user = self.User.objects.create_user(
+            username='testuser',
+            password='password123',
+            first_name='John',
+            last_name='Doe',
+            email='testuser@example.com',
+            phone='555-555-5555',
+            is_admin=False,
+            is_client=True,
+            is_applicant=False,
+            is_employee_contract_signed=False,
+        )
+        self.assertEqual(user.username, 'testuser')
+        self.assertTrue(user.check_password('password123'))
+        self.assertEqual(user.first_name, 'John')
+        self.assertEqual(user.last_name, 'Doe')
+        self.assertEqual(user.email, 'testuser@example.com')
+        self.assertEqual(user.phone, '555-555-5555')
+        self.assertFalse(user.is_admin)
+        self.assertTrue(user.is_client)
+        self.assertFalse(user.is_applicant)
+        self.assertFalse(user.is_employee_contract_signed)
+
+    def test_create_superuser(self):
+        superuser = self.User.objects.create_superuser(
+            username='admin',
+            password='adminpassword',
+            first_name='Admin',
+            last_name='User',
+            email='admin@example.com',
+        )
+        self.assertEqual(superuser.username, 'admin')
+        self.assertTrue(superuser.check_password('adminpassword'))
+        self.assertEqual(superuser.first_name, 'Admin')
+        self.assertEqual(superuser.last_name, 'User')
+        self.assertEqual(superuser.email, 'admin@example.com')
+        self.assertTrue(superuser.is_admin)
+        self.assertTrue(superuser.is_staff)
+        self.assertTrue(superuser.is_superuser)
+
+    def test_full_name(self):
+        user = self.User.objects.create_user(
+            username='testuser',
+            password='password123',
+            first_name='John',
+            last_name='Doe',
+            email='testuser@example.com',
+            phone='555-555-5555',
+            is_admin=False,
+            is_client=True,
+            is_applicant=False,
+            is_employee_contract_signed=False,
+        )
+        self.assertEqual(user.full_name, 'John Doe')
+
+
 class TestDepartmentModel(TestCase):
     # def setUp(self):
     #     self.department = Department.objects.create(name='Test Department')

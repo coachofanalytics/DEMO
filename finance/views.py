@@ -56,22 +56,24 @@ def contract_form_submission(request):
 			user_student_data = request.POST.get('usr_data')
 			student_dict_data = QueryDict(user_student_data)
 			username = student_dict_data.get('username')
-			print("user_student_data=====>",user_student_data)
+			# print("user_student_data=====>",user_student_data)
 			# print("student_dict_data",student_dict_data)
 			# print("username",username)
 			try:
 				customer=User.objects.get(username=username)
-				ss= customer.id
+				# ss= customer.id
+				# print("id",ss)
 				payment = Payment_Information.objects.filter(
             			customer_id=request.user.id
         			).first()
+				# print("payment=====>",payment)
 				# payment = Payment_Information.objects.get(customer_id_id=customer.id)
 			except:
 				customer = None
 				payment = None
 			if not payment:
 				form=UserForm(student_dict_data)
-				# print("form --->",form)
+				print("form --->",form)
 				if form.cleaned_data.get('category') == 1:
 					form.instance.is_applicant = True
 				elif form.cleaned_data.get('category') == 2:
@@ -321,7 +323,8 @@ def payments(request):
 def payment(request,method):
     path_value,sub_title=path_values(request)
     subject='PAYMENT'
-    url='email/payment/payment_method.html'
+    url='finance/DYC/payment_method.html'
+    
     message=f'Hi,{request.user.first_name}, an email has been sent \
             with {sub_title} details for your payment.In the unlikely event\
             that you have not received it, kindly \
@@ -345,9 +348,9 @@ def payment(request,method):
                     subject=subject, html_template=url, 
 		    		context=context
                     )
-        return render(request, "email/payment/payment_method.html",context)
+        return render(request, "finance/DYC/payment_method.html",context)
     except:
-        return render(request, "email/payment/payment_method.html",context)
+        return render(request, "finance/DYC/payment_method.html",context)
     
 
 def pay(request, service=None):
@@ -369,10 +372,11 @@ def pay(request, service=None):
             "service": True,
         }
 
-    if request.user.sub_category == 7:
-        return render(request, "finance/DYC/pay.html", context)
-    else:
-        return render(request, "finance/payments/pay.html", context)
+    return render(request, "finance/DYC/pay.html", context)
+    # if request.user.sub_category == 7:
+    #     return render(request, "finance/DYC/pay.html", context)
+    # else:
+    #     return render(request, "finance/payments/pay.html", context)
 
 def paymentComplete(request):
     payments = Payment_Information.objects.filter(customer_id=request.user.id).first()

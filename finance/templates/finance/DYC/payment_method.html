@@ -108,21 +108,20 @@
         <div class="row">
             <div class="col-md-8 top-coloumn">
                 <p class="title-sub-head">
-                    CODA-CROWN DATA ANALYSIS AND CONSULTANCY LLC
+                    DYC-DIASPORA YOUTH CAUCAS
                 </p>
                 <!-- <p class="title-head">
                     BI TRAIN
                 </p> -->
 
                 <p class="title-para">
-                   <i>Learn The Basics Of Business Intelligence To Skyrocket
-                    Your Career Even If You Don’t Have Any Experience.</i> 
+                   <i>Leading provider of travel, education, and business services in the US.</i> 
                 </p>
             </div>
             <div class="col-md-4 top-coloumn text-white">
                 <div style="padding:2rem">
                     <center>
-                        <a href="{% url 'accounts:account-login'%}" class="btn btn-md btn-bc">Sign In</a>
+                        <a href="{% url 'main:layout'%}" class="btn btn-md btn-bc">Go Back</a>
                     </center>
                 </div>
             </div>
@@ -139,7 +138,9 @@
                         <p>Thank you for choosing {{subtitle}} as your payment method. Please use the following information to complete your payment:</p>
                         <ul style="list-style:none; padding-left:0;">
                             {% if subtitle == 'mpesa' %} 
-                                <li><strong>M-Pesa:</strong> {{mpesa_number}}</li>
+                                <li><strong>Bank Name:</strong>Stanbic</li>
+                                <li><strong>Account Name:</strong>CROWN DATA ANALYSIS & CONSULTING LLC</li>
+                                <!-- <li><strong>M-Pesa:</strong> {{mpesa_number}}</li> -->
                                 <li><strong>Paybill No:</strong>600100</li>
                                 <li><strong>Account No:</strong> {{account_no}}</li>
                             {% elif subtitle == 'cashapp' %}
@@ -159,9 +160,7 @@
                 </div>
         <div class="row">
             <div class="col-md-12 top-coloumn bg-white">
-                <!-- <p class="title-para text-dark text-left">
-                    <i>Sign in to learn more about CODA,Diaspora Youth Caucus and get to know what they do.</i>
-                </p> -->
+           
             </div>
             <div class="col-md-5">
             </div>
