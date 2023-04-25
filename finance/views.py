@@ -222,7 +222,7 @@ def newcontract(request, *args, **kwargs):
     try:
         service = VisaService.objects.get(sub_category=sub_category)
         total_price = service.price + reg_fee
-    except VIsaService.DoesNotExist:
+    except VisaService.DoesNotExist:
         service = None
         total_price = reg_fee
     print(service)
@@ -359,12 +359,11 @@ def pay(request, service=None):
     if not request.user.is_authenticated:
         return redirect(reverse('accounts:account-login'))
     contract_url = reverse('finance:newcontract', args=[request.user.username])
-    try:
-        payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
-        print(payment_info)
-    except:
-        print("Redirected")
-        return redirect('finance:newcontract',request.user)
+    payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
+
+    if not payment_info:
+        return redirect('finance:newcontract', request.user)
+
 
     # try:
     #     total_price = request.session['totalprice']
