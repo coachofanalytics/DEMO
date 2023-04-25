@@ -4,7 +4,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import  login #authenticate,
 from django.utils.decorators import method_decorator
 from coda_project import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -23,7 +23,12 @@ from .forms import UserForm,LoginForm,UserCategoryForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
 from finance.utils import DYCDefaultPayments
-
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormMixin
+from django.forms import modelform_factory
+from .models import UserCategory
+from django.core.exceptions import ValidationError
 # Create your views here..
 
 # @allowed_users(allowed_roles=['admin'])
@@ -42,7 +47,18 @@ class userslistview(ListView):
     fields="__all__"
     template_name="accounts/admin/adminpage.html"
 
+def authenticate(email=None, password=None, **kwargs):
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return None
     
+    if user.check_password(password):
+        return user
+    else:
+        return None  
+
+
 class UserCategoryCreateView(CreateView):
     model = UserCategory
     template_name = 'accounts/registration/DYC/select_category.html'
@@ -102,19 +118,6 @@ def join(request):
     return render(request, "accounts/registration/DYC/register.html", {"form": form})
 
 
-# ---------------ACCOUNTS VIEWS----------------------
-# @login_required
-# def my_view(request):
-#     try:
-#         user_category = UserCategory.objects.filter(user=request.user).latest("entry_date")
-#         category = user_category.category
-#         subcategory = user_category.sub_category
-#         # do something with category and subcategory
-#     except UserCategory.DoesNotExist:
-#         # handle case where user has no category or subcategory
-#         pass
-
-
 def CreateProfile():
     users = User.objects.filter(profile=None)
     for user in users:
@@ -128,46 +131,46 @@ def login_view(request):
         if form.is_valid():
             request.session["siteurl"] = settings.SITEURL
             username = form.cleaned_data.get("username")
-            # email = form.cleaned_data.get("email")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            account = authenticate(username=username, password=password)
-            user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
-            category = user_category.category
-            subcategory = user_category.sub_category
-            print(f'accountid==>{account.id},username===>{account.username},"category==>{category},subcategory==>{subcategory}')
+            account = authenticate(email=email, password=password)
+            # print("user account=============>",account)
+            # print("account-email=======>",account.email)
+            try:
+                # user_category = UserCategory.objects.filter(user=request.user).latest("entry_date")
+                user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
+                category = user_category.category
+                subcategory = user_category.sub_category
+            except UserCategory.DoesNotExist:
+                # use the default user_category value if there are no UserCategory objects
+                # user_category = default_user_category_value
+                category = 5
+                subcategory = 6
             # CreateProfile()
             # If Category is Staff/employee
-            if account is not None and subcategory == 2:
-                if account.is_staff and not account.is_employee_contract_signed:
-                    login(request, account)
-                    return redirect("accounts:userdashboard")
-                if subcategory == 2:  # contractual
-                    login(request, account)
-                    return redirect("accounts:userdashboard")
-                else:  # parttime (agents) & Fulltime
-                    login(request, account)
-                    # return redirect("management:user_task", username=request.user)
-                    return redirect("accounts:userdashboard")
+            if account is not None and category == 4 and account.is_staff:
+                login(request, account)
+                return redirect("accounts:userdashboard")
 
-            # If Category is client/customer
-            elif account is not None and account.category == 3:
-                if subcategory == 1:  # Job Support
-                    login(request, account)
-                    # return redirect("accounts:user-list", username=request.user)
-                    return redirect('accounts:userdashboard')
-                else:  # Student
+            # If Category is Business #2 
+            elif account is not None and category == 2:
+                if subcategory == 2:  # B1 Visa
                     login(request, account)
                     return redirect('accounts:userdashboard')
-
-            elif account is not None and account.category == 4:
+                else:  # B1 Visa
                     login(request, account)
-                    return redirect("accounts:userdashboard")
-           
-            # If Category is applicant
+                    return redirect('accounts:userdashboard')
+                
+            # If Category is Student
+            elif account is not None and category == 1:
+                if subcategory == 1:  # F1 Visa
+                    login(request, account)
+                    return redirect('accounts:userdashboard')
+            # If Category is Staff & Admin
             elif account is not None and account.is_admin:
                 login(request, account)
-                # return redirect("main:layout")
-                return redirect("accounts:userdashboard")
+                return redirect("main:layout")
+            
             else:
                 # messages.success(request, f"Invalid credentials.Kindly Try again!!")
                 msg=f"Invalid credentials.Kindly Try again!!"

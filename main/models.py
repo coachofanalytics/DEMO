@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from accounts.models import User
+from accounts.models import User,UserCategory
 
 # from tableauhyperapi import DatabaseName
 
@@ -36,11 +36,11 @@ class Service(models.Model):
         return "/services/{slug}/".format(slug=self.slug)
 
 
-class CourseCategory(models.Model):
+class ServiceCategory(models.Model):
     name = models.CharField(max_length=254)
 
     class Meta:
-        verbose_name_plural = "Course Categories"
+        verbose_name_plural = "Service Categories"
 
     def __str__(self):
         return self.name
@@ -50,7 +50,7 @@ class Course(models.Model):
     serial = models.PositiveIntegerField(null=True, blank=True)
     title = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(UserCategory, on_delete=models.CASCADE)
     subcategory = models.CharField(default='Full Course', max_length=200, null=True, blank=True)
     price = models.FloatField()
     is_active = models.BooleanField(default=True)
@@ -80,30 +80,17 @@ class Assets(models.Model):
         return self.name
     
 
-# class Feedback(models.Model):
-#     user= models.ForeignKey(
-#         "accounts.User",
-#         verbose_name=("UserCategories"),
-#         related_name="UserCategory",
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#     )
-#     category= models.ForeignKey(
-#         "accounts.UserCategory",
-#         verbose_name=("UserCategories"),
-#         related_name="UserCategory",
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#     )
-#     title = models.CharField(max_length=254)
-#     description = models.TextField(null=True, blank=True)
-#     category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
-#     subcategory = models.CharField(default='Full Course', max_length=200, null=True, blank=True)
-#     price = models.FloatField()
-#     is_active = models.BooleanField(default=True)
+class Feedback(models.Model):
+    user= models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    category = models.ForeignKey(UserCategory,null=True,blank=True,on_delete=models.CASCADE)
+    topic = models.CharField(max_length=254)
+    description = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
-#     def __str__(self):
-#         return self.title
-
+    def __str__(self):
+        return self.title

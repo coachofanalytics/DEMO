@@ -18,8 +18,8 @@
 					<form method="post">
 						{% csrf_token %}
 						<div class="form-group">
-							<label for="">Enter Your Username</label>
-							{{ form.username }}
+							<label for="">Enter Your Email/Username</label>
+							{{ form.email }}
 						</div>
 						<div class="form-group">
 							<label for="">Enter Your Password</label>
@@ -48,7 +48,7 @@
 					<p>Rerieve your <a href="{% url 'password_reset' %}">PASSWORD</span></a>
 					<div class="down-detail">
 						<p>NOT YET REGISTERED?</p>
-						<a href="{% url 'accounts:join' %}" class="btn btn-primary">SIGN UP</a>
+						<a href="{% url 'accounts:select_category' %}" class="btn btn-primary">SIGN UP</a>
 					</div>
 				</div>
 			</div>

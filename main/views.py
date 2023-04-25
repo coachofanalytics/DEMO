@@ -94,29 +94,12 @@ from django.shortcuts import get_object_or_404
 
 def layout(request):
     services=Service.objects.all()
-
     context={
             "services":services,
             # "posts":posts,
             "title": "DYC"
         }
     return render(request, "main/home_templates/newlayout.html")
-
-
-# =====================DC_KENYA VIEWS=======================================
-def dclayout(request):
-    # advertisement()
-    
-    # posts=posts.objects.all()
-    services=Service.objects.all()
-
-    context={
-            "services":services,
-            # "posts":posts,
-            "title": "DCKENYA"
-        }
-    
-    return render(request, "main/DYC/dc_layout.html",context)
 
 
 # =====================SERVICE VIEWS=======================================

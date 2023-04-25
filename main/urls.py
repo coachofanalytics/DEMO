@@ -6,7 +6,6 @@ from . import views
 app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
-    # path('', views.dclayout, name='layout'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('team/', views.about, name='team'),
@@ -16,17 +15,9 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('update/<int:pk>/', views.ServiceUpdateView.as_view(template_name='main/form.html'), name='update_service'),
     path('delete/<int:id>/', views.delete_service, name='delete_service'),
-    #==============DC48KENYA==============================================
-    # path('dchome', views.dclayout, name='dc_layout'),
-    # path('dclogin', views.dc48login, name='dc_login'),
-    # path('dcregister', views.register, name='dc_register'),
-
     #==============DEPARTMENTS==============================================
-        #--------------------------MANAGEMENT--------------------#
     path('newprofile/', views.UserCreateView.as_view(template_name='main/form.html'), name='newprofile'),
     path('updateprofile/<int:pk>/', views.UserProfileUpdateView.as_view(template_name='main/form.html'), name='update_profile'),
-        
-    path('contact/', views.contact, name='contact'),
 
    #==============ERRORS==============================================
     path('400Error/', views.error400, name='400error'),

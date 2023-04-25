@@ -27,15 +27,21 @@ class User(AbstractUser):
 class UserCategory(models.Model):
     # added this column here
     class Category(models.IntegerChoices):
-        DYC = 1
-        Other = 2
-    # added this column here
+        No_selection = 0
+        Student = 1,'STUDENT'
+        Business = 2,'BUSINESS'
+        Residence = 3,'RESIDENCE(GC)'
+        Staff = 4,'DYC EMPLOYEE'
+        Other = 5,'OTHER'
     class SubCategory(models.IntegerChoices):
         No_selection = 0
-        Business = 1
-        Staff = 2
-        Student = 3
-        Other = 4
+        F1 = 1,'STUDENT VISA'
+        B1 = 2,'BUSINESS VISA'
+        H1 = 3,'WORK VISA'
+        GC=4,'GREEN CARD'
+        Asylum=5,'ASYLUM'
+        OTHER = 6,'OTHER'
+
     user= models.ForeignKey(
         "accounts.User",
         verbose_name=("UserCategories"),
@@ -52,6 +58,7 @@ class UserCategory(models.Model):
     entry_date = models.DateTimeField("entered on", auto_now_add=True, editable=True)
 
     class Meta:
+        verbose_name_plural = "Service Categories"
         ordering = ["-entry_date"]
 
     def __str__(self):

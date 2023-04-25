@@ -244,7 +244,7 @@ def newcontract(request, *args, **kwargs):
 	if category == 1 and sub_category == 2 or request.user.is_superuser:
 		return render(request, 'main/contracts/client_contract.html',context)
 	else:
-		return render(request, 'main/contracts/student_contract.html',context)
+		return render(request, 'main/contracts/client_contract.html',context)
 
 	# if client_data.category == 3 and client_data.sub_category == 2 or request.user.is_superuser:
 	# 	return render(request, 'management/contracts/trainingcontract_form.html',context)
