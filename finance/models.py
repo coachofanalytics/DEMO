@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import datetime, date
 from decimal import *
 from enum import unique
@@ -25,10 +26,10 @@ class Payment_Information(models.Model):
         on_delete=models.CASCADE,
         related_name="customer")
     payment_fees=models.IntegerField()
-    down_payment=models.IntegerField(default=500)
+    down_payment=models.IntegerField(default=500, validators=[MinValueValidator(19.99), MaxValueValidator(10000)])
     student_bonus=models.IntegerField(null=True,blank=True)
     fee_balance=models.IntegerField(default=None)
-    plan = models.IntegerField()
+    plan = models.IntegerField(null=True,blank=True)
     payment_method = models.CharField(max_length=100)
     contract_submitted_date = models.DateTimeField(default=timezone.now)
     client_signature = models.CharField(max_length=1000)

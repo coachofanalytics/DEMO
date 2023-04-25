@@ -24,8 +24,27 @@ class User(AbstractUser):
         return full_name
 
 
+class VisaService(models.Model):
+    class SubCategory(models.IntegerChoices):
+        No_selection = 0
+        F1 = 1,'STUDENT VISA'
+        B1 = 2,'BUSINESS VISA'
+        H1 = 3,'WORK VISA'
+        GC = 4,'GREEN CARD'
+        Asylum = 5,'ASYLUM'
+        OTHER = 6,'OTHER'
+
+
+    name = models.CharField(max_length=254)
+    sub_category = models.IntegerField(choices=SubCategory.choices)
+    price = models.FloatField()
+
+    def __str__(self):
+        return str(self.name)
+
+
 class UserCategory(models.Model):
-    # added this column here
+
     class Category(models.IntegerChoices):
         No_selection = 0
         Student = 1,'STUDENT'
@@ -33,6 +52,7 @@ class UserCategory(models.Model):
         Residence = 3,'RESIDENCE(GC)'
         Staff = 4,'DYC EMPLOYEE'
         Other = 5,'OTHER'
+
     class SubCategory(models.IntegerChoices):
         No_selection = 0
         F1 = 1,'STUDENT VISA'
@@ -66,7 +86,7 @@ class UserCategory(models.Model):
 
 
 class Location(models.Model):
-    user= models.ForeignKey(
+    user = models.ForeignKey(
         "accounts.User",
         verbose_name=("Locations"),
         related_name="Location",

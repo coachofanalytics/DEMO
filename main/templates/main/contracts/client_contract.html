@@ -131,7 +131,7 @@
                         <div class="row">
                             <div style="background-color:#f8f8f8; border:1px solid #ccc; padding:20px;">
                                 <ul style="list-style:none; padding-left:0;">
-                                    <form  method="POST" action="/finance/contract_form/" class="form-group">
+                                    <form  method="POST" action="/finance/pay/" class="form-group">
                                         {% csrf_token %}
                                                 <input type="hidden" name="usr_data" value="first_name={{client_data.first_name}}&username={{client_data.username}}&last_name={{client_data.last_name}}&
                                                 email={{client_data.email}}&phone={{client_data.phone}}&gender={{client_data.gender}}&
@@ -160,37 +160,13 @@
                                         </p>
                                         <hr style="height:1px;border:none;color:rgb(102, 102, 105);background-color:rgb(106, 106, 155);" />
                                             <div class="row">
+
                                                 <div class="col-md-4">
-                                                <b>Training Contract Period</b> <br>
-                                                <div>
-                                                    <input type="radio" id="One_month" name="duration" value="1" required>
-                                                    <label for="Training">Monthly</label>
+                                                    Registration Fee: KSH.<span class="fees">{{ reg_fee }}</span> <br>
+                                                    {% if payments %}{{ payments.name }} Fee: KSH.<span class="fees">{{ payments.price }}</span> <br> {% endif %}
+                                                    Total Amount: KSH.<span class="fees">{{ total_price }}</span> <br>
+                                                    Balance: KSH.  <span id="balance">{{ total_price }}</span>
                                                 </div>
-                                                <div>
-                                                    <input type="radio" id="two_month" name="duration" value="2">
-                                                    <label for="Training">yearly </label>
-                                                </div>
-                                                    <input type="radio" id="one_time" name="duration" value="3">
-                                                    <label for="Training">one-time</label>
-                                            </div>
-                                                <div class="col-md-4">
-                                                    Total Amount: KSH.<span class="fees">NULL</span> <br>
-                                                    Down payment: KSH.<input type="text" name="down_payment" value="{{payments.student_down_payment_per_month}}" id="down_payment"> <br>
-                                                    Early Registration Bonus: KSH. <input type="text" name="bonus" value="{{payments.student_bonus_payment_per_month}}" id="bonus"><br>
-                                                    Balance: KSH.  <span id="balance">NULL</span>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <h8>METHOD OF PAYMENT:</h8> <br>
-                                                    <input type="radio" name="payment_type" value="paypal" required>
-                                                    Paypal <br>
-                                                    <input type="radio" name="payment_type" value="cash_app">
-                                                    Cash App <br>
-                                                    <input type="radio" name="payment_type" value="Venmo">
-                                                    Venmo <br>
-                                                    <input type="radio" name="payment_type" value="Mpesa">
-                                                    Mpesa
-                                                </div>
-                                    
                                             </div>
                                         <hr style="height:1px;border:none;color:rgb(102, 102, 105);background-color:rgb(106, 106, 155);" />
                                         <p class="lead  text-center">
