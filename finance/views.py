@@ -363,17 +363,13 @@ def pay(request, service=None):
 
     if not payment_info:
         return redirect('finance:newcontract', request.user)
-
-
-    # try:
-    #     total_price = request.session['totalprice']
-    # except:
-    #     total_price = 0
-    #
-    # print(total_price)
+    
     context = {
             "title": "PAYMENT",
             "payments": payment_info,
+            "rate": rate,
+            "Fee_USD": payment_info.down_payment,
+            "Fee_KSH": payment_info.down_payment * rate,
             "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
             "link": contract_url,
             "service": True,

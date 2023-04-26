@@ -28,6 +28,7 @@
     </div>
             <div class="col-md-6  text-center">
                 <h4><b>Modes of Payments</b></h4>
+                Exchange Rate: <b>{{rate}}</b>
                 <hr>
                   <!-- <img src="\media\home\project2.jpg" class="card-img-top">--->
                     <div class="pay text-center padding-auto">
@@ -38,7 +39,8 @@
                                       <input type="text" id="priceId" hidden> 
                                       <id="priceId"> 
                                         <button>
-                                          $Amount to be Paid <b>Ksh.{{payments.down_payment}}</b>
+                                          $Amount to be Paid <b>USD.{{Fee_USD}}|Ksh.{{Fee_KSH}}</b>
+                                          <!-- $Amount to be Paid <b>USD.{{payments.down_payment}}|Ksh.{{payments.down_payment}}|mul:100</b> -->
                                           <!-- $Amount to be Paid <b>$ {% if service %} {{ payments.price }} {% else %}{{payments.down_payment|add:10}}{% endif %}</b> -->
                                         </button>
                                         <a class="article-title" href="{% url 'finance:updatepay' payments.id%}">

@@ -134,10 +134,7 @@ def login_view(request):
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             account = authenticate(email=email, password=password)
-            # print("user account=============>",account)
-            # print("account-email=======>",account.email)
             try:
-                # user_category = UserCategory.objects.filter(user=request.user).latest("entry_date")
                 user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
                 category = user_category.category
                 subcategory = user_category.sub_category
@@ -147,17 +144,12 @@ def login_view(request):
                 category = 5
                 subcategory = 6
             # CreateProfile()
+            # If Category is Staff/employee
+            if account is not None and category == 4 and account.is_staff:
+                login(request, account)
+                return redirect("accounts:userdashboard")
 
-            # If Category is Student
-            if account is not None and category == 1:
-                if subcategory == 1:  # F1 Visa
-                    login(request, account)
-                    return redirect('accounts:userdashboard')
-                else:
-                    login(request, account)
-                    return redirect('accounts:userdashboard')
-
-            # If Category is Business #2
+            # If Category is Business #2 
             elif account is not None and category == 2:
                 if subcategory == 2:  # B1 Visa
                     login(request, account)
@@ -165,29 +157,16 @@ def login_view(request):
                 else:  # B1 Visa
                     login(request, account)
                     return redirect('accounts:userdashboard')
-
-            # If Category is Business
-            elif account is not None and category == 3:
-                if subcategory == 3:  # B1 Visa
+                
+            # If Category is Student
+            elif account is not None and category == 1:
+                if subcategory == 1:  # F1 Visa
                     login(request, account)
                     return redirect('accounts:userdashboard')
-                else:
-                    login(request, account)
-                    return redirect('accounts:userdashboard')
-
-            # If Category is Staff/employee
-            # print(account.is_stuff)
-            elif account is not None and category == 4 and account.is_staff:
-                login(request, account)
-                return redirect("accounts:userdashboard")
-
-
-            elif account is not None and category == 5:
-                login(request, account)
-                return redirect("accounts:userdashboard")
-
+                
             # If Category is Staff & Admin
-            elif account is not None and account.is_admin:
+            # elif account is not None and account.is_admin:
+            elif account is not None:
                 login(request, account)
                 return redirect("main:layout")
             
