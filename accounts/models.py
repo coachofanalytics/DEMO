@@ -80,9 +80,10 @@ class UserCategory(models.Model):
     class Meta:
         verbose_name_plural = "Service Categories"
         ordering = ["-entry_date"]
+        unique_together = (("user", "category"),)
 
     def __str__(self):
-        return str(self.user)
+        return self.get_category_display()
 
 
 class Location(models.Model):

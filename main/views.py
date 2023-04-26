@@ -14,12 +14,12 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Service,Assets
+from .models import Assets
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from accounts.utils import employees
 from accounts.forms import LoginForm,UserForm
-from main.forms import ContactForm
+from main.forms import ContactForm,FeedbackForm
 from accounts.views import CreateProfile
 from PIL import Image
 from django.contrib.auth import get_user_model
@@ -93,59 +93,11 @@ from django.shortcuts import get_object_or_404
 
 
 def layout(request):
-    services=Service.objects.all()
     context={
-            "services":services,
             # "posts":posts,
             "title": "DYC"
         }
     return render(request, "main/home_templates/newlayout.html")
-
-
-# =====================SERVICE VIEWS=======================================
-class ServiceCreateView(LoginRequiredMixin, CreateView):
-    model = Service
-    success_url = "/services/"
-    fields = "__all__"
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-
-def services(request):
-    services = Service.objects.filter(is_active=True).order_by('serial')
-    context = {
-        "SITEURL" :settings.SITEURL,
-        "services": services
-    }
-    return render(request, "main/services.html", context)
-
-
-class ServiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Service
-    fields ="__all__"
-
-    def form_valid(self, form):
-        form.instance.username = self.request.user
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse("main:services")
-
-    def test_func(self):
-        service = self.get_object()
-        if self.request.user.is_superuser:
-            return True
-        elif self.request.user == service.staff:
-            return True
-        return False
-
-def delete_service(request,id):
-    service = service.objects.get(pk=id)
-    if request.user.is_superuser:
-        service.delete()
-    return redirect('main:services')
 
     
 def about(request):
@@ -214,10 +166,11 @@ class UserProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         elif self.request.user:
             return True
         return False
-
+    
+@login_required
 def contact(request):
     if request.method == "POST":
-        form = ContactForm(request.POST, request.FILES)
+        form = FeedbackForm(request.POST, request.FILES)
         message=f'Thank You, we will get back to you within 48 hours.'
         context={
             "message":message,
@@ -226,16 +179,14 @@ def contact(request):
         if form.is_valid():
             # form.save()
             instance=form.save(commit=False)
-            # instance.client_name='admin',
-            instance.task='NA',
-            instance.plan='NA',
-            instance.trained_by=request.user
+            print("USER========>",request.user)
+            instance.user=request.user
             instance.save()
-            # return redirect("management:assessment")
-            return render(request, "main/errors/generalerrors.html",context)
+            return render(request, "main/messages/message.html",context)
     else:
-        form = ContactForm()
-    return render(request, "main/contact/contact_message.html", {"form": form})
+        form = FeedbackForm()
+        print("USER========>",request.user)
+    return render(request, "main/contact/contact_form.html", {"form": form})
 
 
 class ImageCreateView(LoginRequiredMixin, CreateView):

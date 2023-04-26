@@ -11,10 +11,10 @@ urlpatterns = [
     path('team/', views.about, name='team'),
     
     #=======================SERVICES=====================================
-    path('newservice/', views.ServiceCreateView.as_view(template_name='main/form.html'), name='newservice'),
-    path('services/', views.services, name='services'),
-    path('update/<int:pk>/', views.ServiceUpdateView.as_view(template_name='main/form.html'), name='update_service'),
-    path('delete/<int:id>/', views.delete_service, name='delete_service'),
+    # path('newservice/', views.ServiceCreateView.as_view(template_name='main/form.html'), name='newservice'),
+    # path('services/', views.services, name='services'),
+    # path('update/<int:pk>/', views.ServiceUpdateView.as_view(template_name='main/form.html'), name='update_service'),
+    # path('delete/<int:id>/', views.delete_service, name='delete_service'),
     #==============DEPARTMENTS==============================================
     path('newprofile/', views.UserCreateView.as_view(template_name='main/form.html'), name='newprofile'),
     path('updateprofile/<int:pk>/', views.UserProfileUpdateView.as_view(template_name='main/form.html'), name='update_profile'),

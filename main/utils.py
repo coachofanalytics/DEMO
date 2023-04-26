@@ -5,7 +5,7 @@ from accounts.forms import UserForm
 from django.http import HttpResponseRedirect, Http404, JsonResponse,HttpResponse
 from accounts.models import User
 from coda_project.settings import SITEURL
-from .models import Service,Assets
+from .models import Assets
 import datetime
 #import pdfkit
 

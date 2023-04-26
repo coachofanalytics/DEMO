@@ -28,7 +28,6 @@ from .models import (
 from .forms import TransactionForm,InflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
-from main.models import Service
 from .utils import check_default_fee,get_exchange_rate
 from main.utils import countdown_in_month
 

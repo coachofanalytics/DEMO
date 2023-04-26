@@ -19,46 +19,6 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
-class Service(models.Model):
-    serial = models.PositiveIntegerField(null=True, blank=True)
-    title = models.CharField(default='training',max_length=254)
-    slug = models.SlugField(default='slug',max_length=255)
-    description = models.TextField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name_plural = "Services"
-    
-    def __str__(self):
-        return self.title
-    
-    def get_absolute_url(self):
-        return "/services/{slug}/".format(slug=self.slug)
-
-
-class ServiceCategory(models.Model):
-    name = models.CharField(max_length=254)
-
-    class Meta:
-        verbose_name_plural = "Service Categories"
-
-    def __str__(self):
-        return self.name
-
-
-class Course(models.Model):
-    serial = models.PositiveIntegerField(null=True, blank=True)
-    title = models.CharField(max_length=254)
-    description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey(UserCategory, on_delete=models.CASCADE)
-    subcategory = models.CharField(default='Full Course', max_length=200, null=True, blank=True)
-    price = models.FloatField()
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.title
-
-
 class Assets(models.Model):
     name = models.CharField(max_length=200)
     category = models.CharField(default='background',max_length=200,null=True, blank=True)
@@ -87,7 +47,7 @@ class Feedback(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
     )
-    category = models.ForeignKey(UserCategory,null=True,blank=True,on_delete=models.CASCADE)
+    # category = models.ForeignKey(UserCategory,null=True,blank=True,on_delete=models.CASCADE)
     topic = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
