@@ -392,6 +392,7 @@ def clientlist(request):
         template_name = "accounts/clients/dcklist.html"
 
     if request.user.category == 4 and request.user.sub_category == 7:
+        print ('request.user')
         template_name = "accounts/clients/dyclist.html"
 
     return render(request, template_name, clients)

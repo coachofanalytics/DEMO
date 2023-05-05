@@ -27,9 +27,14 @@ def get_exchange_rate(base, target):
     # api_key = exchange_api_key
     url = f'https://openexchangerates.org/api/latest.json?app_id={exchange_api_key}&base={base}'
     response = requests.get(url)
-    data = response.json()
-    # print(data)
-    return data['rates'][target]
+    if response.status_code != 200:
+        rate=135.50
+    else:
+        data = response.json()
+        rate=data['rates'][target]
+    print(rate)
+    return rate
+
 
 # ==================================================
 def DYCDefaultPayments():

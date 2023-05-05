@@ -108,7 +108,8 @@ body {
 }
 
 .top-left-coloumn {
-  background-image: url(/static/data/img/banner1.png);
+  /* background-image: url(/static/main/img/background/background_v1.jpg); */
+  /* background-image: url(media/background/background_v1.jpg); */
   background-repeat: no-repeat;
   background-size: cover;
 }
