@@ -134,15 +134,23 @@ def login_view(request):
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             account = authenticate(email=email, password=password)
-            try:
-                user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
-                category = user_category.category
-                subcategory = user_category.sub_category
-            except UserCategory.DoesNotExist:
-                # use the default user_category value if there are no UserCategory objects
-                # user_category = default_user_category_value
-                category = 5
-                subcategory = 6
+            if account is not None:
+                try:
+                    user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
+                    category = user_category.category
+                    subcategory = user_category.sub_category
+                except UserCategory.DoesNotExist:
+                    category = 5
+                    subcategory = 6
+            # try:
+            #     user_category = UserCategory.objects.filter(user=account.id).latest("entry_date")
+            #     category = user_category.category
+            #     subcategory = user_category.sub_category
+            # except UserCategory.DoesNotExist:
+            #     # use the default user_category value if there are no UserCategory objects
+            #     # user_category = default_user_category_value
+            #     category = 5
+            #     subcategory = 6
             # CreateProfile()
             # If Category is Staff/employee
             if account is not None and category == 4 and account.is_staff:

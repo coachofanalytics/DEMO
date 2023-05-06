@@ -111,32 +111,36 @@ TEMPLATES = [
 #  ==============DBFUNCTIONS=====================================
 def dba_values():
     if os.environ.get('ENVIRONMENT') == 'production':
-        host = os.environ.get('HEROKU_PROD_HOST')
-        dbname = os.environ.get('HEROKU_PROD_NAME')
-        user = os.environ.get('HEROKU_PROD_USER')
-        password = os.environ.get('HEROKU_PROD_PASS')
-    elif os.environ.get('ENVIRONMENT') == 'testing':
+        host = os.environ.get('HEROKU_DYCPROD_HOST')
+        dbname = os.environ.get('HEROKU_DYCPROD_NAME')
+        user = os.environ.get('HEROKU_DYCPROD_USER')
+        password = os.environ.get('HEROKU_DYCPROD_PASS')
+    elif os.environ.get('ENVIRONMENT') == 'staging':
         # In Heroku/Postgres it is Heroku_UAT
-        host = os.environ.get('HEROKU_DEV_HOST')
-        dbname = os.environ.get('HEROKU_DEV_NAME')
-        user = os.environ.get('HEROKU_DEV_USER')
-        password = os.environ.get('HEROKU_DEV_PASS')
+        host = os.environ.get('HEROKU_DYCDEV_HOST')
+        dbname = os.environ.get('HEROKU_DYCDEV_NAME')
+        user = os.environ.get('HEROKU_DYCDEV_USER')
+        password = os.environ.get('HEROKU_DYCDEV_PASS')
     else:
-        # host = os.environ.get('HEROKU_DEV_HOST')
-        # dbname = os.environ.get('HEROKU_DEV_NAME')
-        # user = os.environ.get('HEROKU_DEV_USER')
-        # password = os.environ.get('HEROKU_DEV_PASS')
-        host = 'localhost'
-        dbname = "DYC_DEV" #os.environ.get('POSTGRES_DB_NAME') 
-        user = "postgres" #os.environ.get('POSTGRESDB_USER')
-        password ="MANAGER2030" #os.environ.get('POSTGRESSPASS') 
+        # host = os.environ.get('HEROKU_DYCPROD_HOST')
+        # dbname = os.environ.get('HEROKU_DYCPROD_NAME')
+        # user = os.environ.get('HEROKU_DYCPROD_USER')
+        # password = os.environ.get('HEROKU_DYCPROD_PASS')
+
+        host = os.environ.get('HEROKU_DYCDEV_HOST')
+        dbname = os.environ.get('HEROKU_DYCDEV_NAME')
+        user = os.environ.get('HEROKU_DYCDEV_USER')
+        password = os.environ.get('HEROKU_DYCDEV_PASS')
+        # host = 'localhost'
+        # dbname = "DYC_DEV" #os.environ.get('POSTGRES_DB_NAME') 
+        # user = "postgres" #os.environ.get('POSTGRESDB_USER')
+        # password ="MANAGER2030" #os.environ.get('POSTGRESSPASS') 
     return host,dbname,user,password  
 
 WSGI_APPLICATION = "coda_project.wsgi.application"
 import dj_database_url
 
 host,dbname,user,password=dba_values() #herokuprod() #herokudev() #dblocal()  #herokudev(),
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
