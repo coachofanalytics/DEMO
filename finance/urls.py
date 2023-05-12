@@ -22,9 +22,10 @@ urlpatterns = [
     path('inflow_entry/', views.inflow, name='entry_inflow'),
     #path('inflow/', InflowListView.as_view(), name='inflow-list'),
     path('inflows/', views.inflows, name='inflow-list'),
-    path('user_inflow/', UserInflowListView.as_view(), name='user-list'),
+    path('user_inflow/<str:username>', views.userlist, name='userinflow'),
     #path('inflow/new/', InflowCreateView.as_view(), name='inflow-create'),
-    path('inflow/<int:pk>/', InflowDetailView.as_view(), name='inflow-detail'),
+    # path('inflow/<int:pk>/views.', InflowDetailView.as_view(), name='inflow-detail'),
+    # path('inflow/<str:username>/', inflow_detail, name='userinflow'),
     path('inflow/<int:pk>/delete/', InflowDeleteView.as_view(), name='inflow-delete'),
     path('inflow/<int:pk>/update/', InflowUpdateView.as_view(), name='inflow-update'),
     #=============================CLIENT CONTRACT FORM SUBMISSIONS=====================================

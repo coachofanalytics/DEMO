@@ -25,10 +25,10 @@ from .models import (
         Default_Payment_Fees,
         Inflow,Transaction,
         )
-from .forms import TransactionForm,InflowForm
+from .forms import InflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
-from .utils import check_default_fee,get_exchange_rate
+from .utils import check_default_fee,get_exchange_rate,compute_amt
 from main.utils import countdown_in_month
 
 
@@ -40,7 +40,7 @@ phone_number,email_info,cashapp,venmo,account_no=payment_details(request)
 
 
 #Time details
-(remaining_days, remaining_seconds, remaining_minutes, remaining_hours) = countdown_in_month()
+(remaining_days, remaining_seconds, remaining_minutes, remaining_hours,now) = countdown_in_month()
 #Exchange Rate details
 usd_to_kes = get_exchange_rate('USD', 'KES')
 rate = round(Decimal(usd_to_kes), 2)
@@ -135,16 +135,6 @@ def contract_form_submission(request):
             payment_history_data.save()
             if payment:
                 messages.success(request, f'Added New Contract For the {username}!')
-                if request.user.category == 4 or request.user.is_superuser:
-                    return redirect('management:dckdashboard')
-                if request.user.category == 3 and request.user.sub_category == 1 or request.user.is_superuser: 
-                    return redirect('accounts:user-list', username=request.user)
-                if request.user.category == 3 and request.user.sub_category == 2 or request.user.is_superuser: 
-                    return redirect('data:train')
-                else:
-                    return redirect('finance:pay')
-            else:
-                messages.success(request, f'Account created for {username}!')
                 return redirect('finance:pay')
     except:
         message=f'Hi,{request.user}, there is an issue on our end kindly contact us directly at info@codanalytics.net'
@@ -258,46 +248,8 @@ def newcontract(request, *args, **kwargs):
 
 
 # ==================PAYMENT CONFIGURATIONS VIEWS=======================
-# class PaymentConfigCreateView(LoginRequiredMixin, CreateView):
-#     model = PayslipConfig
-#     success_url = "/finance/paymentconfigs/"
-#     fields = "__all__"
-
-#     def form_valid(self, form):
-#         form.instance.user = self.request.user
-#         return super().form_valid(form)
-
-# class PaymentConfigListView(ListView):
-#     model = PayslipConfig
-#     template_name = "finance/payments/paymentconfigs.html"
-#     context_object_name = "payconfigs"
-
-
-# class PaymentConfigUpdateView(UpdateView):
-#     model = PayslipConfig
-#     success_url = "/finance/paymentconfigs/"
-    
-#     fields = "__all__"
-
-#     def form_valid(self, form):
-#         # form.instance.author=self.request.user
-#         if self.request.user.is_superuser:
-#             return super().form_valid(form)
-#         else:
-#             # return redirect("management:tasks")
-#             return render(request,"management/contracts/supportcontract_form.html")
-
-#     def test_func(self):
-#         # task = self.get_object()
-#         if self.request.user.is_superuser:
-#             return True
-#         # elif self.request.user == task.employee:
-#         #     return True
-#         return False
-
-
 # ==================PAYMENTVIEWS=======================
-class PaymentCreateView(LoginRequiredMixin, CreateView):
+class DefaultPaymentCreateView(LoginRequiredMixin, CreateView):
     model = Default_Payment_Fees
     success_url = "/finance/contract_form"
     fields = [
@@ -308,6 +260,32 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
     ]
     def form_valid(self, form):
         form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+#Adding payments to payment history
+class PaymentCreateView(LoginRequiredMixin, CreateView):
+    model = Payment_History
+    success_url = "/finance/contract_form"
+    # fields = "__all__"
+    fields = [
+                "customer",
+                "payment_fees",
+                "down_payment",
+                # "student_bonus",
+                "plan",
+                "payment_method",
+    ]
+    def form_valid(self, form):
+        # form.instance.user = self.request.user
+        form.instance.client_signature = form.instance.customer
+        today=str(now)
+        form.instance.client_date = today
+        form.instance.rep_date = today
+        form.instance.student_bonus = 0
+        form.instance.company_rep = 'coda'
+        payment_fees = form.instance.payment_fees
+        down_payment = form.instance.down_payment
+        form.instance.fee_balance=payment_fees-down_payment-form.instance.student_bonus
         return super().form_valid(form)
 
 def payments(request):
@@ -373,19 +351,12 @@ def pay(request, service=None):
             "link": contract_url,
             "service": True,
         }
-
     return render(request, "finance/DYC/pay.html", context)
-    # if request.user.sub_category == 7:
-    #     return render(request, "finance/DYC/pay.html", context)
-    # else:
-    #     return render(request, "finance/payments/pay.html", context)
 
 def paymentComplete(request):
     payments = Payment_Information.objects.filter(customer_id=request.user.id).first()
-    # print(payments)
     customer = request.user
     body = json.loads(request.body)
-    # print("payment_complete:", body)
     payment_fees = body["payment_fees"]
     down_payment = payments.down_payment
     studend_bonus = payments.student_bonus
@@ -478,7 +449,7 @@ class PaymentInformationUpdateView(UpdateView):
 @login_required
 def transact(request):
     if request.method == "POST":
-        form = TransactionForm(request.POST, request.FILES)
+        form = InflowForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             instance=form.save(commit=False)
@@ -486,13 +457,13 @@ def transact(request):
             instance.save()
             return redirect("/finance/transaction/")
     else:
-        form = TransactionForm()
+        form = InflowForm()
     return render(request, "finance/payments/transact.html", {"form": form})
 
 
 class TransactionListView(ListView):
     model = Transaction
-    template_name = "finance/payments/transaction.html"
+    template_name = "finance/DYC/transactions.html"
     context_object_name = "transactions"
     # ordering=['-transaction_date']
 
@@ -521,7 +492,7 @@ class TransactionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         "description",
         "receipt_link",
     ]
-    form = TransactionForm()
+    # form = InflowForm()
 
     def form_valid(self, form):
         form.instance.username = self.request.user
@@ -552,6 +523,51 @@ class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         return False
         
 # ----------------------CASH INFLOW CLASS-BASED VIEWS--------------------------------
+@login_required
+def inflows(request):
+    # (remaining_days, remaining_seconds, remaining_minutes, remaining_hours) = countdown_in_month()
+    usd_to_kes = get_exchange_rate('USD', 'KES')
+    rate = round(Decimal(usd_to_kes), 2)
+    transactions = Transaction.objects.filter(clients_category="DYC")
+    (pledged, total_amt, amount_ksh, receipt_url)=compute_amt(transactions, rate)
+    total_members = transactions.filter(clients_category="DYC").count()
+    paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
+    total_amt = 0
+    total_paid = 0
+        
+    amount_ksh = 0  # Assign a default value of 0
+    
+    # for transact in transactions:
+    #     # print("receipturl",transact.receipturl)
+    #     total_amt += transact.total_payment
+    #     if transact.has_paid:
+    #         total_paid += transact.total_paid
+    #     if transact.receipturl:
+    #         receipt_url=transact.receipturl
+    #     else:
+    #         return redirect('main:404error')
+    
+    # pledged = total_amt - total_paid
+    # amount_ksh = total_amt * rate  # Initialize amount_ksh outside the if block
+    
+    context = {
+        "transactions": transactions,
+        "total_count": total_members,
+        "paid_count": paid_members,
+        "total_amt": total_amt,
+        "amount_ksh": amount_ksh,
+        "total_paid": total_paid,
+        "pledged": pledged,
+        "rate": rate,
+        "remaining_days": remaining_days,
+        "remaining_seconds ": int(remaining_seconds % 60),
+        "remaining_minutes ": int(remaining_minutes % 60),
+        "remaining_hours": int(remaining_hours % 24),
+        "receipt_url": receipt_url,
+    }
+    return render(request, "finance/payments/inflows.html", context)
+
+
 def inflow(request):
     if request.method == "POST":
         form = InflowForm(request.POST, request.FILES)
@@ -562,23 +578,47 @@ def inflow(request):
     else:
         form = InflowForm()
     return render(
-        request, "finance/company_finances/inflow_entry.html", {"form": form}
+        request, "finance/payments/payment_form.html", {"form": form}
     )
 
 @method_decorator(login_required, name="dispatch")
 class InflowDetailView(DetailView):
     template_name = "finance/cash_inflow/inflow_detail.html"
     model = Inflow
+    context_object_name = 'inflow'
     ordering = ["-transaction_date"]
 
+# @method_decorator(login_required, name="dispatch")
+# class InflowDetailView(DetailView):
+#     model = Inflow
+#     template_name = 'inflow_detail.html'
+#     context_object_name = 'inflow'
+#     slug_field = 'sender'
+#     slug_url_kwarg = 'sender'
+    
+#     def get_object(self, queryset=None):
+#         sender = self.kwargs.get(self.slug_url_kwarg)
+#         queryset = self.get_queryset()
+#         return queryset.get(sender=sender)
 
-def inflows(request):
-    inflows = Inflow.objects.all().order_by("-transaction_date")
-    total = Inflow.objects.all().aggregate(Total_Cashinflows=Sum("amount"))
-    revenue = total.get("Total_Cashinflows")
-    context = {"inflows": inflows, "revenue": revenue}
-    return render(request, "finance/cash_inflow/inflows.html", context)
 
+# def inflow_detail(request, username):
+#     inflow = get_object_or_404(Transaction, sender__username=username)
+#     return render(request, 'inflow_detail.html', {'inflow': inflow})
+
+def userlist(request, username):
+    user = get_object_or_404(User, username=username)
+    transactions = Transaction.objects.filter(sender=user)
+    (pledged, total_amt, amount_ksh, receipt_url)=compute_amt(transactions, rate)
+    context={
+                "total_amt": total_amt,
+                "amount_ksh": amount_ksh,
+                "pledged": pledged,
+                'inflow': transactions,
+                'receipt_url': receipt_url,
+                "rate":rate
+             }
+    return render(request, 'finance/cash_inflow/user_inflow.html', context)
 
 @method_decorator(login_required, name="dispatch")
 class UserInflowListView(ListView):
@@ -627,7 +667,3 @@ class InflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-
-# ============LOAN VIEWS========================
-# ==================================TESTING FOOD VIEWS==========================
-# =========================DC 48 KENYA===================================

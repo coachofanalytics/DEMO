@@ -88,33 +88,33 @@ def join(request):
             contract_data, contract_date = agreement_data(request)
             default_amounts = Default_Payment_Fees.objects.all()
             category = request.session.get('category')
+            print("category=========>",category)
             subcategory = request.session.get('subcategory')
             default_fee = compute_default_fee(category, default_amounts, Default_Payment_Fees)
             context = {"job_support_data": contract_data,
                        "contract_date": contract_date,
                        "payment_data": default_fee
                        }
-            if category == 4 and subcategory == 99:
-                return render(request, "management/contracts/supportcontract_form.html", context)
-            else:
-                form = UserForm(request.POST, request.FILES)
-                if form.is_valid():
-                    if subcategory == 2:
-                        form.instance.is_staff = True
-                    else:
-                        form.instance.is_client = True
-                    first_name = form.instance.first_name
-                    last_name = form.instance.last_name
-                    username = (first_name[0] + last_name).lower()
-                    form.instance.username = username
-                    form.save()
-                    user = User.objects.get(username=username)
-                    user_category = UserCategory(category=category, sub_category=subcategory, user=user, entry_date=timezone.now())
-                    user_category.save()
-
-                    return redirect('accounts:account-login')
+            # if category == 4 and subcategory == 99:
+            #     return render(request, "management/contracts/supportcontract_form.html", context)
+            # else:
+            form = UserForm(request.POST, request.FILES)
+            if form.is_valid():
+                if category == 4:
+                    form.instance.is_staff = True
                 else:
-                    msg = "error validating form"
+                    form.instance.is_client = True
+                first_name = form.instance.first_name
+                last_name = form.instance.last_name
+                username = (first_name[0] + last_name).lower()
+                form.instance.username = username
+                form.save()
+                user = User.objects.get(username=username)
+                user_category = UserCategory(category=category, sub_category=subcategory, user=user, entry_date=timezone.now())
+                user_category.save()
+                return redirect('accounts:account-login')
+            else:
+                msg = "error validating form"
     return render(request, "accounts/registration/DYC/register.html", {"form": form})
 
 

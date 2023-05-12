@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
 from django.db.models import Sum, Max
 from django.shortcuts import get_object_or_404,render
@@ -35,6 +36,26 @@ def get_exchange_rate(base, target):
     print(rate)
     return rate
 
+def compute_amt(transactions, rate):
+    total_amt = 0
+    total_paid = 0
+    pledged = 0
+    amount_ksh = 0
+    receipt_url = None
+
+    for transact in transactions:
+        total_amt += transact.total_payment
+        if transact.has_paid:
+            total_paid += transact.total_paid
+        if transact.receipturl:
+            receipt_url = transact.receipturl
+        else:
+            return redirect('main:404error')
+
+    pledged = total_amt - total_paid
+    amount_ksh = total_amt * rate
+
+    return pledged, total_amt, amount_ksh, receipt_url
 
 # ==================================================
 def DYCDefaultPayments():

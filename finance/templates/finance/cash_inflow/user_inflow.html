@@ -1,90 +1,48 @@
-{%extends "main/base_templates/new_base.html"%}
+{%extends "main/base_templates/base.html"%}
 {% load mathfilters %}
 {% block content %}
 <section id="rating">
   <div class="rating text-center">
-    <h2>Cashflows</h2>
+    <h2>MY ACCOUNT</h2>
     <!-- <hr> -->
     <!-- <h5><b class="remaining-time">{{remaining_days}},{{remaining_hours}},{{remaining_minutes}},{{remaining_seconds}}</b></h5> -->
     <hr>
     <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
     <div class="row text-center">
-      <div class="col-md-2 amount_msg" id="bada">
-        <div class="card">
-          <div class="card-body">
-            <font size="-1"><h5><b>Prospective</b></h5></font>
-            <hr/>
-            <!-- <i><h6>{{GoalAmount}}</h6></i> -->
-            <i><h6>{{total_count}}</h6></i>
-            <hr/>
-            <font size="-1"
-            <i><p>Kindly add your name on the list</p></i>
-            </font>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2 amount_msg" id="bada">
-        <div class="card">
-          <div class="card-body">
-            <h5><b>Paid Up Members</b></h5>
-            <hr/>
-            <!-- <i><h6>{{GoalAmount}}</h6></i> -->
-            <i><h6>{{paid_count}}</h6></i>
-            <hr/>
-            <font size="-1"
-            <i><p>Congrats & Thanks</p></i>
-            </font>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2 amount_msg" id="bada">
+      <div class="col-md-4 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
             <h5><b>Total Amount</b></h5>
             <hr/>
-            <!-- <i><h6>{{GoalAmount}}</h6></i> -->
-            <i><h6>${{total_amt}}</h6></i>
+            <i><h6>Ksh.{{total_amts}}</h6></i>
             <hr/>
             <font size="-1"
-            <i><p>Total amount(paid+pledged)</p></i>
+            <i><p>Total amount</p></i>
             </font>
           </div>
         </div>
       </div>
-      <div class="col-md-2 amount_msg" id="bada">
+      <div class="col-md-4 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
             <h5><b>Amount Paid</b></h5>
             <hr/>
             <!-- <i><h6>{{GoalAmount}}</h6></i> -->
-            <i><h6>${{total_paid}}</h6></i>
+            <i><h6>Ksh.{{total_amt}}</h6></i>
             <hr/>
             <i><p>Amount Paid</p></i>
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-2 amount_msg" id="bada">
+
+      <div class="col-md-4 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
-            <h5><b>Pledges</b></h5>
+            <p>
+              Welcome {{request.user}}
+            </p>
             <hr/>
-            <!-- <i><h6>{{GoalAmount}}</h6></i> 
-            <i><h6>${{pledged}}</h6></i>
-            <hr/>
-            <i><p>Amount Pledged</p></i>
-          </div>
-        </div>
-      </div> -->
-      <div class="col-md-2 amount_msg" id="bada">
-        <div class="card">
-          <div class="card-body">
-            <p><a href="{% url 'finance:dcinflow'%}" class="btn btn-secondary btn-sm"
-              >Add Revenue
-            </a></p>
-            <hr/>
-            <a href="{% url 'finance:dcklist'%}" class="btn btn-secondary btn-sm"
-            >Finance Report
-          </a>
+  
           <hr/>
             <!-- <i><h6>{{GoalAmount}}</h6></i> -->
             <i><h6>Exchange Rate :KES.{{rate}}</h6></i>
@@ -114,7 +72,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for transanction in transactions %}
+        {% for transanction in inflow %}
         <tr>
           <td>
             <a class="text-dark  text-decoration-none" 
@@ -124,7 +82,6 @@
             </a>
         </td>
         <td>
-        <a class="article-title" href="{% url 'finance:userclientinflows' transanction.sender %}">
           {{transanction.sender.first_name}},{{transanction.sender.last_name}}
         </td>
           <!-- <td>{{transanction.receiver}}</td>
@@ -140,14 +97,11 @@
           <!-- <td>{{transanction.amount}}</td>  -->
           <!-- <td>{{amount_ksh}}</td>  -->
           <td>{{transanction.transaction_date|date:"n/d/Y"}}</td>
-          {% if transanction.receipturl.status_code == 302 %}
           <td> <a class="article-title" href="{{transanction.receipturl}}">View Receipt</a></td>
-          {%else%}
-          <td> <a class="article-title" href="{% url 'main:404error'%} ">No Receipt</a></td>
-          {%endif%}
+          <!-- <td> <a class="article-title" href="{% url 'main:404error'%} ">No Receipt</a></td> -->
           {%if user.is_admin or user.is_superuser%}
-          <td> <a class="article-title" href="{% url 'finance:dcinflow-update' transanction.id %}">Edit</a></td>
-          <td> <a class="article-title" href="{% url 'finance:dcinflow-delete' transanction.id %}">Delete</a></td>
+          <td> <a class="article-title" href="{% url 'finance:inflow-update' transanction.id %}">Edit</a></td>
+          <td> <a class="article-title" href="{% url 'finance:inflow-delete' transanction.id %}">Delete</a></td>
           {%endif%}
         </tr>
         {% endfor %}

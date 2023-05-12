@@ -44,7 +44,8 @@ def countdown_in_month():
                 remaining_days,
                 remaining_seconds ,
                 remaining_minutes ,
-                remaining_hours 
+                remaining_hours,
+                now
             )
 
 def path_values(request):
