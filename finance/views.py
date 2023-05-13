@@ -588,23 +588,6 @@ class InflowDetailView(DetailView):
     context_object_name = 'inflow'
     ordering = ["-transaction_date"]
 
-# @method_decorator(login_required, name="dispatch")
-# class InflowDetailView(DetailView):
-#     model = Inflow
-#     template_name = 'inflow_detail.html'
-#     context_object_name = 'inflow'
-#     slug_field = 'sender'
-#     slug_url_kwarg = 'sender'
-    
-#     def get_object(self, queryset=None):
-#         sender = self.kwargs.get(self.slug_url_kwarg)
-#         queryset = self.get_queryset()
-#         return queryset.get(sender=sender)
-
-
-# def inflow_detail(request, username):
-#     inflow = get_object_or_404(Transaction, sender__username=username)
-#     return render(request, 'inflow_detail.html', {'inflow': inflow})
 
 def userlist(request, username):
     user = get_object_or_404(User, username=username)
@@ -629,14 +612,15 @@ class UserInflowListView(ListView):
 
 @method_decorator(login_required, name="dispatch")
 class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Inflow
-    success_url = "/finance/inflow"
+    model = Transaction
+    success_url = "/finance/inflows/"
+    template_name='finance/payments/payment_form.html'
     fields = [
         "sender",
         "receiver",
         "phone",
         "category",
-        "task",
+        # "task",
         "method",
         "period",
         "qty",
@@ -657,9 +641,9 @@ class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 @method_decorator(login_required, name="dispatch")
 class InflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Inflow
+    model = Transaction
     success_url = "/finance/inflow"
-
+    template_name='finance/cash_inflow/transaction_confirm_delete.html'
     def test_func(self):
         inflow = self.get_object()
         # if self.request.user == inflow.sender:
