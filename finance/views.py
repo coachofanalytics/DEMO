@@ -630,12 +630,12 @@ class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     ]
 
     def form_valid(self, form):
-        form.instance.sender = self.request.user
+        # form.instance.sender = self.request.user
         return super().form_valid(form)
 
     def test_func(self):
         inflow = self.get_object()
-        if self.request.user == inflow.sender:
+        if self.request.user.is_superuser or self.request.user == inflow.sender:
             return True
         return False
 
