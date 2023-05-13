@@ -1,5 +1,6 @@
 import requests
 import string
+import os
 from django.views.generic import DeleteView, ListView, TemplateView, UpdateView
 from accounts.forms import UserForm
 from django.http import HttpResponseRedirect, Http404, JsonResponse,HttpResponse
@@ -29,6 +30,7 @@ import datetime
 #         response = HttpResponse(pdf_file.read(), content_type='application/pdf')
 #         response['Content-Disposition'] = 'attachment; filename="appointment_letter.pdf"'
 #         return response
+
 
 def countdown_in_month():
     now = datetime.datetime.now()
