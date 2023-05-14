@@ -69,8 +69,7 @@ def compute_amt(VisaService,transactions,rate,user_categories):
             receipt_url = transact.receipturl
         else:
             return redirect('main:404error')
-    total_amt=round(Decimal(total_amt), 2)
-    balance = total_price-total_amt
+    balance = round(Decimal(total_price), 2)-round(Decimal(total_amt), 2)
     balance=round(Decimal(balance), 2)
 
     return total_price,total_amt,balance,receipt_url
