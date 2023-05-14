@@ -49,8 +49,8 @@ def get_exchange_rate(base, target):
 
 def compute_amt(VisaService,transactions,rate,user_categories):
     category,sub_category=category_subcategory(user_categories)
-    total_amt = 0
-    total_paid = 0
+    total_amt = Decimal(0)
+    total_paid = Decimal(0)
     receipt_url = None
     reg_fee = 19.99
     try:
@@ -69,8 +69,9 @@ def compute_amt(VisaService,transactions,rate,user_categories):
             receipt_url = transact.receipturl
         else:
             return redirect('main:404error')
-    balance = float(total_price)-float(total_amt)
-    balance=round(Decimal(total_price), 2)
+    total_amt=round(Decimal(total_amt), 2)
+    balance = total_price-total_amt
+    balance=round(Decimal(balance), 2)
 
     return total_price,total_amt,balance,receipt_url
 

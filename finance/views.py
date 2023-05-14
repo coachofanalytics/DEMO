@@ -531,15 +531,14 @@ def inflows(request):
     (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
     total_members = transactions.filter(clients_category="DYC").count()
     paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
-    bal=total_price - total_amt
-    # print(total_price,total_amt,balance,bal)
+    print(total_price,total_amt,balance)
     context = {
         "transactions": transactions,
         "total_count": total_members,
         "paid_count": paid_members,
         "total_price": total_price,
         "total_amt": total_amt,
-        "balance": bal,
+        "balance": balance,
         "rate": rate,
         "remaining_days": remaining_days,
         "remaining_seconds ": int(remaining_seconds % 60),
@@ -582,7 +581,7 @@ def userlist(request, username):
     user = get_object_or_404(User, username=username)
     transactions = Transaction.objects.filter(sender=user)
     (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
-    bal=total_price - total_amt
+    bal=float(total_price)- float(total_amt)
     reg_fee = 19.99
     try:
         service = VisaService.objects.get(sub_category=sub_category)
@@ -622,7 +621,7 @@ def userlist(request, username):
     context={
                 "total_price": total_price,
                 "total_amt": total_amt,
-                "balance": bal,
+                "balance": balance,
                 'inflow': transactions,
                 "rate":rate,
                 'receipt_url': receipt_url,
