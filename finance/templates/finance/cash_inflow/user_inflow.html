@@ -8,8 +8,24 @@
     <!-- <h5><b class="remaining-time">{{remaining_days}},{{remaining_hours}},{{remaining_minutes}},{{remaining_seconds}}</b></h5> -->
     <hr>
     <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
+    <!-- <div class="row text-center">
+      {% for item in context.items %}
+        <div class="col-md-3 amount_msg" id="bada">
+          <div class="card">
+            <div class="card-body">
+              <h5><b>{{ item.title }}</b></h5>
+              <hr/>
+              <i><h6>Ksh.{{ item.amount }}</h6></i>
+              <hr/>
+              <i><p>{{ item.description }}</p></i>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div> -->
+
     <div class="row text-center">
-      <div class="col-md-4 amount_msg" id="bada">
+      <div class="col-md-3 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
             <h5><b>Total Amount</b></h5>
@@ -22,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 amount_msg" id="bada">
+      <div class="col-md-3 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
             <h5><b>Amount Paid</b></h5>
@@ -34,8 +50,20 @@
           </div>
         </div>
       </div>
+      <div class="col-md-3 amount_msg" id="bada">
+        <div class="card">
+          <div class="card-body">
+            <h5><b>Balance</b></h5>
+            <hr/>
+            <!-- <i><h6>{{GoalAmount}}</h6></i> -->
+            <i><h6>Ksh.{{balance}}</h6></i>
+            <hr/>
+            <i><p>Unpaid Amount</p></i>
+          </div>
+        </div>
+      </div>
 
-      <div class="col-md-4 amount_msg" id="bada">
+      <div class="col-md-3 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
             <p>
@@ -49,8 +77,7 @@
           </div>
         </div>
       </div>
-
-
+    
   </div>
   <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
     <table class="table table-borderless" style="width: 100%">

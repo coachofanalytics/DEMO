@@ -528,17 +528,18 @@ def inflows(request):
     #categories and subcategories
     (category,sub_category)=category_subcategory(user_categories)
     transactions = Transaction.objects.filter(clients_category="DYC")
-    (total_price,balance, total_amt,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
+    (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
     total_members = transactions.filter(clients_category="DYC").count()
     paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
-
+    bal=total_price - total_amt
+    # print(total_price,total_amt,balance,bal)
     context = {
         "transactions": transactions,
         "total_count": total_members,
         "paid_count": paid_members,
         "total_price": total_price,
         "total_amt": total_amt,
-        "balance": balance,
+        "balance": bal,
         "rate": rate,
         "remaining_days": remaining_days,
         "remaining_seconds ": int(remaining_seconds % 60),
@@ -546,6 +547,10 @@ def inflows(request):
         "remaining_hours": int(remaining_hours % 24),
         "receipt_url": receipt_url,
     }
+    # if request.user.is_superuser or request.user.is_staff:
+    #     return render(request, "finance/payments/inflows.html", context)
+    # else:
+    #     return render(request, 'finance/cash_inflow/user_inflow.html', context)
     return render(request, "finance/payments/inflows.html", context)
 
 
@@ -577,6 +582,7 @@ def userlist(request, username):
     user = get_object_or_404(User, username=username)
     transactions = Transaction.objects.filter(sender=user)
     (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
+    bal=total_price - total_amt
     reg_fee = 19.99
     try:
         service = VisaService.objects.get(sub_category=sub_category)
@@ -589,10 +595,34 @@ def userlist(request, username):
     request.session['total_price'] = total_price
     today = date.today()
     contract_date = today.strftime("%d %B, %Y")
+#     context = {
+#     "items": [
+#         {
+#             "title": "Total Amount",
+#             "amount": total_price,
+#             "description": "Total amount",
+#         },
+#         {
+#             "title": "Amount Paid",
+#             "amount": total_amt,
+#             "description": "Amount Paid",
+#         },
+#         {
+#             "title": "Balance",
+#             "amount": bal,
+#             "description": "Unpaid Amount",
+#         }
+#     ],
+#     "rate": rate,
+#     "receipt_url": receipt_url,
+#     "category": category,
+#     "sub_category": sub_category,
+# }
+
     context={
                 "total_price": total_price,
                 "total_amt": total_amt,
-                "balance": balance,
+                "balance": bal,
                 'inflow': transactions,
                 "rate":rate,
                 'receipt_url': receipt_url,
