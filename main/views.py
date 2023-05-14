@@ -1,13 +1,7 @@
-from django.db.models import Min,Max
-from django.db.models import Q
-from celery import shared_task
 from django.shortcuts import redirect, render
-from django.contrib import messages
 from datetime import datetime,date,timedelta
 from dateutil.relativedelta import relativedelta
-from coda_project import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
@@ -17,11 +11,7 @@ from django.views.generic import (
 from .models import Assets
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
-from accounts.utils import employees
-from accounts.forms import LoginForm,UserForm
 from main.forms import ContactForm,FeedbackForm
-from accounts.views import CreateProfile
-from PIL import Image
 from django.contrib.auth import get_user_model
 
 User=get_user_model()

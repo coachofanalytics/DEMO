@@ -28,7 +28,7 @@ from .models import (
 from .forms import InflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
-from .utils import check_default_fee,get_exchange_rate,compute_amt
+from .utils import check_default_fee,get_exchange_rate,compute_amt,category_subcategory
 from main.utils import countdown_in_month
 
 
@@ -44,7 +44,6 @@ phone_number,email_info,cashapp,venmo,account_no=payment_details(request)
 #Exchange Rate details
 usd_to_kes = get_exchange_rate('USD', 'KES')
 rate = round(Decimal(usd_to_kes), 2)
-
 
 def finance_report(request):
     return render(request, "finance/reports/finance.html", {"title": "Finance"})
@@ -525,39 +524,21 @@ class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 # ----------------------CASH INFLOW CLASS-BASED VIEWS--------------------------------
 @login_required
 def inflows(request):
-    # (remaining_days, remaining_seconds, remaining_minutes, remaining_hours) = countdown_in_month()
-    usd_to_kes = get_exchange_rate('USD', 'KES')
-    rate = round(Decimal(usd_to_kes), 2)
+    user_categories = UserCategory.objects.filter(user= request.user)
+    #categories and subcategories
+    (category,sub_category)=category_subcategory(user_categories)
     transactions = Transaction.objects.filter(clients_category="DYC")
-    (pledged, total_amt, amount_ksh, receipt_url)=compute_amt(transactions, rate)
+    (total_price,balance, total_amt,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
     total_members = transactions.filter(clients_category="DYC").count()
     paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
-    total_amt = 0
-    total_paid = 0
-        
-    amount_ksh = 0  # Assign a default value of 0
-    
-    # for transact in transactions:
-    #     # print("receipturl",transact.receipturl)
-    #     total_amt += transact.total_payment
-    #     if transact.has_paid:
-    #         total_paid += transact.total_paid
-    #     if transact.receipturl:
-    #         receipt_url=transact.receipturl
-    #     else:
-    #         return redirect('main:404error')
-    
-    # pledged = total_amt - total_paid
-    # amount_ksh = total_amt * rate  # Initialize amount_ksh outside the if block
-    
+
     context = {
         "transactions": transactions,
         "total_count": total_members,
         "paid_count": paid_members,
+        "total_price": total_price,
         "total_amt": total_amt,
-        "amount_ksh": amount_ksh,
-        "total_paid": total_paid,
-        "pledged": pledged,
+        "balance": balance,
         "rate": rate,
         "remaining_days": remaining_days,
         "remaining_seconds ": int(remaining_seconds % 60),
@@ -590,16 +571,33 @@ class InflowDetailView(DetailView):
 
 
 def userlist(request, username):
+    user_categories = UserCategory.objects.filter(user= request.user)
+    #categories and subcategories
+    (category,sub_category)=category_subcategory(user_categories)
     user = get_object_or_404(User, username=username)
     transactions = Transaction.objects.filter(sender=user)
-    (pledged, total_amt, amount_ksh, receipt_url)=compute_amt(transactions, rate)
+    (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
+    reg_fee = 19.99
+    try:
+        service = VisaService.objects.get(sub_category=sub_category)
+        total_price = service.price + reg_fee
+    except VisaService.DoesNotExist:
+        service = None
+        total_price = reg_fee
+
+    total_price=float(total_price)*float(rate)
+    request.session['total_price'] = total_price
+    today = date.today()
+    contract_date = today.strftime("%d %B, %Y")
     context={
+                "total_price": total_price,
                 "total_amt": total_amt,
-                "amount_ksh": amount_ksh,
-                "pledged": pledged,
+                "balance": balance,
                 'inflow': transactions,
+                "rate":rate,
                 'receipt_url': receipt_url,
-                "rate":rate
+                'category': category,
+                'sub_category': sub_category,
              }
     return render(request, 'finance/cash_inflow/user_inflow.html', context)
 

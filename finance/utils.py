@@ -6,7 +6,13 @@ from django.db.models import Sum, Max
 from django.shortcuts import get_object_or_404,render
 from django.contrib import messages
 from .models import  Transaction
+from decimal import *
 
+def category_subcategory(user_categories):
+    for cat in user_categories:
+        category=cat.category
+        sub_category=cat.sub_category
+    return category,sub_category
 
 def check_default_fee(Default_Payment_Fees,username):
     try:
@@ -36,12 +42,19 @@ def get_exchange_rate(base, target):
     print(rate)
     return rate
 
-def compute_amt(transactions, rate):
+def compute_amt(VisaService,transactions,rate,user_categories):
+    category,sub_category=category_subcategory(user_categories)
     total_amt = 0
     total_paid = 0
-    pledged = 0
-    amount_ksh = 0
     receipt_url = None
+    reg_fee = 19.99
+    try:
+        service = VisaService.objects.get(sub_category=sub_category)
+        total_price = (service.price + reg_fee)* float(rate)
+        total_price=round(Decimal(total_price), 2)
+    except VisaService.DoesNotExist:
+        service = None
+        total_price = reg_fee
 
     for transact in transactions:
         total_amt += transact.total_payment
@@ -51,11 +64,10 @@ def compute_amt(transactions, rate):
             receipt_url = transact.receipturl
         else:
             return redirect('main:404error')
+    balance = float(total_price)-float(total_amt)
+    balance=round(Decimal(total_price), 2)
 
-    pledged = total_amt - total_paid
-    amount_ksh = total_amt * rate
-
-    return pledged, total_amt, amount_ksh, receipt_url
+    return total_price,total_amt,balance,receipt_url
 
 # ==================================================
 def DYCDefaultPayments():
