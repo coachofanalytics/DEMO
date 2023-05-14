@@ -9,10 +9,15 @@ from .models import  Transaction
 from decimal import *
 
 def category_subcategory(user_categories):
+    category = None
+    sub_category = None
+
     for cat in user_categories:
-        category=cat.category
-        sub_category=cat.sub_category
-    return category,sub_category
+        category = cat.category
+        sub_category = cat.sub_category
+        # Process the category and sub-category here if needed
+
+    return category, sub_category
 
 def check_default_fee(Default_Payment_Fees,username):
     try:
