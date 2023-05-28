@@ -76,6 +76,7 @@ class UserCategoryCreateView(CreateView):
         # self.object.save()
         print('Instance saved:', self.object.pk)
         return super().form_valid(form)
+    
 
 def join(request):
     form = UserForm()
@@ -88,16 +89,12 @@ def join(request):
             contract_data, contract_date = agreement_data(request)
             default_amounts = Default_Payment_Fees.objects.all()
             category = request.session.get('category')
-            print("category=========>",category)
             subcategory = request.session.get('subcategory')
             default_fee = compute_default_fee(category, default_amounts, Default_Payment_Fees)
             context = {"job_support_data": contract_data,
                        "contract_date": contract_date,
                        "payment_data": default_fee
                        }
-            # if category == 4 and subcategory == 99:
-            #     return render(request, "management/contracts/supportcontract_form.html", context)
-            # else:
             form = UserForm(request.POST, request.FILES)
             if form.is_valid():
                 if category == 4:

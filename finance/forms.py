@@ -6,46 +6,49 @@ from accounts.models import User
 
 from .models import (
     Transaction,
+    Outflow,
     Inflow
 )
 
-# class TransactionForm(forms.ModelForm):
-#     class Meta:
-#         model = Transaction
-#         fields = [
-#             "id",
-#             "sender",
-#             "receiver",
-#             "phone",
-#             "department",
-#             "category",
-#             "type",
-#             "payment_method",
-#             "qty",
-#             "amount",
-#             "transaction_cost",
-#             "description",
-#             "receipt_link",
-#         ]
-#         labels = {
-#             "sender": "Your full Name",
-#             "receiver": "Enter Receiver Name",
-#             "phone": "Receiver Phone",
-#             "department": "Department",
-#             "category": "Category",
-#             "type": "Type",
-#             "payment_method": "Payment Method",
-#             "qty": "Quantity",
-#             "amount": "Unit Price",
-#             "transaction_cost": "Transaction Cost",
-#             "description": "Description",
-#             "receipt_link": "Link",
-#         }
-#         widgets = {"description": Textarea(attrs={"cols": 30, "rows": 1})}
+class OutflowForm(forms.ModelForm):
+    class Meta:
+        model = Outflow
+        fields = [
+            "id",
+            "sender",
+            "receiver",
+            "phone",
+            "department",
+            "category",
+            "type",
+            "payment_method",
+            "qty",
+            "amount",
+            "transaction_cost",
+            "description",
+            "receipt_link",
+        ]
+        labels = {
+            "sender": "Your full Name",
+            "receiver": "Enter Receiver Name",
+            "phone": "Receiver Phone",
+            "department": "Department",
+            "category": "Category",
+            "type": "Type",
+            "payment_method": "Payment Method",
+            "qty": "Quantity",
+            "amount": "Unit Price",
+            "transaction_cost": "Transaction Cost",
+            "description": "Description",
+            "receipt_link": "Link",
+        }
+        widgets = {"description": Textarea(attrs={"cols": 30, "rows": 1})}
 
-#     def __init__(self, *args, **kwargs):
-#         super(TransactionForm, self).__init__(*args, **kwargs)
-#         self.fields["payment_method"].empty_label = "Select"
+    def __init__(self, *args, **kwargs):
+        super(OutflowForm, self).__init__(*args, **kwargs)
+        self.fields["payment_method"].empty_label = "Select"
+
+
 
 class InflowForm(forms.ModelForm):
     class Meta:

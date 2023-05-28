@@ -42,7 +42,7 @@
             <h5><b>Total Amount</b></h5>
             <hr/>
             <!-- <i><h6>{{GoalAmount}}</h6></i> -->
-            <i><h6>Ksh.{{total_price}}</h6></i>
+            <i><h6>Ksh.{{total_amt}}</h6></i>
             <hr/>
             <font size="-1"
             <i><p>Total amount</p></i>
@@ -53,13 +53,13 @@
       <div class="col-md-2 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
-            <h5><b>Amount Paid</b></h5>
+            <h5><b>Expenditure</b></h5>
             <hr/>
             <!-- <i><h6>{{GoalAmount}}</h6></i> -->
-            <i><h6>Ksh.{{total_amt}}</h6></i>
+            <i><h6>Ksh.{{expenditure}}</h6></i>
             <hr/>
             <font size="-1"
-            <i><p>Total amount paid</p></i>
+            <i><p>Total Expenditure</p></i>
             </font>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <div class="card-body">
             <h5><b>Balance</b></h5>
             <hr/>
-            <i><h6>Ksh.{{balance}}</h6></i>
+            <i><h6>Ksh.{{balance_amount}}</h6></i>
             <hr/>
             <i><p>Balance Amount</p></i>
           </div>
@@ -83,6 +83,10 @@
               >Add Revenue
             </a></p>
             <hr/>
+            <p><a href="{% url 'finance:outflow_entry'%}" class="btn btn-secondary btn-sm"
+              >Add Expense
+            </a></p>
+          <hr/>
             <a href="{% url 'finance:inflow-list'%}" class="btn btn-secondary btn-sm"
             >Finance Report
           </a>

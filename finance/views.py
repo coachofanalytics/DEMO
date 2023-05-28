@@ -23,9 +23,9 @@ from accounts.models import *
 from .models import (
         Payment_Information,Payment_History,
         Default_Payment_Fees,
-        Inflow,Transaction,
+        Inflow,Transaction,Outflow
         )
-from .forms import InflowForm
+from .forms import InflowForm,OutflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
 from .utils import check_default_fee,get_exchange_rate,compute_amt,category_subcategory
@@ -199,9 +199,10 @@ def newcontract(request, *args, **kwargs):
     # get the current logged in user
     user = request.user
     user_categories = UserCategory.objects.filter(user=user)
-    for cat in user_categories:
-        category=cat.category
-        sub_category=cat.sub_category
+    category, sub_category = [(cat.category, cat.sub_category) for cat in user_categories][0] if user_categories else (None, None)
+    # for cat in user_categories:
+    #     category=cat.category
+    #     sub_category=cat.sub_category
 
     #Gets client/user information from the custom user table
     client_data=User.objects.get(username=username)
@@ -213,7 +214,7 @@ def newcontract(request, *args, **kwargs):
     except VisaService.DoesNotExist:
         service = None
         total_price = reg_fee
-    print(service)
+    # print(service)
 
     request.session['total_price'] = total_price
     today = date.today()
@@ -301,7 +302,7 @@ def payments(request):
 def payment(request,method):
     path_value,sub_title=path_values(request)
     subject='PAYMENT'
-    url='finance/DYC/payment_method.html'
+    url='finance/payments/payment_method.html'
     
     message=f'Hi,{request.user.first_name}, an email has been sent \
             with {sub_title} details for your payment.In the unlikely event\
@@ -326,9 +327,9 @@ def payment(request,method):
                     subject=subject, html_template=url,
                     context=context
                     )
-        return render(request, "finance/DYC/payment_method.html",context)
+        return render(request, "finance/payments/payment_method.html",context)
     except:
-        return render(request, "finance/DYC/payment_method.html",context)
+        return render(request, "finance/payments/payment_method.html",context)
     
 
 def pay(request, service=None):
@@ -350,7 +351,7 @@ def pay(request, service=None):
             "link": contract_url,
             "service": True,
         }
-    return render(request, "finance/DYC/pay.html", context)
+    return render(request, "finance/payments/pay.html", context)
 
 def paymentComplete(request):
     payments = Payment_Information.objects.filter(customer_id=request.user.id).first()
@@ -462,7 +463,7 @@ def transact(request):
 
 class TransactionListView(ListView):
     model = Transaction
-    template_name = "finance/DYC/transactions.html"
+    template_name = "finance/payments/transactions.html"
     context_object_name = "transactions"
     # ordering=['-transaction_date']
 
@@ -523,20 +524,30 @@ class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         
 # ----------------------CASH INFLOW CLASS-BASED VIEWS--------------------------------
 @login_required
-def inflows(request):
+def cashflows(request):
+    path_value,sub_title=path_values(request)
     user_categories = UserCategory.objects.filter(user= request.user)
     #categories and subcategories
     (category,sub_category)=category_subcategory(user_categories)
     transactions = Transaction.objects.filter(clients_category="DYC")
+    outflows=Outflow.objects.all()
+    total_outflows = sum(transact.total_payment for transact in outflows)
+   
     (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
     total_members = transactions.filter(clients_category="DYC").count()
     paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
     print(total_price,total_amt,balance)
+    balance_amount=total_amt-total_outflows
+    # print("total_amt",total_amt)
+    # print("total_outflows====>",total_outflows)
+    # print("balance_amount====>",balance_amount)
     context = {
         "transactions": transactions,
         "total_count": total_members,
         "paid_count": paid_members,
         "total_price": total_price,
+        "expenditure": total_outflows,
+        "balance_amount": balance_amount,
         "total_amt": total_amt,
         "balance": balance,
         "rate": rate,
@@ -562,6 +573,19 @@ def inflow(request):
             return redirect("/finance/inflows/")
     else:
         form = InflowForm()
+    return render(
+        request, "finance/payments/payment_form.html", {"form": form}
+    )
+
+def outflow(request):
+    if request.method == "POST":
+        form = OutflowForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.sender = request.user
+            form.save()
+            return redirect("/finance/inflows/")
+    else:
+        form = OutflowForm()
     return render(
         request, "finance/payments/payment_form.html", {"form": form}
     )
@@ -653,6 +677,7 @@ class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         "qty",
         "amount",
         "transaction_cost",
+        "receipt_link",
         "description",
     ]
 

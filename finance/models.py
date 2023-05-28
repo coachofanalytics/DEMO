@@ -88,85 +88,6 @@ class Default_Payment_Fees(models.Model):
     def __str__(self):
         return str(self.id)
 
-
-# class Transaction(models.Model):
-#     # Method of Category
-#     CAT_CHOICES = [
-#         ("Salary", "Salary"),
-#         ("Health", "Health"),
-#         ("Transport", "Transport"),
-#         ("Food_Accomodation", "Food & Accomodation"),
-#         ("Internet_Airtime", "Internet & Airtime"),
-#         ("Recruitment", "Recruitment"),
-#         ("Labour", "Labour"),
-#         ("Management", "Management"),
-#         ("Electricity", "Electricity"),
-#         ("Construction", "Construction"),
-#         ("Other", "Other"),
-#     ]
-#     # Method of Payment
-#     PAY_CHOICES = [
-#         ("Cash", "Cash"),
-#         ("Mpesa", "Mpesa"),
-#         ("Check", "Check"),
-#         ("Other", "Other"),
-#     ]
-#     # Method of Payment
-#     DEPT_CHOICES = [
-#         ("HR", "HR"),
-#         ("IT", "IT"),
-#         ("HEALTH", "HEALTH"),
-#         ("Other", "Other"),
-#     ]
-#     sender = models.ForeignKey(
-#          User,
-#          verbose_name=_("sender"),
-#          related_name="sender", 
-#          null=True, blank=True,
-#          on_delete=models.SET_NULL,
-#          limit_choices_to={"is_staff": True, "is_active": True},
-#          )
-#     receiver = models.CharField(max_length=100, null=True, default=None)
-#     phone = models.CharField(max_length=50, null=True, default=None)
-#     type = models.CharField(max_length=100, default=None, null=True)
-#     activity_date = models.DateTimeField(default=timezone.now)
-#     receipt_link = models.CharField(max_length=100, blank=True, null=True)
-#     qty = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
-#     amount = models.DecimalField(
-#         max_digits=10, decimal_places=2, null=True, default=None
-#     )
-#     transaction_cost = models.DecimalField(
-#         max_digits=10, decimal_places=2, null=True, default=0
-#     )
-#     description = models.TextField(max_length=1000, default=None)
-
-#     department = models.CharField(
-#         max_length=25,
-#         choices=DEPT_CHOICES,
-#         default="Other",
-#     )
-#     payment_method = models.CharField(
-#         max_length=25,
-#         choices=PAY_CHOICES,
-#         default="Other",
-#     )
-
-#     category = models.CharField(
-#         max_length=100,
-#         choices=CAT_CHOICES,
-#         default="Other",
-#     )
-
-#     def get_absolute_url(self):
-#         return reverse("management:transaction-detail", kwargs={"pk": self.pk})
-
-#     class Meta:
-#         verbose_name_plural = "Transactions"
-#         ordering = ["-activity_date"]
-
-#     def __str__(self):
-#         return f"{self.id} Transactions"
-
 class Transaction(models.Model):
     CLIENTS_CHOICES = [
         ("DYC", "Diaspora Youth Caucus"),
@@ -280,10 +201,122 @@ class Transaction(models.Model):
             except:
                 total_amt_paid=0.00
             return total_amt_paid
-            
-
 
 # -------------------------------------CASH FLOW MODEL---------------------------------------
+class Outflow(models.Model):
+    # Method of Category
+    CAT_CHOICES = [
+        ("Salary", "Salary"),
+        ("Health", "Health"),
+        ("Transport", "Transport"),
+        ("Food_Accomodation", "Food & Accomodation"),
+        ("Internet_Airtime", "Internet & Airtime"),
+        ("Recruitment", "Recruitment"),
+        ("Labour", "Labour"),
+        ("Management", "Management"),
+        ("Electricity", "Electricity"),
+        ("Construction", "Construction"),
+        ("Website", "Website"),
+        ("Other", "Other"),
+    ]
+    # Method of Payment
+    PAY_CHOICES = [
+        ("Cash", "Cash"),
+        ("Mpesa", "Mpesa"),
+        ("Check", "Check"),
+        ("Other", "Other"),
+    ]
+    # Cost Types
+    TYPE_CHOICES = [
+        ("Fixed","Fixed"),
+        ("Operating","Operating"),
+        ("Direct","Direct"),
+        ("Indirect","Indirect"),
+        ("Other", "Other"),
+    ]
+    # Method of Payment
+    DEPT_CHOICES = [
+        ("HR", "HR"),
+        ("IT", "IT"),
+        ("HEALTH", "HEALTH"),
+        ("Other", "Other"),
+    ]
+    sender = models.ForeignKey(
+         User,
+         verbose_name=_("sender"),
+         related_name="sender", 
+         null=True, blank=True,
+         on_delete=models.SET_NULL,
+         limit_choices_to={"is_staff": True, "is_active": True},
+         )
+    receiver = models.ForeignKey(
+         User,
+         verbose_name=_("receiver"),
+         related_name="receiver", 
+         null=True, blank=True,
+         on_delete=models.SET_NULL,
+        #  limit_choices_to={"is_staff": True, "is_active": True},
+         )
+    # receiver = models.CharField(max_length=100, null=True, default=None)
+    # type = models.CharField(max_length=100, default=None, null=True)
+    phone = models.CharField(max_length=50, null=True, default=None)
+    type = models.CharField(
+        max_length=100,
+        choices=TYPE_CHOICES,
+        default="Other",
+    )
+    activity_date = models.DateTimeField(default=timezone.now)
+    receipt_link = models.CharField(max_length=100, blank=True, null=True)
+    qty = models.PositiveBigIntegerField(null=True, default=None)
+    amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, default=None
+    )
+    transaction_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, default=0
+    )
+    description = models.TextField(max_length=1000, default=None)
+
+    department = models.CharField(
+        max_length=25,
+        choices=DEPT_CHOICES,
+        default="Other",
+    )
+    payment_method = models.CharField(
+        max_length=25,
+        choices=PAY_CHOICES,
+        default="Other",
+    )
+
+    category = models.CharField(
+        max_length=100,
+        choices=CAT_CHOICES,
+        default="Other",
+    )
+
+
+    def get_absolute_url(self):
+        return reverse("finance:transaction-detail", kwargs={"pk": self.pk})
+
+    class Meta:
+        verbose_name_plural = "Outflows"
+        ordering = ["-activity_date"]
+
+    def __str__(self):
+        return f"{self.id} Outflows"
+
+    @property
+    def receipturl(self):
+        if self.receipt_link is not None:
+            urlreceipt = self.receipt_link
+            return urlreceipt
+        else:
+            return redirect('main:layout')
+
+    @property
+    def total_payment(self):
+        total_amount = round(Decimal(self.amount), 2)
+        return total_amount
+
 
 class Inflow(models.Model):
     # Period of Payment

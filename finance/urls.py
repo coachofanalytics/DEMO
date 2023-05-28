@@ -20,8 +20,9 @@ urlpatterns = [
     path('transaction/<int:pk>/delete/', TransactionDeleteView.as_view(template_name="finance/payments/transaction_confirm_delete.html"), name='transaction-delete'),
      #-----------CASHINFLOW---------------------------------------
     path('inflow_entry/', views.inflow, name='entry_inflow'),
-    #path('inflow/', InflowListView.as_view(), name='inflow-list'),
-    path('inflows/', views.inflows, name='inflow-list'),
+    path('outflow_engry/',views.outflow, name='outflow_entry'),
+    path('inflows/', views.cashflows, name='inflow-list'),
+    path('outflows/', views.cashflows, name='outflow-list'),
     path('user_inflow/<str:username>', views.userlist, name='userinflow'),
     #path('inflow/new/', InflowCreateView.as_view(), name='inflow-create'),
     # path('inflow/<int:pk>/views.', InflowDetailView.as_view(), name='inflow-detail'),
