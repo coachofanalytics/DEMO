@@ -47,17 +47,28 @@ class userslistview(ListView):
     fields="__all__"
     template_name="accounts/admin/adminpage.html"
 
+# def authenticate(email=None, password=None, **kwargs):
+#     try:
+#         user = User.objects.get(email=email)
+#     except User.DoesNotExist:
+#         return None
+    
+#     if user.check_password(password):
+#         return user
+#     else:
+#         return None  
+
 def authenticate(email=None, password=None, **kwargs):
     try:
-        user = User.objects.get(email=email)
+        users = User.objects.filter(email=email)
+        if users.exists():
+            user = users.first()
+            if user.check_password(password):
+                return user
     except User.DoesNotExist:
         return None
-    
-    if user.check_password(password):
-        return user
-    else:
-        return None  
 
+    return None
 
 class UserCategoryCreateView(CreateView):
     model = UserCategory

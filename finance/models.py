@@ -179,6 +179,7 @@ class Transaction(models.Model):
         date_time = self.login_date + datetime.timedelta(hours=0)
         endtime = date_time.strftime("%H:%M")
         return endtime
+    
     # Computing total payment
     @property
     def receipturl(self):
