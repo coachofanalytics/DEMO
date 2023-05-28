@@ -8,6 +8,7 @@ class User(AbstractUser):
         Male = 1
         Female = 2
     gender = models.IntegerField(choices=Score.choices,default=1)
+    email = models.EmailField(unique=True)  # Add unique=True to make email field unique
     phone = models.CharField(max_length=100, blank=True, null=True)
     is_admin = models.BooleanField("Is admin", default=False)
     is_client = models.BooleanField("Is Client", default=False)
@@ -18,6 +19,9 @@ class User(AbstractUser):
         # ordering = ["username"]
         ordering = ["-date_joined"]
 
+    def __str__(self):
+        return str(self.email)
+    
     @property
     def full_name(self):
         full_name=self.first_name +' ' + self.last_name
