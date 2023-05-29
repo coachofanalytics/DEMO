@@ -196,6 +196,8 @@ def mycontract(request, *args, **kwargs):
 @login_required
 def newcontract(request, *args, **kwargs):
     username = kwargs.get('username')
+    # email = kwargs.get('email')
+    # print(username)
     # get the current logged in user
     user = request.user
     user_categories = UserCategory.objects.filter(user=user)
@@ -205,7 +207,7 @@ def newcontract(request, *args, **kwargs):
     #     sub_category=cat.sub_category
 
     #Gets client/user information from the custom user table
-    client_data=User.objects.get(username=username)
+    client_data=User.objects.get(email=username)
 
     reg_fee = 19.99
     try:
