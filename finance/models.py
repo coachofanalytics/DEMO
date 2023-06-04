@@ -259,7 +259,7 @@ class Outflow(models.Model):
         choices=TYPE_CHOICES,
         default="Other",
     )
-    activity_date = models.DateTimeField(default=timezone.now)
+    transaction_date = models.DateTimeField(default=timezone.now)
     receipt_link = models.CharField(max_length=100, blank=True, null=True)
     qty = models.PositiveBigIntegerField(null=True, default=None)
     amount = models.DecimalField(
@@ -293,7 +293,7 @@ class Outflow(models.Model):
 
     class Meta:
         verbose_name_plural = "Outflows"
-        ordering = ["-activity_date"]
+        ordering = ["-transaction_date"]
 
     def __str__(self):
         return f"{self.id} Outflows"

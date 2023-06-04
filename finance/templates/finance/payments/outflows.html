@@ -1,0 +1,67 @@
+{%extends "main/base_templates/base.html"%}
+{% load mathfilters %}
+{% block content %}
+<section id="rating">
+  <div class="rating text-center">
+    <h2>Reporting-Cashflows</h2>
+    <!-- <hr> -->
+    <!-- <h5><b class="remaining-time">{{remaining_days}},{{remaining_hours}},{{remaining_minutes}},{{remaining_seconds}}</b></h5> -->
+    <hr>
+
+  </div>
+  <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
+    <table class="table table-borderless" style="width: 100%">
+      <thead class="border-bottom font-weight-bold">
+        <tr>
+          <th>Category</th>
+          <th>Sender</th>
+          <th>Receiver</th>
+            <!-- <th>Phone</th> -->
+            <!-- <th>Department</th> -->
+            <!-- <th>Method</th>
+            <th>period</th> -->
+            <th>Quantity</th>
+            <th>Amount</th>
+            <!-- <th>Amount(Ksh)</th> -->
+            <th>Paid by</th>
+            <th>Receipt</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transanction in outflows %}
+        <tr>
+          <td>
+            <a class="text-dark  text-decoration-none" 
+            data-toggle="tooltip" title="{{  transanction.description  }}"
+            href="{{ category.get_absolute_url }}">
+            {{transanction.category}}
+            </a>
+        </td>
+        <td>
+        <a class="article-title" href="{% url 'finance:userinflow' transanction.sender %}">
+          {{transanction.sender.username}}
+        </td>
+           <td>{{transanction.receiver}}</td>
+           <!-- <td>{{transanction.phone}}</td> -->
+            <!-- <td>{{transanction.department}}</td> -->
+          <!-- <td>{{transanction.method}}</td>
+          <td>{{transanction.period}}</td> -->
+          <!-- <td>{{transanction.payment_method}}</td> -->
+          <td>{{transanction.qty}}</td>
+          <td>{{transanction.amount}}</td>
+          <!-- <td>{{transanction.qty|mul:transanction.amount}}</td>  -->
+          <!-- <td>{{transanction.amount}}</td>  -->
+          <!-- <td>{{amount_ksh}}</td>  -->
+          <td>{{transanction.transaction_date|date:"n/d/Y"}}</td>
+          <td> <a class="article-title" href="{{receipt_url}}">View Receipt</a></td>
+          {%if user.is_admin or user.is_superuser%}
+          <td> <a class="article-title" href="{% url 'finance:outflow-update' transanction.id %}">Edit</a></td>
+          <td> <a class="article-title" href="{% url 'finance:outflow-delete' transanction.id %}">Delete</a></td>
+          {%endif%}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock content %}

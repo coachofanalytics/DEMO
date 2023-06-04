@@ -79,17 +79,34 @@
       <div class="col-md-2 amount_msg" id="bada">
         <div class="card">
           <div class="card-body">
-            <p><a href="{% url 'finance:entry_inflow'%}" class="btn btn-secondary btn-sm"
-              >Add Revenue
-            </a></p>
-            <hr/>
-            <p><a href="{% url 'finance:outflow_entry'%}" class="btn btn-secondary btn-sm"
-              >Add Expense
-            </a></p>
-          <hr/>
-            <a href="{% url 'finance:inflow-list'%}" class="btn btn-secondary btn-sm"
-            >Finance Report
-          </a>
+            <div class="row text-center">
+              <div class="col-md-6">
+                <p><a href="{% url 'finance:entry_inflow'%}" class="btn btn-secondary btn-sm"
+                  >Add Revenue
+                </a></p>
+              </div>
+              <div class="col-md-6">
+                <p><a href="{% url 'finance:outflow_entry'%}" class="btn btn-secondary btn-sm"
+                  >Add Expense
+                </a></p>
+              </div>
+            </div>
+            <div class="row text-center">
+              <div class="col-md-6">
+                <p>
+                  <a href="{% url 'finance:inflow-list'%}" class="btn btn-secondary btn-sm"
+                  >Finance Report
+                </a>
+              </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  <a href="{% url 'finance:outflow-list'%}" class="btn btn-secondary btn-sm"
+                  >Expense Report
+                </a>
+              </p>
+              </div>
+            </div>
           <hr/>
             <!-- <i><h6>{{GoalAmount}}</h6></i> -->
             <i><h6>Exchange Rate :KES.{{rate}}</h6></i>

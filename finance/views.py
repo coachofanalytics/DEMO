@@ -562,7 +562,7 @@ def cashflows(request):
     # if request.user.is_superuser or request.user.is_staff:
     #     return render(request, "finance/payments/inflows.html", context)
     # else:
-    #     return render(request, 'finance/cash_inflow/user_inflow.html', context)
+    #     return render(request, 'finance/cashflows/user_inflow.html', context)
     return render(request, "finance/payments/inflows.html", context)
 
 
@@ -585,7 +585,7 @@ def outflow(request):
         if form.is_valid():
             form.instance.sender = request.user
             form.save()
-            return redirect("/finance/inflows/")
+            return redirect("/finance/outflows/")
     else:
         form = OutflowForm()
     return render(
@@ -594,7 +594,7 @@ def outflow(request):
 
 @method_decorator(login_required, name="dispatch")
 class InflowDetailView(DetailView):
-    template_name = "finance/cash_inflow/inflow_detail.html"
+    template_name = "finance/cashflows/inflow_detail.html"
     model = Inflow
     context_object_name = 'inflow'
     ordering = ["-transaction_date"]
@@ -654,13 +654,20 @@ def userlist(request, username):
                 'category': category,
                 'sub_category': sub_category,
              }
-    return render(request, 'finance/cash_inflow/user_inflow.html', context)
+    return render(request, 'finance/cashflows/user_inflow.html', context)
 
 @method_decorator(login_required, name="dispatch")
 class UserInflowListView(ListView):
     model = Inflow
-    template_name = "finance/cash_inflow/user_inflow.html"
+    template_name = "finance/cashflows/user_inflow.html"
     context_object_name = "inflows"
+    ordering = ["-transaction_date"]
+
+@method_decorator(login_required, name="dispatch")
+class OutflowListView(ListView):
+    model = Outflow
+    template_name = "finance/payments/outflows.html"
+    context_object_name = "outflows"
     ordering = ["-transaction_date"]
 
 @method_decorator(login_required, name="dispatch")
@@ -696,11 +703,53 @@ class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 @method_decorator(login_required, name="dispatch")
 class InflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Transaction
-    success_url = "/finance/inflow"
-    template_name='finance/cash_inflow/transaction_confirm_delete.html'
+    success_url = "/finance/inflows"
+    template_name='finance/cashflows/transaction_confirm_delete.html'
     def test_func(self):
         inflow = self.get_object()
         # if self.request.user == inflow.sender:
+        if self.request.user.is_superuser:
+            return True
+        return False
+    
+@method_decorator(login_required, name="dispatch")
+class OutflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Outflow
+    success_url = "/finance/outflows/"
+    template_name='finance/payments/payment_form.html'
+    fields = [
+        "sender",
+        "receiver",
+        "phone",
+        "category",
+        # "task",
+        # "method",
+        # "period",
+        "qty",
+        "amount",
+        "transaction_cost",
+        "receipt_link",
+        "description",
+    ]
+
+    def form_valid(self, form):
+        # form.instance.sender = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        outflow = self.get_object()
+        if self.request.user.is_superuser or self.request.user == outflow.sender:
+            return True
+        return False
+
+@method_decorator(login_required, name="dispatch")
+class OutflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Outflow
+    success_url = "/finance/outflows"
+    template_name='finance/cashflows/outflow_confirm_delete.html'
+    def test_func(self):
+        outflow = self.get_object()
+        # if self.request.user == outflow.sender:
         if self.request.user.is_superuser:
             return True
         return False
