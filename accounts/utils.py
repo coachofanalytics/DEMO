@@ -9,6 +9,10 @@ from finance.utils import DYCDefaultPayments
 
 from django.contrib.auth.decorators import login_required
 
+# def get_default_sender():
+#     # Custom logic to determine the default sender
+#     return User.objects.get(username="default_sender")
+
 @login_required
 def user_categories(user,UserCategory):
     # get the current logged in user

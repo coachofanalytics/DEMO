@@ -11,6 +11,11 @@ from .models import (
 )
 
 class OutflowForm(forms.ModelForm):
+    sender = forms.ModelChoiceField(
+        queryset=User.objects.filter(is_staff=True, is_active=True),
+        label="Sender's Name",
+        empty_label="Select",
+    )
     class Meta:
         model = Outflow
         fields = [
@@ -29,8 +34,6 @@ class OutflowForm(forms.ModelForm):
             "receipt_link",
         ]
         labels = {
-            "sender": "Your full Name",
-            "receiver": "Enter Receiver Name",
             "phone": "Receiver Phone",
             "department": "Department",
             "category": "Category",
@@ -42,11 +45,50 @@ class OutflowForm(forms.ModelForm):
             "description": "Description",
             "receipt_link": "Link",
         }
-        widgets = {"description": Textarea(attrs={"cols": 30, "rows": 1})}
+        widgets = {"description": forms.Textarea(attrs={"cols": 30, "rows": 1})}
 
     def __init__(self, *args, **kwargs):
         super(OutflowForm, self).__init__(*args, **kwargs)
         self.fields["payment_method"].empty_label = "Select"
+
+
+# class OutflowForm(forms.ModelForm):
+#     class Meta:
+#         model = Outflow
+#         fields = [
+#             "id",
+#             "sender",
+#             "receiver",
+#             "phone",
+#             "department",
+#             "category",
+#             "type",
+#             "payment_method",
+#             "qty",
+#             "amount",
+#             "transaction_cost",
+#             "description",
+#             "receipt_link",
+#         ]
+#         labels = {
+#             "sender": "Sender's Name",
+#             "receiver": "Receiver's Name",
+#             "phone": "Receiver Phone",
+#             "department": "Department",
+#             "category": "Category",
+#             "type": "Type",
+#             "payment_method": "Payment Method",
+#             "qty": "Quantity",
+#             "amount": "Unit Price",
+#             "transaction_cost": "Transaction Cost",
+#             "description": "Description",
+#             "receipt_link": "Link",
+#         }
+#         widgets = {"description": Textarea(attrs={"cols": 30, "rows": 1})}
+
+#     def __init__(self, *args, **kwargs):
+#         super(OutflowForm, self).__init__(*args, **kwargs)
+#         self.fields["payment_method"].empty_label = "Select"
 
 
 

@@ -147,11 +147,11 @@ class Transaction(models.Model):
         default="Other",
     )
     sender = models.ForeignKey(
-        "accounts.User", 
-        on_delete=models.CASCADE, 
-        # limit_choices_to=(Q(sub_category=6) |Q(sub_category=7)|Q(is_superuser=True)),
-        # limit_choices_to={"category": 4, "is_active": True },
-        related_name="dc_inflows")
+    "accounts.User", 
+    on_delete=models.CASCADE, 
+    related_name="transaction_sender",
+    default=1)
+
     receiver = models.CharField(max_length=100, null=True, default=None)
     phone = models.CharField(max_length=50, null=True, default=None)
     transaction_date = models.DateTimeField(default=timezone.now)
@@ -204,6 +204,7 @@ class Transaction(models.Model):
             return total_amt_paid
 
 # -------------------------------------CASH FLOW MODEL---------------------------------------
+
 class Outflow(models.Model):
     # Method of Category
     CAT_CHOICES = [
@@ -250,15 +251,7 @@ class Outflow(models.Model):
          on_delete=models.SET_NULL,
          limit_choices_to={"is_staff": True, "is_active": True},
          )
-    receiver = models.ForeignKey(
-         User,
-         verbose_name=_("receiver"),
-         related_name="receiver", 
-         null=True, blank=True,
-         on_delete=models.SET_NULL,
-        #  limit_choices_to={"is_staff": True, "is_active": True},
-         )
-    # receiver = models.CharField(max_length=100, null=True, default=None)
+    receiver = models.CharField(max_length=100, null=True, default=None)
     # type = models.CharField(max_length=100, default=None, null=True)
     phone = models.CharField(max_length=50, null=True, default=None)
     type = models.CharField(

@@ -85,7 +85,7 @@ class UserCategoryCreateView(CreateView):
         self.request.session['category'] = category
         self.request.session['subcategory'] = subcategory
         # self.object.save()
-        print('Instance saved:', self.object.pk)
+        # print('Instance saved:', self.object.pk)
         return super().form_valid(form)
     
 

@@ -20,7 +20,8 @@ class User(AbstractUser):
         ordering = ["-date_joined"]
 
     def __str__(self):
-        return str(self.email)
+        # return str(self.email)
+        return str(self.username)
     
     @property
     def full_name(self):
