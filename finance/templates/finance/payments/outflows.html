@@ -3,12 +3,72 @@
 {% block content %}
 <section id="rating">
   <div class="rating text-center">
-    <h2>Reporting-Cashflows</h2>
-    <!-- <hr> -->
-    <!-- <h5><b class="remaining-time">{{remaining_days}},{{remaining_hours}},{{remaining_minutes}},{{remaining_seconds}}</b></h5> -->
+    <h2>Expense Report</h2>
     <hr>
-
   </div>
+  <div class="row text-center">
+    <div class="col-md-3 amount_msg" id="bada">
+      <div class="card">
+        <div class="card-body">
+          <h5><b>Total Amount</b></h5>
+          <hr/>
+          <!-- <i><h6>{{GoalAmount}}</h6></i> -->
+          <i><h6>Ksh.{{total_amt}}</h6></i>
+          <hr/>
+          <font size="-1"
+          <i><p>Total amount</p></i>
+          </font>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 amount_msg" id="bada">
+      <div class="card">
+        <div class="card-body">
+          <h5><b>Expenditure</b></h5>
+          <hr/>
+          <!-- <i><h6>{{GoalAmount}}</h6></i> -->
+          <i><h6>Ksh.{{expenditure}}</h6></i>
+          <hr/>
+          <font size="-1"
+          <i><p>Total Expenditure</p></i>
+          </font>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 amount_msg" id="bada">
+      <div class="card">
+        <div class="card-body">
+          <h5><b>Balance</b></h5>
+          <hr/>
+          <i><h6>Ksh.{{balance_amount}}</h6></i>
+          <hr/>
+          <i><p>Balance Amount</p></i>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 amount_msg" id="bada">
+      <div class="card">
+        <div class="card-body">
+          <div class="row text-center">
+              <p><a href="{% url 'finance:outflow_entry'%}" class="btn btn-secondary btn-sm"
+                >Add Expense
+              </a></p>
+          </div>
+          <div class="row text-center">
+              <p>
+                <a href="{% url 'finance:inflow-list'%}" class="btn btn-secondary btn-sm"
+                >Cash Inflow Report
+              </a>
+            </p>
+          </div>
+        <hr/>
+          <!-- <i><h6>{{GoalAmount}}</h6></i> -->
+          <i><h6>Exchange Rate :KES.{{rate}}</h6></i>
+        </div>
+        </div>
+      </div>
+    </div>
   <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
     <table class="table table-borderless" style="width: 100%">
       <thead class="border-bottom font-weight-bold">
@@ -28,7 +88,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for transanction in outflows %}
+        {% for transanction in transactions %}
         <tr>
           <td>
             <a class="text-dark  text-decoration-none" 

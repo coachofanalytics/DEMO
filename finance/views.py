@@ -540,10 +540,8 @@ def cashflows(request):
     paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
     print(total_price,total_amt,balance)
     balance_amount=total_amt-total_outflows
-    # print("total_amt",total_amt)
-    # print("total_outflows====>",total_outflows)
-    # print("balance_amount====>",balance_amount)
-    context = {
+
+    inflow_context = {
         "transactions": transactions,
         "total_count": total_members,
         "paid_count": paid_members,
@@ -559,11 +557,26 @@ def cashflows(request):
         "remaining_hours": int(remaining_hours % 24),
         "receipt_url": receipt_url,
     }
-    # if request.user.is_superuser or request.user.is_staff:
-    #     return render(request, "finance/payments/inflows.html", context)
-    # else:
-    #     return render(request, 'finance/cashflows/user_inflow.html', context)
-    return render(request, "finance/payments/inflows.html", context)
+    outflow_context = {
+        "transactions": outflows,
+        "total_price": total_price,
+        "expenditure": total_outflows,
+        "balance_amount": balance_amount,
+        "total_amt": total_amt,
+        "balance": balance,
+        "rate": rate,
+        "remaining_days": remaining_days,
+        "remaining_seconds ": int(remaining_seconds % 60),
+        "remaining_minutes ": int(remaining_minutes % 60),
+        "remaining_hours": int(remaining_hours % 24),
+        "receipt_url": receipt_url,
+    }
+    if sub_title == 'outflows':
+        return render(request, "finance/payments/outflows.html", outflow_context)
+    elif sub_title == 'inflows':
+        return render(request, "finance/payments/inflows.html", inflow_context)
+    else:
+        return render(request, 'finance/cashflows/user_inflow.html', inflow_context)
 
 
 def inflow(request):
