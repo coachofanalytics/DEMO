@@ -113,7 +113,9 @@
           <!-- <td>{{transanction.amount}}</td>  -->
           <!-- <td>{{amount_ksh}}</td>  -->
           <td>{{transanction.transaction_date|date:"n/d/Y"}}</td>
-          <td> <a class="article-title" href="{{receipt_url}}">View Receipt</a></td>
+          <!-- <td> <a class="article-title" href="{{receipt_url}}">View Receipt</a></td> -->
+          <!-- <td> <a class="article-title" href="{{receipt_url}}">View Receipt</a></td> -->
+          <td> <a class="article-title" href="{{transanction.receipt_link}}">View Receipt</a></td>
           {%if user.is_admin or user.is_superuser%}
           <td> <a class="article-title" href="{% url 'finance:outflow-update' transanction.id %}">Edit</a></td>
           <td> <a class="article-title" href="{% url 'finance:outflow-delete' transanction.id %}">Delete</a></td>
