@@ -40,7 +40,7 @@ def get_exchange_rate(base, target):
     url = f'https://openexchangerates.org/api/latest.json?app_id={exchange_api_key}&base={base}'
     response = requests.get(url)
     if response.status_code != 200:
-        rate=135.50
+        rate=139.00
     else:
         data = response.json()
         rate=data['rates'][target]

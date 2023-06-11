@@ -538,7 +538,7 @@ def cashflows(request):
     (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
     total_members = transactions.filter(clients_category="DYC").count()
     paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
-    print(total_price,total_amt,balance)
+    # print(total_price,total_amt,balance)
     balance_amount=total_amt-total_outflows
 
     inflow_context = {
