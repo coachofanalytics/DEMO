@@ -154,6 +154,7 @@ class Transaction(models.Model):
 
     receiver = models.CharField(max_length=100, null=True, default=None)
     phone = models.CharField(max_length=50, null=True, default=None)
+    sender_phone = models.CharField(max_length=50, null=True, default=None)
     transaction_date = models.DateTimeField(default=timezone.now)
     receipt_link = models.CharField(max_length=100, blank=True, null=True)
     qty = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)

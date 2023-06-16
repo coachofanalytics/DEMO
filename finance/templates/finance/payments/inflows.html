@@ -148,7 +148,7 @@
         </td>
         <td>
         <a class="article-title" href="{% url 'finance:userinflow' transanction.sender %}">
-          {{transanction.sender.first_name}},{{transanction.sender.last_name}}
+          {{transanction.sender.first_name}} {{transanction.sender.last_name}},{{transanction.sender_phone}}
         </td>
           <!-- <td>{{transanction.receiver}}</td>
             <td>{{transanction.phone}}</td> -->

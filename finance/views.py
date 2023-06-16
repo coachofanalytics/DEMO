@@ -484,6 +484,7 @@ class TransactionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         "sender",
         "receiver",
         "phone",
+        "sender_phone",
         "department",
         "category",
         "type",
@@ -494,7 +495,6 @@ class TransactionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         "description",
         "receipt_link",
     ]
-    # form = InflowForm()
 
     def form_valid(self, form):
         form.instance.username = self.request.user
@@ -620,7 +620,8 @@ def userlist(request, username):
     user = get_object_or_404(User, username=username)
     transactions = Transaction.objects.filter(sender=user)
     (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
-    bal=float(total_price)- float(total_amt)
+    # bal=float(total_price)- float(total_amt)
+    bal=float(total_amt)
     reg_fee = 19.99
     try:
         service = VisaService.objects.get(sub_category=sub_category)
@@ -692,6 +693,7 @@ class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         "sender",
         "receiver",
         "phone",
+        "sender_phone",
         "category",
         # "task",
         "method",
