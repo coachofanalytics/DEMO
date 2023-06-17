@@ -146,10 +146,17 @@
             {{transanction.category}}
             </a>
         </td>
+        {% if transanction.sender.first_name == "" or  transanction.sender.last_name == "" %}
+        <td>
+          <a class="article-title" href="{% url 'finance:userinflow' transanction.sender %}">
+            {{transanction.sender_phone}}
+        </td>
+        {% else %}
         <td>
         <a class="article-title" href="{% url 'finance:userinflow' transanction.sender %}">
-          {{transanction.sender.first_name}} {{transanction.sender.last_name}},{{transanction.sender_phone}}
+          {{transanction.sender.first_name}},{{transanction.sender.last_name}}
         </td>
+        {% endif %}
           <!-- <td>{{transanction.receiver}}</td>
             <td>{{transanction.phone}}</td> -->
             <!-- <td>{{transanction.department}}</td> -->
