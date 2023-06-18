@@ -10,6 +10,7 @@ from coda_project import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpRequest
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -17,6 +18,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
+from requests import request
 from django.views.generic.edit import FormView
 from .models import User,UserProfile,UserCategory
 from .forms import UserForm,LoginForm,UserCategoryForm
@@ -28,8 +30,14 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormMixin
 from django.forms import modelform_factory
 from .models import UserCategory
+from finance.models import Transaction
 from django.core.exceptions import ValidationError
+from main.utils import path_values
 # Create your views here..
+
+
+# path_values
+# path_val,sub_title=path_values(request)
 
 # @allowed_users(allowed_roles=['admin'])
 def home(request):
@@ -46,6 +54,16 @@ class userslistview(ListView):
     model=User
     fields="__all__"
     template_name="accounts/admin/adminpage.html"
+
+def userlist(request):
+    users = User.objects.filter(transaction_sender__amount__gte=10000).distinct()
+    template_name = "accounts/admin/processing_users.html"
+    context = {
+        "users": users
+    }
+    return render(request, template_name, context)
+
+
 
 # def authenticate(email=None, password=None, **kwargs):
 #     try:
@@ -277,18 +295,18 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     success_url = "/accounts/users"
     # fields=['category','address','city','state','country']
     fields = [
-        "category",
-        "sub_category",
+        # "category",
+        # "sub_category",
         "first_name",
         "last_name",
         "date_joined",
         "email",
         "gender",
         "phone",
-        "address",
-        "city",
-        "state",
-        "country",
+        # "address",
+        # "city",
+        # "state",
+        # "country",
         "is_admin",
         "is_staff",
         "is_client",
