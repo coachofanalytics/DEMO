@@ -56,7 +56,7 @@ class userslistview(ListView):
     template_name="accounts/admin/adminpage.html"
 
 def userlist(request):
-    users = User.objects.filter(transaction_sender__amount__gte=10000).distinct()
+    users = User.objects.filter(transaction_sender__amount__gte=5000).distinct()
     template_name = "accounts/admin/processing_users.html"
     context = {
         "users": users
