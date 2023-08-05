@@ -94,7 +94,7 @@
                   {% if user.is_admin or user.is_superuser %}
                         <a class="dropdown-item" href="{% url 'accounts:userdashboard' %}" target="" >My Account</a >
                           <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" target="" >Users</a>
+                        <a class="dropdown-item" href="{% url 'accounts:accounts-users' %}" target="" >Users</a>
                           <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
                   {% elif user.category == 4 or user.is_superuser %}

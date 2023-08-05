@@ -623,17 +623,18 @@ def userlist(request, username):
     # bal=float(total_price)- float(total_amt)
     bal=float(total_amt)
     reg_fee = 19.99
-    try:
-        service = VisaService.objects.get(sub_category=sub_category)
-        total_price = service.price + reg_fee
-    except VisaService.DoesNotExist:
-        service = None
-        total_price = reg_fee
+    # try:
+    #     service = VisaService.objects.get(sub_category=sub_category)
+    #     total_price = service.price + reg_fee
+    # except VisaService.DoesNotExist:
+    #     service = None
+    #     total_price = reg_fee
 
-    total_price=float(total_price)*float(rate)
-    request.session['total_price'] = total_price
+    # total_price=float(total_price)*float(rate)
+    # request.session['total_price'] = total_price
     today = date.today()
     contract_date = today.strftime("%d %B, %Y")
+    
 #     context = {
 #     "items": [
 #         {

@@ -23,6 +23,14 @@
                     <div>
                       <a href="{% url 'finance:inflow-list' %}" <h2  class="position-relative text-white">My Finance Account</h2></a>
                     </div>
+                    <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
+                    <div>
+                      <a href="{% url 'accounts:processing-users' %}" <h2  class="position-relative text-white">Processing Members</h2></a>
+                    </div>
+                    <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
+                    <div>
+                      <a href="{% url 'accounts:accounts-users' %}" <h2  class="position-relative text-white">Registered Members</h2></a>
+                    </div>
                     {% else %}
                     <div>
                       <a href="{% url 'finance:userinflow' request.user %}" <h2  class="position-relative text-white">My Finance Account</h2></a>
@@ -31,14 +39,6 @@
                     <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
                     <div>
                       <a href="#" <h2  class="position-relative text-white">Sign Contract</h2></a>
-                    </div>
-                    <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
-                    <div>
-                      <a href="{% url 'accounts:processing-users' %}" <h2  class="position-relative text-white">Processing Members</h2></a>
-                    </div>
-                    <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
-                    <div>
-                      <a href="{% url 'accounts:accounts-users' %}" <h2  class="position-relative text-white">Registered Members</h2></a>
                     </div>
                     <hr style="height:3px;border:none;color:rgb(102, 102, 122);background-color:rgb(157, 157, 178);" />
                     <div>

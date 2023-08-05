@@ -54,7 +54,8 @@ def compute_amt(VisaService,transactions,rate,user_categories):
     receipt_url = None
     reg_fee = 19.99
     try:
-        service = VisaService.objects.get(sub_category=sub_category)
+        # service = VisaService.objects.get(sub_category=sub_category)
+        service = VisaService.objects.filter(sub_category=sub_category).first()
         total_price = (service.price + reg_fee)* float(rate)
         total_price=round(Decimal(total_price), 2)
     except VisaService.DoesNotExist:
