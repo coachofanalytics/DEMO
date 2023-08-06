@@ -196,18 +196,13 @@ def mycontract(request, *args, **kwargs):
 @login_required
 def newcontract(request, *args, **kwargs):
     username = kwargs.get('username')
-    # email = kwargs.get('email')
-    # print(username)
     # get the current logged in user
     user = request.user
     user_categories = UserCategory.objects.filter(user=user)
     category, sub_category = [(cat.category, cat.sub_category) for cat in user_categories][0] if user_categories else (None, None)
-    # for cat in user_categories:
-    #     category=cat.category
-    #     sub_category=cat.sub_category
 
     #Gets client/user information from the custom user table
-    client_data=User.objects.get(email=username)
+    client_data=User.objects.get(username=username)
 
     reg_fee = 19.99
     try:
@@ -634,7 +629,7 @@ def userlist(request, username):
     # request.session['total_price'] = total_price
     today = date.today()
     contract_date = today.strftime("%d %B, %Y")
-    
+
 #     context = {
 #     "items": [
 #         {
