@@ -8,6 +8,7 @@ from django.contrib.auth import  login #authenticate,
 from django.utils.decorators import method_decorator
 from coda_project import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest
@@ -50,31 +51,8 @@ def thank(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
-class userslistview(ListView):
-    model=User
-    fields="__all__"
-    template_name="accounts/admin/adminpage.html"
 
-def userlist(request):
-    users = User.objects.filter(transaction_sender__amount__gte=5000).distinct()
-    template_name = "accounts/admin/processing_users.html"
-    context = {
-        "users": users
-    }
-    return render(request, template_name, context)
-
-
-
-# def authenticate(email=None, password=None, **kwargs):
-#     try:
-#         user = User.objects.get(email=email)
-#     except User.DoesNotExist:
-#         return None
     
-#     if user.check_password(password):
-#         return user
-#     else:
-#         return None  
 
 def authenticate(email=None, password=None, **kwargs):
     try:
@@ -217,34 +195,44 @@ def login_view(request):
 
 
 # ================================USERS SECTION================================
+@login_required
 def userdashboard(request):
     # departments = Department.objects.filter(is_active=True)
     # return render(request, "management/departments/agenda/dck_dashboard.html", {'title': "DCK DASHBOARD"})
     return render(request, "accounts/dashboard/userdashboard.html", {'title': "DCK DASHBOARD"})
 
-def users(request):
-    users = User.objects.filter(is_active=True).order_by("-date_joined")
-    queryset = User.objects.filter(is_active=True).order_by("-date_joined")
-    userfilters=UserFilter(request.GET,queryset=users)
+# class userslistview(ListView):
+#     model=User
+#     fields="__all__"
+#     template_name="accounts/admin/adminpage.html"
 
-    # Use the Paginator to paginate the queryset
-    paginator = Paginator(userfilters.qs, 10) # Show 10 objects per page
-    page = request.GET.get('page')
-    objects = paginator.get_page(page)
+@login_required
+def userlist(request):
+    users = User.objects.filter(transaction_sender__amount__gte=5000).distinct()
+    template_name = "accounts/admin/processing_users.html"
 
     context={
-        # "users": queryset,
-        "userfilters": userfilters,
-        "objects":objects
+        "users": users,
+    }
+    if request.user.is_superuser:
+        return render(request, template_name, context)
+    else:
+        return redirect("main:layout")
+    
+
+@login_required
+def users(request):
+    users = User.objects.filter(is_active=True).order_by("-date_joined")
+    template_name="accounts/admin/adminpage.html"
+    context={
+        "users": users,
     }
 
     if request.user.is_superuser:
-        return render(request, "accounts/admin/superpage.html", context)
-
-    # if request.user.is_admin:
-    #     return render(request, "accounts/admin/adminpage.html", {"users": users})
+        return render(request, template_name, context)
     else:
         return redirect("main:layout")
+    
 
 class SuperuserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User
