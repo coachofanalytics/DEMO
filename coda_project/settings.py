@@ -21,6 +21,8 @@ SECRET_KEY = "!cxl7yhjsl00964n=#e-=xblp4u!hbajo2k8u#$v9&s6__5=xf"
 DEBUG = True
 # DEBUG = os.environ.get("DEBUG_VALUE") == "True"
 
+SECURE_SSL_REDIRECT = True
+
 ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = ['127.0.0.1','localhost','codatrainingapp.herokuapp.com','www.codanalytics.net','codanalytics.net']
 # ALLOWED_HOSTS = []
@@ -122,15 +124,6 @@ def dba_values():
         user = os.environ.get('HEROKU_DYCDEV_USER')
         password = os.environ.get('HEROKU_DYCDEV_PASS')
     else:
-        # host = os.environ.get('HEROKU_DYCPROD_HOST')
-        # dbname = os.environ.get('HEROKU_DYCPROD_NAME')
-        # user = os.environ.get('HEROKU_DYCPROD_USER')
-        # password = os.environ.get('HEROKU_DYCPROD_PASS')
-
-        # host = os.environ.get('HEROKU_DYCDEV_HOST')
-        # dbname = os.environ.get('HEROKU_DYCDEV_NAME')
-        # user = os.environ.get('HEROKU_DYCDEV_USER')
-        # password = os.environ.get('HEROKU_DYCDEV_PASS')
         host = 'localhost'
         dbname = "DYC_DEV" #os.environ.get('POSTGRES_DB_NAME') 
         user = "postgres" #os.environ.get('POSTGRESDB_USER')
