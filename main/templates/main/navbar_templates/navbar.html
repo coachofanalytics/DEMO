@@ -1,136 +1,195 @@
-<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
-  <div class="container-fluid">
-      <a class="navbar-brand logo-text" href="{% url 'main:layout'%}">DYC</a>
-      <button class="navbar-toggler nav-btn" type="button" data-bs-toggle="coll apse"
-          data-bs-target="#collapsibleNavbar">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav mr-auto w-100 justify-content-end">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'main:layout' %}"
-          >Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdown"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          About
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-          <a class="dropdown-item" href="#"
-            >Team</a
-          >
-          <a class="dropdown-item" href="#"
-          >Career</a
-        </div>
-      </li>
 
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdown"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Services
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-          <a
-            class="dropdown-item"
-            href="{% url 'main:layout' %}"
-          >Student Services</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'main:layout' %}"
-            >Business & Entertainment</a
-          >
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'main:layout' %}"
-            >Travel-Tourism</a
-          >
-        </div>
-      </li>
-      <!-- {% if user.is_authenticated %}
-      {% if user.is_admin or  user.is_staff or  user.is_superuser%}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
-          >Reports</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropDown"> -->
-                <!-- <a class="dropdown-item" href="https://drive.google.com/file/d/1UsSmmJv5_83ZRegObGhgGE3C5eIJ-4E1/view"
-                     target="" >Company Agenda</a >
-                      <div class="dropdown-divider"></div> -->
-                <!-- <a class="dropdown-item" href="#" 
-                     target="" >Finance Department</a>
-                      <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://public.tableau.com/app/profile/coda2331/viz/EmployeeProductivityVersion08/LandingPageReport?publish=yes"
-                    target="_blank" >Human Resource Report</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"
-                    target="" >Weekly Assessment </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"
-                        target="" >IT Department</a>
-            </div>
-      </li>
-      {% endif %}
-      {% endif %} -->
-    </ul>
+    
+<style>
 
-    <div class="navbar-nav">
-      {% if user.is_authenticated %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
-          >Account</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                  {% if user.is_admin or user.is_superuser %}
-                        <a class="dropdown-item" href="{% url 'accounts:userdashboard' %}" target="" >My Account</a >
-                          <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'accounts:accounts-users' %}" target="" >Users</a>
-                          <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
-                  {% elif user.category == 4 or user.is_superuser %}
-                  <a class="dropdown-item" href="{% url 'accounts:userdashboard' %}" target="" >My Account</a >
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
-                    <div class="dropdown-divider"></div>
-                    {% else %}
-                    <a class="dropdown-item" href="{% url 'accounts:userdashboard' %}" target="" >My Account</a >
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'account-logout'%}" target="" >Logout</a>
-                      <div class="dropdown-divider"></div>
-                  {% endif %}
-            </div>
-      </li>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#"  id="navbarDropDown" role="button" data-toggle="dropdown"
-          >Support</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                            <a class="dropdown-item" href="{% url 'main:layout' %}" target="" >Help?</a>
-                            <div class="dropdown-divider"></div>
-            </div>
-      </li>
-      {% else %}
-      <a class="nav-item nav-link" href="{% url 'accounts:account-login' %}"
-        >Login</a
-      >
-      <a class="nav-item nav-link" href="{% url 'accounts:select_category' %}"
-        >Register</a
-      >
-      {% endif %}
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #35bdbd;
+  z-index: 1000;
+ 
+
+}
+
+.logos {
+  padding: 0.1rem;
+  font-weight: 900;
+  font-size: 20px;
+}
+.logolink:hover {
+            text-decoration: none; /* Remove underline on hover */
+        }
+
+.list {
+  margin-right: 40px;
+  padding: 0.8rem;
+}
+
+.logolink {
+  text-decoration: none;
+  margin-left: -40px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 570;
+  font-size: 30px;
+  color: black;
+  position: relative; 
+}
+  
+.navList {
+  list-style: none;
+
+  display: flex;
+  margin-top: 20px;
+}
+
+.navLin {
+  text-decoration: none;
+  
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 550;
+  font-size: 13.5px;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  transition: color 0.3s ease;
+  position: relative; 
+}
+
+.navLin:hover {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.navLin::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background-color: gray;
+  transition: width 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navLin:hover::after {
+  width: 70%;
+}
+
+.navLin.active {
+  width: 270px;
+}
+.menu-icon{
+  display: none;
+}
+@media (max-width: 600px) {
+  .menu-icon {
+    display: block;
+    margin-top: 7px;
+    cursor: pointer;
+    margin-left: 240px;
+    color: white;
+    font-size: 24px;
+
+    
+  }
+    .navbar {
+    flex-direction: column; /* Change flex direction to column for small screens */
+    align-items: center; /* Align items to the center */
+  }
+  .logolink {
+  margin-left: -10px;
+ }
+
+  .list {
+    display: none; /* Hide navigation list by default on small screens */
+  }
+
+  .list.active {
+    position: absolute;
+    background-color:#114d94a2;
+    display: block;
+    margin-top: 90px;
+    margin-left: 20px;
+    width: 100vw; /* Set width to 100% of viewport width */
+    height: 100vh;
    
-    </div>
+  
+   
+  }
+  
+  .list.active ul {
+    list-style: none; 
+    display: inline-block;
+    margin-left: 30px;
+    padding: 10px;
+   
+    
+  }
+  
+  .list.active li {
+    padding: 0.5rem 1rem;
+    margin-top: 14px; /* Add padding to list items */
+  }
+  
+  .list.active li:hover {
+    background-color: #f0f0f0;
+  }
+}
+@media (max-width: 400px) {
+  .menu-icon {
+    display: block;
+    cursor: pointer;
+    font-size: small;
+    margin-left: 20px;
+   }
+    .navbar {
+    flex-direction: column; 
+    align-items: center;
+  }
+  .logolink {
+  margin-left: 10px;
+ }
+}  
 
-
-      </div>
-  </div>
-</nav>
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logos">
+            <ul class="navList">
+                <li>
+                    <a href="/" class="logolink">
+                        DC<span style="color: red;">48K</span>
+                    </a>
+                </li>
+                <div class="menu-icon" onclick="toggleNavbar()">
+                    &#9776;
+                </div>
+            </ul>
+        </div>
+        <div class="list" id="navList">
+            <ul class="navList">
+                <li><a href="/" class="navLin">HOME</a></li>
+                <li><a href="/about" class="navLin">ABOUT US</a></li>
+                <li><a href="/Portfolio" class="navLin">SERVICES</a></li>
+               
+                <li><a href="/services" class="navLin">GOVERNANCE</a></li>
+                <li><a href="/services" class="navLin">MEMBERSHIP</a></li>
+                <li><a href="/Contact Us" class="navLin">GALLERY</a></li>
+                <li><a href="/Contact Us" class="navLin">SUPPORT</a></li>
+                <li><a href="/Contact Us" class="navLin">NEWS</a></li>
+                <!-- <li><a href="/Contact Us" class="navLin">LOGIN</a></li>
+                <li><a href="/Contact Us" class="navLin">REGISTER</a></li> -->
+                
+            </ul>
+        </div>
+    </nav>
+    <script>
+        function toggleNavbar() {
+            const navList = document.getElementById('navList');
+            navList.classList.toggle('active');
+        }
+    </script>

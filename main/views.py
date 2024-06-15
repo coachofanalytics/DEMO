@@ -83,8 +83,28 @@ from django.shortcuts import get_object_or_404
 
 
 def layout(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST, request.FILES)
+        message=f'Thank You, we will get back to you within 48 hours.'
+        context={
+            "message":message,
+            # "link":SITEURL+'/management/companyagenda'
+        }
+        if form.is_valid():
+            # form.save()
+            instance=form.save(commit=False)
+            # instance.client_name='admin',
+            instance.task='NA',
+            instance.plan='NA',
+            instance.trained_by=request.user
+            instance.save()
+            # return redirect("management:assessment")
+            return render(request, "main/errors/generalerrors.html",context)
+    else:
+        form = ContactForm()
     context={
             # "posts":posts,
+            "form": form,
             "title": "DYC"
         }
     return render(request, "main/home_templates/newlayout.html")

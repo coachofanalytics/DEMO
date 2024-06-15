@@ -21,7 +21,7 @@ SECRET_KEY = "!cxl7yhjsl00964n=#e-=xblp4u!hbajo2k8u#$v9&s6__5=xf"
 DEBUG = True
 # DEBUG = os.environ.get("DEBUG_VALUE") == "True"
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = ['127.0.0.1','localhost','codatrainingapp.herokuapp.com','www.codanalytics.net','codanalytics.net']
@@ -137,25 +137,25 @@ host,dbname,user,password=dba_values() #herokuprod() #herokudev() #dblocal()  #h
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": dbname,
-        "USER":user,
-        "PASSWORD":password,
-        "HOST": host
-    }
-}
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": dbname,
+#         "USER":user,
+#         "PASSWORD":password,
+#         "HOST": host
 #     }
 # }
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES["default"].update(db_from_env)
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    }
+}
+
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES["default"].update(db_from_env)
 # DATABASES ={'default': dj_database_url.config(conn_max_age=600)}
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600)   # to update if default db already exists.
 

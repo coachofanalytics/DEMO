@@ -1,111 +1,410 @@
 {%extends "main/base_templates/base.html"%} 
 {% load static %}
 {% block content %}
-<div class="banner-div">
-  <div class="container-md">
-      <!-- <h2>Goal</h2> -->
-        <!-- <h1>Leading provider of travel, education, and business services in the US.</h1> -->
-  </div>
-</div>
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+  .swiper-container {
+      width: 100%;
+      margin-bottom: 10px;
+  }
+  .swiper-slide {
+      background: #fff;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+  }
+  .swiper-slide img{
+    width: 100%;
+    height: 850px;
+    object-fit: cover;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    
+  }
+  .swiper-button-next, .swiper-button-prev {
+            color: #000; /* Button color */
+            font-size: smaller; /* Smaller button size */
 
-<div class="strip-div">
-  <div class="container">
-      <p>
-        DYC's mission is to provide high-quality services and support to clients looking to travel, 
-        study, or expand their business in US. 
-      </p>
-  </div>
+            position: absolute;
+            top: 90%;
+            transform: translateY(-50%);
+            /* z-index: 10; */
+            background: rgba(255, 255, 255, 0.8); /* Light background for better visibility */
+            border-radius: 50%; /* Make buttons round */
+            width: 55px; /* Button size */
+            height: 55px; /* Button size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background-color: #000; /* Hover background color */
+            color: #fff; /* Hover text color */
+        }
+        .swiper-button-next:active, .swiper-button-prev:active {
+            transform: translateY(-50%) scale(0.9); /* Scale down on click */
+        }
+        .swiper-button-next {
+            right: 10px;
+        }
+        .swiper-button-prev {
+            left: 10px;
+        }
+    .swiper-slide .text {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: red;/* Semi-transparent background */
+    padding: 7px 13px;
+    border-radius: 50px;
+    align-items: center;
+}
+.swiper-slide .text:hover{
+  background-color: white;
+
+}
+
+.swiper-slide .text a{
+  text-decoration: none;
+  margin: 10px;
+  font-size: 30px;
+  color: white;
+  
+
+}
+.swiper-slide .text a:hover{
+  overflow: hidden; /* Ensure content stays within the container */
+  color: #000;
+}
+.mission {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(to bottom, #35bdbd, #ffffff);
+            height: 390px;
+        }
+        .mission .left {
+            flex: 0 0 40%; /* Make the image container take up half the space */
+            padding-right: 20px; /* Add space between the image and text */
+        }
+        .mission .left img {
+            width: 100%;
+            height: auto;
+            margin-left: 100px;
+            margin-bottom: 100px;
+        }
+        .mission .right {
+            flex: 1; /* Make the text container take up remaining space */
+            padding-left: 30px; 
+            margin-left: 100px;/* Add padding for text */
+        }
+        .mission h2 {
+            margin-top: 0;
+            font-weight: 800;
+            color: #fff; /* White color for the heading */
+        }
+        .mission p {
+           margin-top: 20px;
+           line-height: 35px;
+           margin-right: 70px;
+           font-size: 15px;
+            color: rgb(97, 86, 86); /* White color for the text */
+        }
+        .about{
+          text-align: center;
+          margin-top: 40px;
+          margin-left: 110px;
+          margin-right: 110px;
+        }
+        .about h2{
+          color: #35bdbd;
+        }
+      .about p{
+        font-family: Nanum Myeongjo;
+        font-size: 18px;
+
+      }
+      .contact-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 40px;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        .contact-section .left, 
+        .contact-section .right {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .contact-section .left {
+            text-align: left;
+        }
+
+        .contact-section h4 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .contact-section p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+        }
+
+        .social-icons a {
+            color: #333;
+            margin: 0 10px;
+            font-size: 1.8rem;
+            transition: color 0.3s ease;
+        }
+        .fab.fa-linkedin-in {
+            color: #0077b5;
+        }
+        
+        .fab.fa-facebook-f {
+            color: #1877f2;
+        }
+        
+        .fab.fa-whatsapp {
+            color: #25d366;
+        }
+        
+        .fab.fa-youtube {
+            color: #ff0000;
+        }
+        
+        .fas.fa-envelope {
+            color: #0643c7;
+        }
+
+        .social-icons a:hover {
+            color: #3f43fd;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .contact-form button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3f43fd;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #2e31cc;
+        }
+
+</style>
+
+<div class="swiper-container">
+      <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image1.png' %}" alt="Slide 1">
+            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/background/swiper2.jpg' %}" alt="Slide 2">
+            <div class="text"><a href="">PLan for th2 Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image2.png' %}" alt="Slide 3">
+            <div class="text"><a href="">PLan for the Diaspora  <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image4.png' %}" alt="Slide 1">
+            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image5.png' %}" alt="Slide 1">
+            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <!-- <div class="swiper-slide"><img src="https://via.placeholder.com/600x400" alt="Slide 4"></div>
+          <div class="swiper-slide"><img src="https://via.placeholder.com/600x400" alt="Slide 5"></div> -->
+      </div>
+      <!-- Add Pagination -->
+      <!-- <div class="swiper-pagination"></div> -->
+      <!-- Add Navigation -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
 </div>
 
 <div class="services-div">
   <div class="container-lg">
       <div class="row flex-column-reverse flex-md-row">
           <div class="col-md-6 pe-lg-5">
-            <h2 class="mt-4 mt-md-0">Student Services</h2>
-            <p>
-              We provide guidance on the US education system,and assists with university applications, and gather required documents.More importantly, we offer visa application support, 
-              including providing information on visa requirements and application procedures, and visa extension and renewal services. With DYC's guidance and assistance, students can navigate the complex process 
-              of studying in the US and achieve their academic goals.
-            </p>
-              <a href="#">read more</a>
-              
-          </div>
-          <div class="col-md-6">
-              <img class="img-fluid ps-lg-5" src="{% static 'main/img/home/student_services_v1.jpg' %}" alt="">
-          </div>
-      </div>
-
-      <div class="row flex-md-row-reverse flex-column-reverse">
-          <div class="col-md-6">
-              <div class="ps-lg-5">
-                <h2 class="mt-4 mt-md-0">Travel and Tourism Services</h2>
-                <p class="me-lg-5"> DYC organization provides a range of travel and tourism services for visitors to the US. 
-                  The company can arrange flights and accommodation, as well as airport transfers, to ensure a smooth and stress-free trip. 
-                  Additionally, DYC offers a variety of tour packages and, trips to popular destinations. The company provides visa application 
-                  assistance to help visitors navigate the entry requirements and regulations.
-                </p>
-                 
-                  <a href="">read more</a>
-              </div>
-          </div>
-          <div class="col-md-6">
-              <!-- <img class="img-fluid" src="{% static 'main/img/service-2.jpg' %}" alt=""> -->
-              <img class="img-fluid" src="{% static 'main/img/home/travel_tourism-2.jpg' %}" alt="">
-          </div>
-      </div>
-
-      <div class="row flex-column-reverse flex-md-row">
-          <div class="col-md-6 pe-lg-5">
-              <h2 class="mt-4 mt-md-0">Business & Entertainment</h2>
-              <p class="me-lg-5">
-                DYC provides logistical support, event management, market research, and legal and 
-                regulatory compliance support for entertainers and businesses looking to expand into 
-                the US market. With their expertise and support, clients can successfully navigate 
-                the complexities of the US market.
-              </p>
-              <a href="">read more</a>
-          </div>
-          <div class="col-md-6">
-              <img class="img-fluid ps-lg-5" src="{% static 'main/img/home/business_entertainment_v1.jpg' %}" alt="">
-          </div>
-      </div>
-  </div>
-</div>
-<!--
-<div class="testimonials-div">
-  <div class="container">
-      <h1>CLIENT SUCCESS STORIES</h1>
-      <div class="owl-carousel">
-      <div class="row text-center commit"> 
-        {% for post in posts %}
-        <div class="col-md-6">
-          <div class="carousel-card">
-            <div class="img-div p-3">
-              <span>
-                <img src="{{googledriveurl}}={{post.writer.profile.image2.image_url}}" class="team-img" width="110px" height="110px" style="border-radius: 50%;"/>
-              </span>
+            <div style="align-items: center;margin-left: 130px;">
+              <h3 class="mt-4 mt-md-0" style="color: #35bdbd;font-size: 30px;font-weight: 900;">Bernard Kavyu <span style="color: red;font-size: 17px; font-weight: 400;"><li style="list-style: none; margin-left: 70px;margin-top: 7px;">GOVERNOR</li></span></h3>
+              <h5 class="mt-4 mt-md-0" style="color: black;">Diaspora County 48 Kenya</h5>
             </div>
-              <h3> {{ post.writer.first_name }},{{post.writer.last_name}}</h3>
-              <h3>{{post.title}}</h3>
-              <font size="2">
-                  {{post.content|truncatewords:50}}
-                </font>
+            <p style="font-size: 19px;font-family: fantasy;">
+              Greetings, esteemed members of Diaspora County 48 Kenya. 
+              It is with great pride and joy, that I extend to you a warm welcome to our organisation.
+               As your Global Chairperson (Governor), I am honoured to lead this incredible community of Kenyans in the diaspora. Together, we have forged an unbreakable bond founded on our shared heritage, aspirations, and interests, creating a powerful network of individuals, organisations, and businesses dedicated to advancing a better diaspora and a better Kenya.
+            </p>
+            <p style="font-size: 19px;font-family: fantasy;">
+              At Diaspora County 48 Kenya, we are driven by a common vision and mission to serve,
+               promote, and advocate for a conducive environment that fosters a prosperous diaspora, '
+               both socially and economically. Our relentless dedication and commitment to achieving these goals 
+               is fueled by the unwavering belief that, together, 
+              we can make an indelible impact on the lives of our members and the communities we serve.
+
+            </p>
+           <p style="font-size: 19px;font-family: fantasy;">
+            As we embark on this exciting journey, we remain guided by our core values of unity, integrity, accountability, and transparency. These values are not only the cornerstone of our organization
+             but also fundamental in creating a strong and sustainable community.
+             I extend to you an open invitation to join us on this exhilarating journey and 
+             contribute your invaluable ideas, skills, and resources towards realizing our shared aspirations. 
+             Together, we can build a future that surpasses our wildest dreams for ourselves and our beloved
+              children.
+           </p> 
+           <p style="font-size: 19px;font-family: fantasy;">
+            Thank you for being an integral part of our very own Diaspora County 48 Kenya.
+           </p>  
+           <button type="button" style="background-color: white;color: black;" class="btn btn-secondary">MORE INFORMATION</button>
           </div>
-        </div>
-        {% endfor %}
-       </div>
-
-
+          <div class="col-md-6" >
+              <img class="img-fluid ps-lg-5" style="border-radius: 800% 0 0 800%;box-shadow: 0 0 7px rgba(0, 128, 0, 0.7);" src="{% static 'main/img/home/Kavyu.png' %}" alt="">
+          </div>
       </div>
+
+     
   </div>
 </div>
- <div class="row text-center">
+<div class="mission">
+  <div class="left">
+      <img src="{% static 'main/img/home/Kavyu2.png' %}" alt="Mission Image">
+  </div>
+  <div class="right">
+      <h2>Our Mission</h2>
+      <p>Our mission is to serve, promote, and advocate for a conducive environment 
+          for a prosperous diaspora socially, economically, and politically, and extend such benefits to their country. 
+          In addition, we safeguard the diaspora's cordial relationship with their respective host communities for mutual benefit.</p>
+  </div>
+</div>
+<div class="about">
+  <h2>More about us <span style="font-size: 20px;">***</span></h2>
+  <p>We are citizens of Kenyan descent living outside the country and in 2014, we identified ourselves as members of our envisioned Diaspora County 48 Kenya meanwhile we registered DC48 Kenya as a nonprofit organization headed by Global Chairperson presiding over country-wise Kenya Community Groups  (independent individuals, Community-based organizations, Faith-based
+    organizations or businesses organizations owned by Kenyans) within twenty-two chapters globally.</p>
+</div>
+<div class="contact-section">
+  <div class="left">
+      <h4>Need More Info?</h4>
+      <p>Get in touch and we'll send you over all the information you need, no obligations whatsoever.</p>
+      <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Our organization is on a mission to promote and advocate for a prosperous diaspora socially, economically, and politically. We believe in creating 
+        a conducive environment for you to thrive both abroad and back home in Kenya.</p>
+      <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">By supporting our organization, you can help safeguard the cordial relationship between the diaspora and 
+        their host communities, ensuring mutual benefit for all.</p>
+      
+      <div class="social-icons">
+          <p>Contact US On:</p>
+          <a href="#" target="_blank" class="fab fa-linkedin-in"></a>
+          <a href="#" target="_blank" class="fab fa-facebook-f"></a>
+          <a href="#" target="_blank" class="fab fa-whatsapp"></a>
+          <a href="#" target="_blank" class="fab fa-youtube"></a>
+          <a href="#" class="fas fa-envelope"></a>
+      </div>
+  </div>
+  <div class="right">
+      <form method="POST" enctype="multipart/form-data" autocomplete="off">
+              {% csrf_token %}
+          <h4>Leave a Message here!</h4>
+          <div class="contact-form">
+              <div class="col-md-12">
+                <!-- Name input field -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                
+                <!-- Email input field -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                
+                <!-- Message textarea field -->
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+            </div>
+            
+            <!-- Submit button -->
+            
+          </div>
+          <button class="btn btn-dark" style="background-color: #35bdbd;margin-left: 15px;" type="submit">Send Message</button>
+      </form>
+  </div>
+</div>
+
+
+</div>
+ <!-- <div class="row text-center">
 
   <div class="col-md-6 back-to-top-btn d-flex justify-content-center">
-    <a href="#">Share Your Experiences</a>
+    <a style="background-color: #35bdbd;" href="#">Share Your Experiences</a>
   </div>
   <div class="col-md-6 back-to-top-btn d-flex justify-content-center">
-    <a href="">back to top</a>
+    <a style="background-color: #35bdbd;" href="">back to top</a>
   </div>
-  </div> -->
+  </div>  -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        on: {
+            slideChangeTransitionStart: function () {
+                const slides = document.querySelectorAll('.swiper-slide img');
+                slides.forEach(slide => {
+                    slide.style.opacity = '0.9'; // Dim the current slide
+                    slide.style.transform = 'scale(0.8)'; // Slightly shrink the current slide
+                });
+            },
+            slideChangeTransitionEnd: function () {
+                const slides = document.querySelectorAll('.swiper-slide img');
+                slides.forEach(slide => {
+                    slide.style.opacity = '1'; // Restore opacity
+                    slide.style.transform = 'scale(1)'; // Restore size
+                });
+            }
+        }
+    });
+</script>
 {% endblock %}
