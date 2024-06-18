@@ -12,12 +12,19 @@ from accounts.models import User,UserCategory
 User = get_user_model()
 # Create your models here.
 
-class TimeStampedModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class Page(models.Model):
+    page_name = models.CharField(max_length=200)
 
-    class Meta:
-        abstract = True
+    def __str__(self):
+        return self.page_name
+
+class Description(models.Model):
+    page = models.ForeignKey(Page, related_name='descriptions', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,null=False, blank=False) 
+    content = models.TextField(null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.name} for {self.page.page_name}"
 
 class Assets(models.Model):
     name = models.CharField(max_length=200)
