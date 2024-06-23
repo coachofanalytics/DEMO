@@ -26,6 +26,36 @@ class Description(models.Model):
     def __str__(self):
         return f"{self.name} for {self.page.page_name}"
 
+class Team(models.Model):
+  
+
+    name = models.CharField(max_length=255)
+    role = models.CharField(max_length=50)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to='people/')
+    bio = models.TextField()
+    facebook_link = models.URLField(blank = True, null = True)
+    linkedin_link = models.URLField(blank = True, null = True)
+    twitter_link = models.URLField(blank = True, null = True)
+
+
+    def __str__(self):
+        return self.name
+
+class Content(models.Model):
+    SECTION_CHOICES = [
+        ('Our Story', 'Our Story'),
+        ('Newsletter', 'Newsletter'),
+        ('Blog', 'Blog'),
+    ]
+
+    section = models.CharField(max_length=50, choices=SECTION_CHOICES)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField()
+    link = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.section} - {self.title if self.title else 'Content'}"
 class Assets(models.Model):
     name = models.CharField(max_length=200)
     category = models.CharField(default='background',max_length=200,null=True, blank=True)

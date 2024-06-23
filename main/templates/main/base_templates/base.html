@@ -58,6 +58,40 @@
             $("#collapsibleNavbar").toggleClass('show')
         })
     </script>
+
+    <!-- JS for home.html -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+      var swiper = new Swiper('.swiper-container', {
+          slidesPerView: 1,
+          spaceBetween: 30,
+          loop: true,
+          pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+          },
+          navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+          },
+          on: {
+              slideChangeTransitionStart: function () {
+                  const slides = document.querySelectorAll('.swiper-slide img');
+                  slides.forEach(slide => {
+                      slide.style.opacity = '0.9'; // Dim the current slide
+                      slide.style.transform = 'scale(0.8)'; // Slightly shrink the current slide
+                  });
+              },
+              slideChangeTransitionEnd: function () {
+                  const slides = document.querySelectorAll('.swiper-slide img');
+                  slides.forEach(slide => {
+                      slide.style.opacity = '1'; // Restore opacity
+                      slide.style.transform = 'scale(1)'; // Restore size
+                  });
+              }
+          }
+      });
+  </script>
 </body>
 
 </html>

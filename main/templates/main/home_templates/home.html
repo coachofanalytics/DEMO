@@ -1,0 +1,150 @@
+{%extends "main/base_templates/base.html"%} 
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+{% block title %}codanalytics{% endblock %}
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link
+rel="stylesheet"
+type="text/css"
+href="{% static 'main/css/home.css' %}"
+/>
+
+<div class="swiper-container">
+      <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image1.png' %}" alt="Slide 1">
+            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/background/swiper2.jpg' %}" alt="Slide 2">
+            <div class="text"><a href="">PLan for th2 Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image2.png' %}" alt="Slide 3">
+            <div class="text"><a href="">PLan for the Diaspora  <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image4.png' %}" alt="Slide 1">
+            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+          <div class="swiper-slide">
+            <img src="{% static 'main/img/home/image5.png' %}" alt="Slide 1">
+            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
+          </div>
+         
+        </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+</div>
+
+<div class="services-div">
+  <div class="container-lg">
+      <div class="row flex-column-reverse flex-md-row">
+          <div class="col-md-6 pe-lg-5">
+            {% for item in description%}
+            {% if item.name == 'Diaspora County 48 Kenya' %}
+            <div style="align-items: center;margin-left: 130px;">
+              <h3 class="mt-4 mt-md-0" style="color: #35bdbd;font-size: 30px;font-weight: 900;">Bernard Kavyu <span style="color: red;font-size: 17px; font-weight: 400;"><li style="list-style: none; margin-left: 70px;margin-top: 7px;">GOVERNOR</li></span></h3>
+              <h5 class="mt-4 mt-md-0" style="color: black;">{{item.name}}</h5>
+            </div>
+            <p style="font-size: 19px;font-family: fantasy;">
+              {{item.content|split_paragraphs:3 }}
+            </p>
+            {% endif %}
+            {% endfor %}
+           
+           <button type="button" style="background-color: white;color: black;" class="btn btn-secondary">MORE INFORMATION</button>
+          </div>
+          <div class="col-md-6" >
+              <img class="img-fluid ps-lg-5" style="border-radius: 800% 0 0 800%;box-shadow: 0 0 7px rgba(0, 128, 0, 0.7);" src="{% static 'main/img/home/Kavyu.png' %}" alt="">
+          </div>
+      </div>
+     
+
+     
+  </div>
+</div>
+<div class="mission">
+  <div class="left">
+      <img src="{% static 'main/img/home/Kavyu2.png' %}" alt="Mission Image">
+  </div>
+  <div class="right">
+    {% for item in description%}
+    {% if item.name == 'Our Mission' %}
+        <h2>{{item.name}}</h2>
+        <p>
+          {{item.content}}
+        </p>
+    {% endif %}
+    {% endfor %}    
+  </div>
+  
+</div>
+<div class="about">
+  {% for item in description%}
+  {% if item.name == 'More about us' %}
+  <h2>{{item.name}} <span style="font-size: 20px;">***</span></h2>
+  <p>
+    {{item.content}}
+  </p>
+  {% endif %}
+  {% endfor %}  
+</div>
+<div class="contact-section">
+  <div class="left">
+    {% for item in description%}
+    {% if item.name == 'Need More Info?' %}
+      <h4>{{item.name}}</h4>
+     <p>
+        {{item.content|split_help:1}}
+      </p>
+    {% endif %}
+    {% endfor %}
+      <div class="social-icons">
+          <p>Contact US On:</p>
+          <a href="#" target="_blank" class="fab fa-linkedin-in"></a>
+          <a href="#" target="_blank" class="fab fa-facebook-f"></a>
+          <a href="#" target="_blank" class="fab fa-whatsapp"></a>
+          <a href="#" target="_blank" class="fab fa-youtube"></a>
+          <a href="#" class="fas fa-envelope"></a>
+      </div>
+  </div>
+  <div class="right">
+      <form method="POST" enctype="multipart/form-data" autocomplete="off">
+              {% csrf_token %}
+          <h4>Leave a Message here!</h4>
+          <div class="contact-form">
+              <div class="col-md-12">
+                <!-- Name input field -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                
+                <!-- Email input field -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                
+                <!-- Message textarea field -->
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+            </div>
+            
+            <!-- Submit button -->
+            
+          </div>
+          <button class="btn btn-dark" style="background-color: #35bdbd;margin-left: 15px;" type="submit">Send Message</button>
+      </form>
+  </div>
+</div>
+
+
+</div>
+ 
+{% endblock %}

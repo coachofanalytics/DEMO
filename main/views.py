@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets
+from .models import Assets,Description, Page
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from main.forms import ContactForm,FeedbackForm
@@ -83,6 +83,9 @@ from django.shortcuts import get_object_or_404
 
 
 def layout(request):
+    page_instance = Page.objects.get(page_name='Home')
+    description = Description.objects.filter(page = page_instance)
+    
     if request.method == "POST":
         form = ContactForm(request.POST, request.FILES)
         message=f'Thank You, we will get back to you within 48 hours.'
@@ -105,9 +108,9 @@ def layout(request):
     context={
             # "posts":posts,
             "form": form,
-            "title": "DYC"
+            'description': description
         }
-    return render(request, "main/home_templates/newlayout.html")
+    return render(request, "main/home_templates/home.html",context)
 
     
 def about(request):
