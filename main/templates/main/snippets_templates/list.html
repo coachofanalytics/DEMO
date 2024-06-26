@@ -1,0 +1,36 @@
+{%extends "main/base_templates/base.html"%} {% block content %}
+<section id="career">
+  <div class="career text-center">
+    <h2>USER PROFILES</h2>
+    <table class="table table-borderless" style="width: 100%">
+      <thead class="border-bottom font-weight-bold">
+        <tr>
+          <th>title</th>
+          <th>description</th>
+          <!-- <th>Description</th> -->
+          <th>uploaded_at</th>
+          <th>event_date</th>
+          <!---
+          <th>CustomerId</th>
+          <th>Registering For:</th>
+        -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for GalleryImage in GalleryImage %}
+            <tr>
+              <td>{{GalleryImage.title}}</td>
+              <td>{{GalleryImage.description}}</td>
+              <td>{{user.image}}</td>
+              <td>{{GalleryImage.uploaded_at}}</td>
+              <td>{{GalleryImage.event_date}}</td>
+              
+              <!-- <td>{{user.description}}</td> -->
+              <td> <a class="article-title" href="#">Edit</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock content %}

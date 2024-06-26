@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, Page
+from .models import Assets,Description, Page,GalleryImage
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from main.forms import ContactForm,FeedbackForm
@@ -228,3 +228,16 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return reverse('main:images') 
+
+from django.shortcuts import get_object_or_404
+from .models import Page
+
+def home_view(request):
+    page = get_object_or_404(Page, slug='home')
+    return render(request, 'home.html', {'page': page})
+
+
+def Gallery_list(request):
+    info=GalleryImage.objects.all()
+    print("info===============================",info)
+    return render(request,"main/snippets_templates/list.html",{"GalleryImage":info})

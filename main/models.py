@@ -8,9 +8,11 @@ from django.contrib.auth import get_user_model
 from accounts.models import User,UserCategory
 
 # from tableauhyperapi import DatabaseName
+from django.contrib.auth import get_user_model
+from django.db import models
+from accounts.models import UserCategory
 
 User = get_user_model()
-# Create your models here.
 
 class Page(models.Model):
     page_name = models.CharField(max_length=200)
@@ -20,24 +22,21 @@ class Page(models.Model):
 
 class Description(models.Model):
     page = models.ForeignKey(Page, related_name='descriptions', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100,null=False, blank=False) 
+    name = models.CharField(max_length=100, null=False, blank=False) 
     content = models.TextField(null=False, blank=False)
 
     def __str__(self):
         return f"{self.name} for {self.page.page_name}"
 
 class Team(models.Model):
-  
-
     name = models.CharField(max_length=255)
     role = models.CharField(max_length=50)
     region = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='people/')
     bio = models.TextField()
-    facebook_link = models.URLField(blank = True, null = True)
-    linkedin_link = models.URLField(blank = True, null = True)
-    twitter_link = models.URLField(blank = True, null = True)
-
+    facebook_link = models.URLField(blank=True, null=True)
+    linkedin_link = models.URLField(blank=True, null=True)
+    twitter_link = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -56,9 +55,10 @@ class Content(models.Model):
 
     def __str__(self):
         return f"{self.section} - {self.title if self.title else 'Content'}"
+
 class Assets(models.Model):
     name = models.CharField(max_length=200)
-    category = models.CharField(default='background',max_length=200,null=True, blank=True)
+    category = models.CharField(default='background', max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     image_url = models.CharField(max_length=1000, null=True, blank=True)
 
@@ -67,27 +67,34 @@ class Assets(models.Model):
 
     @property
     def split_name(self):
-        image_1=self.name.split("_")[0]
-        image_2=self.name.split("_")[1]
-        image_name=image_1,image_2
-
+        image_1 = self.name.split("_")[0]
+        image_2 = self.name.split("_")[1]
+        image_name = (image_1, image_2)
         return image_name
 
     def __str__(self):
         return self.name
-    
 
 class Feedback(models.Model):
-    user= models.ForeignKey(
+    user = models.ForeignKey(
         User,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
     )
-    # category = models.ForeignKey(UserCategory,null=True,blank=True,on_delete=models.CASCADE)
     topic = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.topic
+
+class GalleryImage(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='gallery/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    event_date = models.DateField()
 
     def __str__(self):
         return self.title
