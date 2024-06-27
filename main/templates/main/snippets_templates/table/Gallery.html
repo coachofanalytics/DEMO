@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+        .add-button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gallery List</h1>
+    <a class="add-button" href="{% url 'main:gallery_create' %}">Add New Image</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Uploaded At</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Event Date</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instance in GalleryImage %}
+            <tr>
+                <td>{{ instance.uploaded_at|date:"F d, Y" }}</td>
+                <td>{{ instance.title }}</td>
+                <td>{{ instance.description }}</td>
+                <td>{{ instance.event_date|date:"F d, Y" }}</td>
+                <td><img src="{{ instance.image.url }}" alt="{{ instance.title }}"></td>
+                <td><a class="article-title" href="{% url 'main:gallery_update' instance.id %}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

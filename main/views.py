@@ -261,3 +261,28 @@ def gallery_create(request):
 
 
 
+
+
+def Gallery_update(request, pk):
+    gallery_instance = get_object_or_404(GalleryImage, pk=pk)
+    if request.method == 'POST':
+        form = GalleryImageForm(request.POST, request.FILES, instance=gallery_instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('Gallery_list'))
+    else:
+        form = GalleryImageForm(instance=gallery_instance)
+    
+    return render(request, 'main/snippets_templates/table/Gallery.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
+
+
