@@ -57,3 +57,12 @@ class FeedbackForm(forms.ModelForm):
 #         label='Sub Category',
 #         widget=forms.Select(attrs={'class': 'form-control'}),
 #     )
+
+
+from django import forms
+from .models import GalleryImage  # Adjust the import according to your app structure
+
+class GalleryImageForm(forms.ModelForm):
+    class Meta:
+        model = GalleryImage
+        fields = '__all__'

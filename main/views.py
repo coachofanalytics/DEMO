@@ -11,7 +11,7 @@ from django.views.generic import (
 from .models import Assets,Description, Page,GalleryImage
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
-from main.forms import ContactForm,FeedbackForm
+from main.forms import ContactForm,FeedbackForm,GalleryImageForm
 from django.contrib.auth import get_user_model
 
 User=get_user_model()
@@ -241,3 +241,23 @@ def Gallery_list(request):
     info=GalleryImage.objects.all()
     print("info===============================",info)
     return render(request,"main/snippets_templates/list.html",{"GalleryImage":info})
+
+
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+def gallery_create(request):
+    if request.method == "POST":
+        form = GalleryImageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to a new URL after POST
+            return HttpResponseRedirect(reverse('gallery_list'))  # Assuming you have a URL named 'gallery_list'
+    else:
+        form = GalleryImageForm()  # Provide an empty form for GET requests
+
+    return render(request, 'main/snippets_templates/table/create.html', {'form': form})
+
+
+
