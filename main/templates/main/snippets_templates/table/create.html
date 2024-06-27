@@ -5,13 +5,11 @@
     <title>Create Gallery Image</title>
 </head>
 <body>
-    
-    <h1>Create GalleryImage</h1>
-    <form method="post">
+    <h1>Create New Gallery Image</h1>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
-        <box-sizing: border-box></box-sizing>
     </form>
 </body>
 </html>

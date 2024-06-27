@@ -276,6 +276,14 @@ def Gallery_update(request, pk):
     return render(request, 'main/snippets_templates/table/Gallery.html', {'form': form})
 
 
+def gallery_delete(request, pk):
+    gallery_instance = get_object_or_404(GalleryImage, pk=pk)
+    if request.method == 'POST':
+        gallery_instance.delete()
+        return redirect('main:gallery_list')
+    
+    return render(request, 'main/snippets_templates/table/delete.html', {'object': gallery_instance})
+
 
 
 

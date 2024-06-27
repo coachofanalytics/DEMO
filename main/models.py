@@ -92,7 +92,7 @@ class Feedback(models.Model):
 class GalleryImage(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='gallery/')
+    image = models.ImageField(max_length=100)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     event_date = models.DateField()
 
