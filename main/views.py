@@ -286,6 +286,13 @@ def gallery_delete(request, pk):
 
 
 
+def gallery_detail(request, pk):
+    gallery_instance = get_object_or_404(GalleryImage, pk=pk)
+    return render(request, 'main/snippets_templates/table/detail.html', {'gallery_instance': gallery_instance})
+
+
+
+
 
 
 

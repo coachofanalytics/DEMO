@@ -1,0 +1,89 @@
+<!-- main/templates/main/gallery_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+        .add-button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .edit-button, .delete-button, .detail-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .edit-button {
+            background-color: #FFC107;
+            color: white;
+        }
+        .delete-button {
+            background-color: #FF6347;
+            color: white;
+        }
+        .detail-button {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gallery List</h1>
+    <a class="add-button" href="{% url 'main:gallery_create' %}">Add New Image</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Uploaded At</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Event Date</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instance in images %}
+            <tr>
+                <td>{{ instance.uploaded_at|date:"F d, Y" }}</td>
+                <td>{{ instance.title }}</td>
+                <td>{{ instance.description }}</td>
+                <td>{{ instance.event_date|date:"F d, Y" }}</td>
+                <td><img src="{{ instance.image.url }}" alt="{{ instance.title }}"></td>
+                <td>
+                    <div class="action-buttons">
+                        <a class="detail-button" href="{% url 'main:gallery_detail' instance.pk %}">Detail</a>
+                        <a class="edit-button" href="{% url 'main:gallery_update' instance.pk %}">Edit</a>
+                        <a class="delete-button" href="{% url 'main:gallery_delete' instance.pk %}">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
