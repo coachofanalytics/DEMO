@@ -29,82 +29,21 @@ class User(AbstractUser):
         return full_name
 
 
-class VisaService(models.Model):
-    class SubCategory(models.IntegerChoices):
-        No_selection = 0
-        F1 = 1,'STUDENT VISA'
-        B1 = 2,'BUSINESS VISA'
-        H1 = 3,'WORK VISA'
-        GC = 4,'GREEN CARD'
-        Asylum = 5,'ASYLUM'
-        OTHER = 6,'OTHER'
+class MemberRegistration(models.Model):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    ]
 
-
-    name = models.CharField(max_length=254)
-    sub_category = models.IntegerField(choices=SubCategory.choices)
-    price = models.FloatField()
-
-    def __str__(self):
-        return str(self.name)
-
-
-class UserCategory(models.Model):
-
-    class Category(models.IntegerChoices):
-        No_selection = 0
-        Student = 1,'STUDENT'
-        Business = 2,'BUSINESS'
-        Residence = 3,'RESIDENCE(GC)'
-        Staff = 4,'DYC EMPLOYEE'
-        Other = 5,'OTHER'
-
-    class SubCategory(models.IntegerChoices):
-        No_selection = 0
-        F1 = 1,'STUDENT VISA'
-        B1 = 2,'BUSINESS VISA'
-        H1 = 3,'WORK VISA'
-        GC=4,'GREEN CARD'
-        Asylum=5,'ASYLUM'
-        OTHER = 6,'OTHER'
-
-    user= models.ForeignKey(
-        "accounts.User",
-        verbose_name=("UserCategories"),
-        related_name="UserCategory",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-    )
-    category = models.IntegerField(choices=Category.choices, default=999)
-    # added this column here
-    sub_category = models.IntegerField(
-        choices=SubCategory.choices, blank=True, null=True
-    )
-    entry_date = models.DateTimeField("entered on", auto_now_add=True, editable=True)
-
-    class Meta:
-        verbose_name_plural = "Service Categories"
-        ordering = ["-entry_date"]
-        unique_together = (("user", "category"),)
+    email = models.EmailField()
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    phone_number = models.CharField(max_length=15)
+    country = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    agree = models.BooleanField()
 
     def __str__(self):
-        return self.get_category_display()
-
-
-class Location(models.Model):
-    user = models.ForeignKey(
-        "accounts.User",
-        verbose_name=("Locations"),
-        related_name="Location",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-    )
-    address = models.CharField(blank=True, null=True, max_length=100)
-    city = models.CharField(blank=True, null=True, max_length=100)
-    state = models.CharField(blank=True, null=True, max_length=100)
-    country = CountryField(blank=True, null=True)
-
-
-class UserProfile(models.Model):
-    pass
+        return f"{self.first_name} {self.last_name}"

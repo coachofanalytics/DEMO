@@ -1,0 +1,17 @@
+{%extends "main/base_templates/base.html"%} 
+{% load static %}
+{% block content %}
+
+
+
+<div class="container">
+    <h1 class="my-4">Upload New Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+    </form>
+</div>
+
+
+{% endblock %}

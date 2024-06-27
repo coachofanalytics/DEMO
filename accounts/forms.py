@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,UserCategory
+from .models import *
 from django.utils.translation import gettext_lazy as _
 
 
@@ -60,19 +60,14 @@ class LoginForm(forms.Form):
     )
 
 
-class UserCategoryForm(forms.Form):
+class MemberRegistrationForm(forms.ModelForm):
     class Meta:
-        model = UserCategory
-        fields = [
-            "category",
-            "sub_category",
-        ]
-        labels = {
-            "category": "Category",
-            "sub_category": "Sub Category",
+        model = MemberRegistration
+        fields = ['email', 'first_name', 'last_name', 'gender', 'phone_number', 'country', 'city', 'agree']
+        widgets = {
+            'gender': forms.RadioSelect(choices=MemberRegistration.GENDER_CHOICES),
+            'agree': forms.CheckboxInput()
         }
-
-    # def __init__(self, *args, **kwargs):
-    #     super(UserCategoryForm, self).__init__(*args, **kwargs)
-    #     # self.fields['category'].required= True
-    #     # set category initial=1 and added category
+        labels = {
+            'agree': 'I agree to the terms and conditions'
+        }

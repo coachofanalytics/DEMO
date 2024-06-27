@@ -66,11 +66,7 @@ urlpatterns = [
         ),
         name="password_reset_confirm",
     ),
-    path(
-        "password-reset-complete/",
-        account_views.PasswordResetCompleteView,
-        name="password_reset_complete",
-    ),
+  
     path("", include("main.urls", namespace="main")),
     path("accounts/", include("accounts.urls")),
     path("finance/", include("finance.urls"), name="finance"),
