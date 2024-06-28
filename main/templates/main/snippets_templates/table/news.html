@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+        .add-button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>News List</h1>
+    <a class="add-button" href="#">Add New Image</a>
+    <table>
+        <thead>
+            <tr>
+                <th>title At</th>
+                <th>content</th>
+                <th>published_date</th>
+                <th>is_event </th>
+                <th>Image</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for News in News %}
+            <tr>
+                <td>{{ News.title|date:"F d, Y" }}</td>
+                <td>{{ News.content }}</td>
+                <td>{{ News.published_date }}</td>
+                <td>{{ News.is_event }}</td>
+                <td>{{ News.image|date:"F d, Y" }}</td>
+                <td><img src="{{ instance.image.url }}" alt="{{ instance.title }}"></td>
+                <td><a class="article-title" href="#">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

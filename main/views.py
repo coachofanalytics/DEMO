@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, Page,GalleryImage
+from .models import Assets,Description, Page,GalleryImage,News
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from main.forms import ContactForm,FeedbackForm,GalleryImageForm
@@ -289,6 +289,22 @@ def gallery_delete(request, pk):
 def gallery_detail(request, pk):
     gallery_instance = get_object_or_404(GalleryImage, pk=pk)
     return render(request, 'main/snippets_templates/table/detail.html', {'gallery_instance': gallery_instance})
+
+
+
+
+
+
+
+
+
+
+
+
+def News_list(request):
+    info=News.objects.all()
+    print("info===============================",info)
+    return render(request,"main/snippets_templates/table/news.html",{"News":info})
 
 
 

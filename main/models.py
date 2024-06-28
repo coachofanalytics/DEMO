@@ -98,3 +98,18 @@ class GalleryImage(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+
+
+
+class News(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    published_date = models.DateField()
+    is_event = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='news_images/', blank=True, null=True)  # Image field for news items
+
+    def __str__(self):
+        return self.title
