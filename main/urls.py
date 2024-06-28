@@ -12,6 +12,7 @@ urlpatterns = [
     path('gallery_detail/<int:pk>/', views.gallery_detail, name='gallery_detail'), 
     path('team/', views.about, name='team'),
     path('News_list/', views.News_list, name='News_list'),
+    path('News_create/', views.News_create, name='News_create'),
 
     #=======================SERVICES=====================================
     # path('newservice/', views.ServiceCreateView.as_view(template_name='main/form.html'), name='newservice'),

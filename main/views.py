@@ -11,7 +11,7 @@ from django.views.generic import (
 from .models import Assets,Description, Page,GalleryImage,News
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
-from main.forms import ContactForm,FeedbackForm,GalleryImageForm
+from main.forms import ContactForm,FeedbackForm,GalleryImageForm,NewsForm
 from django.contrib.auth import get_user_model
 
 User=get_user_model()
@@ -305,6 +305,26 @@ def News_list(request):
     info=News.objects.all()
     print("info===============================",info)
     return render(request,"main/snippets_templates/table/news.html",{"News":info})
+
+
+
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+
+def News_create(request):
+    if request.method == "POST":
+        form = NewsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to a new URL after POST
+            return HttpResponseRedirect(reverse('main:News_list'))  # Assuming you have a URL named 'News_list'
+    else:
+        form = NewsForm()  # Provide an empty form for GET requests
+
+    return render(request, 'main/snippets_templates/table/news_create.html', {'form': form})
+
 
 
 

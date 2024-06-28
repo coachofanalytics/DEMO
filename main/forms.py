@@ -66,3 +66,13 @@ class GalleryImageForm(forms.ModelForm):
     class Meta:
         model = GalleryImage
         fields = '__all__'
+
+
+
+from django import forms
+from .models import News  # Adjust the import according to your app structure
+
+class NewsForm(forms.ModelForm):
+    class Meta:
+        model = News
+        fields = '__all__'
