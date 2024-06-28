@@ -332,6 +332,16 @@ def News_create(request):
 
 
 
+def news_update(request, pk):
+    news_item = get_object_or_404(News, pk=pk)
+    if request.method == "POST":
+        form = NewsForm(request.POST, request.FILES, instance=news_item)
+        if form.is_valid():
+            form.save()
+            return redirect('main:News_list')  # Redirect to the news list view
+    else:
+        form = NewsForm(instance=news_item)
+    return render(request, 'main/snippets_templates/table/news_update.html', {'form': form})
 
 
 

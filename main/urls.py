@@ -13,6 +13,7 @@ urlpatterns = [
     path('team/', views.about, name='team'),
     path('News_list/', views.News_list, name='News_list'),
     path('News_create/', views.News_create, name='News_create'),
+     path('news_update/<int:pk>/', views.news_update, name='news_update'),
 
     #=======================SERVICES=====================================
     # path('newservice/', views.ServiceCreateView.as_view(template_name='main/form.html'), name='newservice'),
