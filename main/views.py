@@ -340,3 +340,17 @@ def Donation_update(request, pk):
     return render(request, 'main/snippets_templates/table/donate_update.html', {'form': form})
 
 
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Donation
+
+
+def Donation_delete(request, pk):
+    donation_instance = get_object_or_404(Donation, pk=pk)
+    if request.method == 'POST':
+        donation_instance.delete()
+        return redirect('main:Donation_list')  # Ensure this name matches your URL pattern
+    
+    return render(request, 'main/snippets_templates/table/donate_delete.html', {'object': donation_instance})
