@@ -11,7 +11,7 @@ from django.views.generic import (
 from .models import Assets,Description, Page,GalleryImage,Donation
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
-from main.forms import ContactForm,FeedbackForm,GalleryImageForm
+from main.forms import ContactForm,FeedbackForm,GalleryImageForm,DonationForm
 from django.contrib.auth import get_user_model
 
 User=get_user_model()
@@ -301,6 +301,18 @@ def Donation_list(request):
     return render(request,"main/snippets_templates/table/donation_list.html",{"Donation":info})
 
 
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from .forms import DonationForm
 
+def Donation_create(request):
+    if request.method == "POST":
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to the Donation list view after successful POST
+            return redirect('main:Donation_list')  # Ensure this name matches your URL pattern
+    else:
+        form = DonationForm()
 
-
+    return render(request, 'main/snippets_templates/table/donation_create.html', {'form': form})

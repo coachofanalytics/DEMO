@@ -66,3 +66,11 @@ class GalleryImageForm(forms.ModelForm):
     class Meta:
         model = GalleryImage
         fields = '__all__'
+
+
+
+from .models import Donation
+class DonationForm(forms.ModelForm):
+    class Meta:
+        model = Donation
+        fields = '__all__'
