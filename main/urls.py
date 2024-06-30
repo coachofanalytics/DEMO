@@ -5,7 +5,7 @@ app_name = 'main'
 urlpatterns = [
     
     #==============ERRORS==============================================
-    path('Gallery_list/', views.Gallery_list, name='Gallery_list'),
+    path('Donation_list/', views.Donation_list, name='Donation_list'),
     path('gallery_create/', views.gallery_create, name='gallery_create'),
     path('Gallery_update/<int:pk>/', views.Gallery_update, name='Gallery'),
     path('gallery_delete/<int:pk>/', views.gallery_delete, name='gallery_delete'),
