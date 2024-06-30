@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import Donation_create, Donation_list
+from .views import Donation_create, Donation_list,Donation_update
 
 app_name = 'main'
 urlpatterns = [
@@ -8,7 +8,7 @@ urlpatterns = [
     #==============ERRORS==============================================
     path('Donation_list/', views.Donation_list, name='Donation_list'),
     path('Donation_create/', views.Donation_create, name='Donation_create'),
-    path('Gallery_update/<int:pk>/', views.Gallery_update, name='Gallery'),
+    path('Donation_update/<int:pk>/', Donation_update, name='Donation_update'),
     path('gallery_delete/<int:pk>/', views.gallery_delete, name='gallery_delete'),
     path('gallery_detail/<int:pk>/', views.gallery_detail, name='gallery_detail'), 
     path('team/', views.about, name='team'),

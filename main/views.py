@@ -316,3 +316,27 @@ def Donation_create(request):
         form = DonationForm()
 
     return render(request, 'main/snippets_templates/table/donation_create.html', {'form': form})
+
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+from .models import Donation
+from .forms import DonationForm
+
+def Donation_update(request, pk):
+    donation_instance = get_object_or_404(Donation, pk=pk)
+    if request.method == 'POST':
+        form = DonationForm(request.POST, request.FILES, instance=donation_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('main:Donation_list') # Ensure this name matches your URL pattern
+    else:
+        form = DonationForm(instance=donation_instance)
+    
+    return render(request, 'main/snippets_templates/table/donate_update.html', {'form': form})
+
+
