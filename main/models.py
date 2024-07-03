@@ -91,3 +91,18 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+
+
+class Testimonials(models.Model):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100, blank=True, null=True)
+    organization = models.CharField(max_length=100, blank=True, null=True)
+    testimonial = models.TextField()
+    image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name        
