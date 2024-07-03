@@ -1,45 +1,95 @@
 {% load static %}
 
-    <nav class="navbar">
-      <img  rel="icon" src="{% static 'main/img/favicon.png' %}" type="image/png">
-      
-        <div class="logos">
-          
-            <ul class="navList">
-               
-                <div class="menu-icon" onclick="toggleNavbar()">
-                    &#9776;
+<nav class="navbar">
+    <img rel="icon" src="{% static 'main/img/favicon.png' %}" type="image/png">
+    <div class="logos">
+        <ul class="navList">
+            <div class="menu-icon" onclick="toggleNavbar()">
+                &#9776;
+            </div>
+        </ul>
+    </div>
+    <div class="list" id="navList">
+        <ul class="navList">
+            <li><a href="/" class="navLin">HOME</a></li>
+            <li class="dropdown">
+                <a href="/about" class="navLin">ABOUT US</a>
+                <div class="dropdown-content">
+                    <a href="#">Our History</a>
+                    <a href="#">Our Team</a>
+                    <a href="#">Careers</a>
                 </div>
-            </ul>
-            
-        </div>
-        <div class="list" id="navList">
-          <!-- <ul class="navList" style="align-items: right: inherit;">
-            <li ><a  class="navLin"href="#">privacy policy</a></li>
-          </ul> -->
-            <ul class="navList">
-                <li><a href="/" class="navLin">HOME</a></li>
-                <li><a href="/about" class="navLin">ABOUT US</a></li>
-                <li><a href="/services" class="navLin">MEMBERSHIP</a></li>
-                <li><a href="/Contact Us" class="navLin">GALLERY</a></li>
-               
-                <li><a href="/Contact Us" class="navLin">NEWS</a></li>
-                <li><a href="/Portfolio" class="navLin">Contact Us</a></li>
-               
-                {% if user.is_authenticated %}
-                <li><a href="/Contact Us" class="navLin">SUPPORT</a></li>
-                <li><a href="/logout" class="navLin">LOGOUT</a></li>
-                {% else %}
-                    <li><a href="/login" class="navLin">LOGIN</a></li>
-                    <li><a href="/register" class="navLin">REGISTER</a></li>
-                {% endif %}
-                
-            </ul>
-        </div>
-    </nav>
-    <script>
-        function toggleNavbar() {
-            const navList = document.getElementById('navList');
-            navList.classList.toggle('active');
-        }
-    </script>
+            </li>
+            <li class="dropdown">
+                <a href="/services" class="navLin">SERVICES</a>
+                <div class="dropdown-content">
+                    <a href="#">Consulting</a>
+                    <a href="#">Development</a>
+                    <a href="#">Design</a>
+                </div>
+            </li>
+            <li><a href="/membership" class="navLin">MEMBERSHIP</a></li>
+           
+            <li><a href="/news" class="navLin">NEWS</a></li>
+            <li><a href="/contact-us" class="navLin">CONTACT US</a></li>
+            <li class="dropdown">
+                <a href="/about" class="navLin">SUPPORT</a>
+                <div class="dropdown-content">
+                    <a href="#">Donate</a>
+                    <a href="#">Become Volunteer</a>
+                    <a href="#">Get Help</a>
+                    
+                </div>
+            </li>
+            {% if user.is_authenticated %}
+            <li><a href="/gallery" class="navLin">GALLERY</a></li>
+            <li><a href="/logout" class="navLin">LOGOUT</a></li>
+            {% else %}
+            <li><a href="/login" class="navLin">LOGIN</a></li>
+            <li><a href="/register" class="navLin">REGISTER</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dropdowns = document.querySelectorAll('.dropdown');
+        let activeDropdown = null;
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', function() {
+                if (activeDropdown) {
+                    activeDropdown.querySelector('.dropdown-content').style.display = 'none';
+                }
+                this.querySelector('.dropdown-content').style.display = 'block';
+                activeDropdown = this;
+            });
+
+            dropdown.addEventListener('mouseleave', function(event) {
+                // Use a timeout to handle the transition smoothly
+                setTimeout(() => {
+                    const relatedTarget = event.relatedTarget;
+                    if (!this.contains(relatedTarget)) {
+                        this.querySelector('.dropdown-content').style.display = 'none';
+                        activeDropdown = null;
+                    }
+                }, 200);
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            if (activeDropdown && !activeDropdown.contains(event.target)) {
+                activeDropdown.querySelector('.dropdown-content').style.display = 'none';
+                activeDropdown = null;
+            }
+        });
+    });
+
+    function toggleNavbar() {
+        const navList = document.getElementById('navList');
+        navList.classList.toggle('active');
+    }
+</script>
