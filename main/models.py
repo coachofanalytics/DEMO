@@ -105,4 +105,15 @@ class Testimonials(models.Model):
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.name        
+        return self.name   
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Name")
+    email = models.EmailField(verbose_name="Email")
+    message = models.TextField(verbose_name="Message")
+    feedback = models.TextField(blank=True, null=True, verbose_name="Feedback")
+    submitted_at = models.DateTimeField(auto_now_add=True, verbose_name="Submitted At")
+
+    def __str__(self):
+        return f"Message from {self.name} ({self.email})"             

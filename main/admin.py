@@ -10,5 +10,6 @@ admin.site.register(Page)
 admin.site.register(Team)
 admin.site.register(Content)
 admin.site.register(Testimonials)
+admin.site.register(ContactMessage)
 
 
