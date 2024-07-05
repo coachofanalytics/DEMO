@@ -41,7 +41,7 @@ urlpatterns = [
     path(
         "logout/",
         auth_views.LogoutView.as_view(
-            template_name="accounts/registration/DYC/logout.html"
+            template_name="accounts/registration/DC48K/logins.html"
         ),
         name="account-logout",
     ),

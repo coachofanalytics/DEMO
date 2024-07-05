@@ -28,7 +28,6 @@ class User(AbstractUser):
         full_name=self.first_name +' ' + self.last_name
         return full_name
 
-
 class MemberRegistration(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),

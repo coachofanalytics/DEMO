@@ -1,7 +1,16 @@
 from django import forms
 from .models import *
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import User
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(label="Username or E-mail")
+    remember_me = forms.BooleanField(required=False, label="Keep me signed in")
 
 class UserForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)

@@ -1,4 +1,3 @@
-{%extends "main/base_templates/base.html"%} 
 {% load static %}
 
 <nav class="navbar">
@@ -44,10 +43,10 @@
             </li>
             {% if user.is_authenticated %}
             <li><a href="/gallery" class="navLin">GALLERY</a></li>
-            <li><a href="/logout" class="navLin">LOGOUT</a></li>
+            <li><a href="{% url 'accounts:register' %}" class="navLin">LOGOUT</a></li>
             {% else %}
-            <li><a href="/login" class="navLin">LOGIN</a></li>
-            <li><a href="/register" class="navLin">REGISTER</a></li>
+            <li><a href="{% url 'accounts:login' %}" class="navLin">LOGIN</a></li>
+            <li><a href="{% url 'accounts:register' %}" class="navLin">REGISTER</a></li>
             {% endif %}
         </ul>
     </div>

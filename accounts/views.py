@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest
+from django.contrib.auth.views import LoginView
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -22,7 +23,7 @@ from django.views.generic import (
 from requests import request
 from django.views.generic.edit import FormView
 from .models import User
-from .forms import UserForm,LoginForm
+from .forms import CustomAuthenticationForm, CustomUserCreationForm, UserForm,LoginForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
 from finance.utils import DYCDefaultPayments
@@ -50,7 +51,20 @@ def thank(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'accounts/registration/DC48K/registers.html', {'form': form})
 
+class CustomLoginView(LoginView):
+    authentication_form = CustomAuthenticationForm
+    template_name = 'accounts/registration/DC48K/logins.html'
     
 
 def authenticate(email=None, password=None, **kwargs):
