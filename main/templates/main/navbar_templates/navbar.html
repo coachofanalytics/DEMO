@@ -1,8 +1,90 @@
 {% load static %}
+<style>
+/* Default styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color:#35bdbd;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    width: max-content; /* Adjust width as needed */
+}
+
+.dropdown-content .sub-dropdown {
+    position: relative;
+}
+
+.sub-dropdown-content {
+    display: none;
+    position: absolute;
+    margin-left: 4px;
+    top: 0;
+    left: 100%; /* Position the sub-dropdown to the right of the main dropdown */
+    background-color: #3b5d5f;
+    border-radius: 4px;
+    min-width: 200px; /* Adjust width as needed */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+/* Hover effect for desktop */
+.sub-dropdown:hover .sub-dropdown-content,
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a, .sub-dropdown-content a {
+    color:  white;
+    font-size: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover, .sub-dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .dropdown {
+        display: block; /* Ensure the dropdown appears as a block */
+        position: static; /* Reset position for stacking items */
+    }
+    
+    .dropdown-content {
+        position: static; /* Change position to static for stacking items */
+        width: 100%; /* Full width on smaller screens */
+        box-shadow: none; /* Remove box shadow */
+        background-color: #35bdbd; /* Transparent background */
+    }
+    
+    .sub-dropdown {
+        position: static; /* Static position for sub-dropdown items */
+    }
+    
+    .sub-dropdown-content {
+        display: none; /* Hide sub-dropdown content by default */
+        position: static; /* Adjust position to stack below main dropdown */
+        width: 100%; /* Full width */
+        box-shadow: none; /* Remove box shadow */
+        background-color: #3b5d5f; /* Background color for sub-dropdown */
+    }
+    
+    .sub-dropdown:hover .sub-dropdown-content {
+        display: block; /* Display sub-dropdown on hover */
+    }
+}
+
+
+</style>
 
 <nav class="navbar">
     <img rel="icon" src="{% static 'main/img/favicon.png' %}" type="image/png">
-    <div class="logos">
+    <div class="logos"> 
         <ul class="navList">
             <div class="menu-icon" onclick="toggleNavbar()">
                 &#9776;
@@ -23,11 +105,19 @@
             <li class="dropdown">
                 <a href="/services" class="navLin">SERVICES</a>
                 <div class="dropdown-content">
-                    <a href="#">Consulting</a>
-                    <a href="#">Development</a>
-                    <a href="#">Design</a>
+                    {% for service in service %}
+                    <div class="sub-dropdown">
+                        <a href="#">{{ service.title }}</a>
+                        <div class="sub-dropdown-content">
+                            {% for subservice in service.subservices.all %}
+                            <a href="#">{{ subservice.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </li>
+            
             <li><a href="/membership" class="navLin">MEMBERSHIP</a></li>
            
             <li><a href="/news" class="navLin">NEWS</a></li>
