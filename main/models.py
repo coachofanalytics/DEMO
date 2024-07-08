@@ -106,3 +106,17 @@ class SubService(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.service}"
+
+        # main/models.py
+
+
+
+class GalleryImage(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='gallery/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    event_date = models.DateField()
+
+    def __str__(self):
+        return self.title
