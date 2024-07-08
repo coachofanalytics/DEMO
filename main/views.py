@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, Page,GalleryImage
+from .models import Assets,Description, Page,GalleryImage,Donation
 from accounts.models import User,UserProfile
 from .utils import Meetings,image_view,path_values
 from main.forms import ContactForm,FeedbackForm,GalleryImageForm
@@ -298,6 +298,11 @@ def gallery_detail(request, pk):
 
 
 
+
+def Donation_list(request):
+    info=Donation.objects.all()
+    print("info===============================",info)
+    return render(request,"main/snippets_templates/table/donation.html",{"Donation":info})
 
 
 
