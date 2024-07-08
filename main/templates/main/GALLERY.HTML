@@ -1,0 +1,36 @@
+{%extends "main/base_templates/base.html"%} {% block content %}
+<section id="career">
+  <div class="career text-center">
+    <h2>DC48K GALLERY IMAGE</h2>
+    <table class="table table-borderless" style="width: 100%">
+      <thead class="border-bottom font-weight-bold">
+        <tr>
+          <th>title</th>
+          <th>description</th>
+          <!-- <th>Description</th> -->
+          <th>Upimagedate</th>
+          <th>uploaded_at</th>
+          <th>event_date</th>
+          <!---
+          <th>CustomerId</th>
+          <th>Registering For:</th>
+        -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for images in images %}
+            <tr>
+              <td>{{images.title}}</td>
+              <td>{{images.description}}</td>
+              <td>{{images.image}}</td>
+              <td>{{images.uploaded_at}}</td>
+              <td>{{images.event_date}}</td>
+              <!-- <td>{{user.description}}</td> -->
+              <td> <a class="article-title" href="#">Edit</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock content %}

@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, Page, Service, SubService
+from .models import Assets,Description, Page, Service, SubService,GalleryImage
 from accounts.models import User
 from .utils import Meetings,image_view,path_values
 from main.forms import ContactForm
@@ -144,3 +144,18 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return reverse('main:images') 
+
+        # List view
+def gallery_image_list(request):
+    images = GalleryImage.objects.all()
+    return render(request, 'main/GALLERY.HTML', {'images': images})
+
+# def gallery_image_create(request):
+#     if request.method == 'POST':
+#         form = GalleryImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('gallery')
+#     else:
+#         form = GalleryImageForm()
+#     return render(request, 'main/GALLERYCREATE.HTLM', {'form': form})

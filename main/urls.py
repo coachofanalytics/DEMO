@@ -1,7 +1,8 @@
 from django.urls import path
 
-from . import views
+from . import views 
 # from .utils import convert_html_to_pdf
+from .views import gallery_image_list
 
 app_name = 'main'
 urlpatterns = [
@@ -20,5 +21,10 @@ urlpatterns = [
     path('403/', views.hendler403, name='403-error'),
     path('404/', views.hendler404, name='404-error'),
     path('500/', views.hendler500, name='500-error'),
+    path('gallery/', views.gallery_image_list, name='gallery'),
+    
 
 ]
+
+
+
