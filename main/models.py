@@ -106,3 +106,15 @@ class SubService(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.service}"
+    
+    
+class News(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    link = models.URLField(null=True,blank=True)
+    published_date = models.DateField()
+    is_event = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='news_images/', blank=True, null=True)  # Add this line for image field
+
+    def __str__(self):
+        return self.title    

@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, Page, Service, SubService
+from .models import Assets,Description, News, Page, Service, SubService
 from accounts.models import User
 from .utils import Meetings,image_view,path_values
 from main.forms import ContactForm
@@ -87,6 +87,8 @@ def layout(request):
     description = Description.objects.filter(page = page_instance)
     service = Service.objects.all()
     subservice = SubService.objects.all()
+    news = News.objects.all()
+    print(news)
    
     if request.method == "POST":
         form = ContactForm(request.POST, request.FILES)
@@ -112,6 +114,7 @@ def layout(request):
             "form": form,
             'description': description,
             'service': service,
+            'news':news,
             'subservice':subservice
         }
     return render(request, "main/home_templates/home.html",context)

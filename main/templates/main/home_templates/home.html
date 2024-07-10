@@ -57,7 +57,18 @@ href="{% static 'main/css/home.css' %}"
            <button type="button" style="background-color: white;color: black;" class="btn btn-secondary">MORE INFORMATION</button>
           </div>
           <div class="col-md-6" >
-              <img class="img-fluid ps-lg-5" style="border-radius: 800% 0 0 800%;box-shadow: 0 0 7px rgba(0, 128, 0, 0.7);" src="{% static 'main/img/home/Kavyu.png' %}" alt="">
+              <!-- <img class="img-fluid ps-lg-5" style="border-radius: 800% 0 0 800%;box-shadow: 0 0 7px rgba(0, 128, 0, 0.7);" src="{% static 'main/img/home/Kavyu.png' %}" alt=""> -->
+              <div class="side-news">
+                <h3>Latest News</h3>
+                <ul>
+                    {% for news in news %}
+                    <li>
+                        <a href="{{ news.link }}">{{ news.title }}</a>
+                       
+                    </li>
+                    {% endfor %}
+                </ul>
+              </div>
           </div>
       </div>
      
@@ -145,5 +156,48 @@ href="{% static 'main/css/home.css' %}"
 
 
 </div>
+
+
+<style>
+  
+  .side-news {
+      width: 60%;
+      /* padding: 10px; */
+      border: 1px solid #ddd;
+      margin-left: 100px;
+  }
+
+  .side-news h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+  }
+
+  .side-news ul {
+      list-style: none;
+      padding: 0;
+  }
+
+  .side-news li {
+      margin-bottom: 15px;
+  }
+
+  .side-news a {
+      font-size: 12px;
+     
+      color: #333;
+      background-color: #fff;
+      /* text-decoration: none; */
+      transition: color 0.3s, text-shadow 0.3s;
+  }
+  .side-news li:hover{
+    box-shadow: #333;
+  }
+
+  .side-news a:hover {
+        color: #35bdbd;
+        text-shadow: 0 0 5px rgba(53, 189, 189, 0.5);
+    }
+</style>
+
  
 {% endblock %}
