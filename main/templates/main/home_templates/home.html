@@ -68,6 +68,13 @@ href="{% static 'main/css/home.css' %}"
                     </li>
                     {% endfor %}
                 </ul>
+                <h3>See more</h3>
+                <div class="social-icon">
+                  
+                  <a href="#" target="_blank" class="fab fa-linkedin-in"></a>
+                  <a href="#" target="_blank" class="fab fa-facebook-f"></a>
+                  <a href="#" target="_blank" class="fab fa-youtube"></a>
+                </div>
               </div>
           </div>
       </div>
@@ -162,23 +169,24 @@ href="{% static 'main/css/home.css' %}"
   
   .side-news {
       width: 60%;
-      /* padding: 10px; */
+      padding: 10px;
       border: 1px solid #ddd;
       margin-left: 100px;
   }
 
   .side-news h3 {
-      font-size: 24px;
-      margin-bottom: 10px;
+      font-size: 20px;
+      margin-bottom: 5px;
   }
 
   .side-news ul {
       list-style: none;
       padding: 0;
+      margin-left: 35px;
   }
 
   .side-news li {
-      margin-bottom: 15px;
+      margin-bottom: 0px;
   }
 
   .side-news a {
@@ -196,7 +204,19 @@ href="{% static 'main/css/home.css' %}"
   .side-news a:hover {
         color: #35bdbd;
         text-shadow: 0 0 5px rgba(53, 189, 189, 0.5);
+        text-decoration:underline;
     }
+    .social-icon {
+     margin-left: 35px;
+  }
+
+  .social-icon a {
+      color: #333;
+      margin: 0 5px;
+      font-size:1.5rem;
+      transition: color 0.3s ease;
+  }
+
 </style>
 
  
