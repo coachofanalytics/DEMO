@@ -7,6 +7,7 @@ app_name = 'accounts'
 urlpatterns = [
     #=============================USERS VIEWS=====================================
     path('', views.home, name='home'),
+    path('join/',views.join, name ='joins'),
   
     path('register/', register, name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),

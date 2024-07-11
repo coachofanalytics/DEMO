@@ -15,47 +15,100 @@ class CustomAuthenticationForm(AuthenticationForm):
 class UserForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Repeat Password", widget=forms.PasswordInput)
+    phone_regex = r'^\d{10}$'
+  
+
     class Meta:
-        model = User
+        model = CustomerUser
         fields = [
+            "category",
+            "sub_category",
             "first_name",
             "last_name",
+            "username",
             "password1",
             "password2",
-            "email",
             "phone",
             "gender",
+            "email",
+            "address",
+            "city",
+            "state",
+            "country",
+            "zipcode",
+            "resume_file",
+            "is_staff",
+            "is_applicant",
         ]
         labels = {
+            "sub_category": "",
             "first_name": "",
             "last_name": "",
-            # "password1": "",
-            # "password2": "",
+            "username": "",
             "email": "",
             "gender": "",
             "phone": "",
+            "address": "",
+            "city": "",
+            "state": "",
+            "country": "",
+            "zipcode": "",
         }
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
-        # self.fields['category'].required= True
-        # set category initial=1 and added category
-        # self.fields["category"].initial = 1
-        # self.fields["sub_category"].initial = 1
-        # self.fields["gender"].required = True
-        # self.fields["country"].required = True
+        self.fields["category"].initial = 1
+        self.fields["sub_category"].initial = 1
+        self.fields["gender"].required = True
+        self.fields["country"].required = True
+        if self.data.get('category') in ['3', '4', '5', '6']:
+            self.fields['username'].required = False
+            self.fields['password1'].required = False
+            self.fields['password2'].required = False
+            self.fields['gender'].required = False
+            self.fields['phone'].required = False
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
-
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email:
+            try:
+                validate_email(email) # type: ignore
+            except forms.ValidationError:
+                raise forms.ValidationError("Invalid email address")
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        required_fields = ["first_name", "last_name", "username", "password1", "password2", "phone", "email", "gender", "country"]
+        for field in required_fields:
+            if not cleaned_data.get(field):
+                self.add_error(field, "This field is required.")
+
+        first_name = cleaned_data.get("first_name")
+        last_name = cleaned_data.get("last_name")
+        username = cleaned_data.get("username")
+        disallowed_usernames = ["test", "testing"]
+
+        if first_name in disallowed_usernames:
+            self.add_error("first_name", "This first name is not allowed.")
+        if last_name in disallowed_usernames:
+            self.add_error("last_name", "This last name is not allowed.")
+        if username in disallowed_usernames:
+            self.add_error("username", "This username is not allowed.")
+
     def save(self, commit=True):
         user = super(UserForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password2"])
+        if self.cleaned_data.get('password2'):
+            user.set_password(self.cleaned_data["password2"])
+        else:
+            user.set_password(user.password2)
         if commit:
             user.save()
         return user

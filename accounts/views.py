@@ -1,3 +1,4 @@
+import secrets
 import string, random
 from django.core.paginator import Paginator
 from django.urls import reverse, reverse_lazy
@@ -6,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  login #authenticate,
 from django.utils.decorators import method_decorator
+from accounts.choices import CategoryChoices
 from coda_project import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -22,7 +24,7 @@ from django.views.generic import (
 )
 from requests import request
 from django.views.generic.edit import FormView
-from .models import User
+from .models import CustomerUser, User
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, UserForm,LoginForm
 from .utils import agreement_data,employees,compute_default_fee
 from finance.models import Default_Payment_Fees,Payment_History
@@ -65,7 +67,44 @@ def register(request):
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'accounts/registration/DC48K/logins.html'
+def generate_random_password(length=12):
+    characters = string.ascii_letters + string.digits + "!@#$%&"
+    password = ''.join(secrets.choice(characters) for _ in range(length))
+    return password
+def join(request):
+    form = UserForm()  # Define form variable with initial value
+    if request.method == "POST":
+        previous_user = CustomerUser.objects.filter(email=request.POST.get("email"))
+        if len(previous_user) > 0:
+            messages.success(request, f'User already exists with this email')
+            return redirect("/password-reset")
+        else:
+            contract_data, contract_date = agreement_data(request)
+            form = UserForm(request.POST)  # Assign form with request.POST data
+            if form.is_valid():
+                if form.cleaned_data.get('category') in [CategoryChoices.Jobsupport,CategoryChoices.Student,CategoryChoices.investor,CategoryChoices.General_User]:
+
+                    random_password = generate_random_password(8)
+                    form.instance.username = form.cleaned_data.get('email')
+                    form.instance.password1 = random_password
+                    form.instance.password2 = random_password
+                    form.instance.gender = None
+                    # form.instance.phone = "0000000000"
+
+                if form.cleaned_data.get("category") == CategoryChoices.Coda_Staff_Member:
+                    form.instance.is_staff = True
+                elif form.cleaned_data.get("category") == CategoryChoices.Jobsupport or form.cleaned_data.get("category") == CategoryChoices.Student or form.cleaned_data.get("category") == CategoryChoices.investor:
+                    form.instance.is_client = True
+                else:
+                    form.instance.is_applicant = True
+
+                form.save()
+
+    else:
+        msg = "error validating form"
+        print(msg)
     
+    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})    
 
 def authenticate(email=None, password=None, **kwargs):
     try:
