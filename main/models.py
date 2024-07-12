@@ -118,3 +118,27 @@ class News(models.Model):
 
     def __str__(self):
         return self.title    
+    
+class Team(models.Model):
+    ROLE_CHOICES = [
+        ('Governor', 'Governor'),
+        ('Deputy Governor', 'Deputy Governor'),
+        ('Regional Coordinator', 'Regional Coordinator'),
+        ('Team Member', 'Team Member'),
+    ]
+
+    LEADERSHIP_CHOICES = [
+        ('Local', 'Local'),
+        ('Global', 'Global'),
+    ]
+
+    name = models.CharField(max_length=255)
+    leadership = models.CharField(max_length=50, choices=LEADERSHIP_CHOICES)
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to='people/')
+    bio = models.TextField()
+
+    def __str__(self):
+        return self.name    
+    
