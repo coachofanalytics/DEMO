@@ -114,13 +114,35 @@ class UserForm(forms.ModelForm):
         return user
 
 
-class LoginForm(forms.Form):
+class LoginForms(forms.Form):
     # username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
+class LoginForm(forms.Form):
+    enter_your_username_or_email = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control","autocomplete": "username email"}))
+    enter_your_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+    # def clean_enter_your_username_or_email(self):
+    #     username_or_email = self.cleaned_data.get('enter_your_username_or_email')
+    #     # Add your validation logic for email format here
+    #     # For example:
+    #     if '@' not in username_or_email:
+    #         raise forms.ValidationError("Please enter a valid email address.")
+    #     return username_or_email
 
+    def clean(self):
+        cleaned_data = super().clean()
+        username_or_email = cleaned_data.get('enter_your_username_or_email')
+        password = cleaned_data.get('enter_your_password')
+        # Add validation for required fields here
+        # For example:
+        if not username_or_email:
+            self.add_error('enter_your_username_or_email', "This field is required.")
+        if not password:
+            self.add_error('password', "This field is required.") 
 
 class MemberRegistrationForm(forms.ModelForm):
     class Meta:

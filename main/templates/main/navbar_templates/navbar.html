@@ -83,7 +83,7 @@
 </style>
 
 <nav class="navbar">
-    <img rel="icon" src="{% static 'main/img/favicon.png' %}" type="image/png">
+   <img rel="icon" src="{% static 'main/img/favicon.png' %}" type="image/png">
     <div class="logos"> 
         <ul class="navList">
             <div class="menu-icon" onclick="toggleNavbar()">
@@ -133,10 +133,10 @@
             </li>
             {% if user.is_authenticated %}
             <li><a href="/gallery" class="navLin">GALLERY</a></li>
-            <li><a href="{% url 'accounts:register' %}" class="navLin">LOGOUT</a></li>
+            <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGOUT</a></li>
             {% else %}
-            <li><a href="{% url 'accounts:login' %}" class="navLin">LOGIN</a></li>
-            <li><a href="{% url 'accounts:register' %}" class="navLin">REGISTER</a></li>
+            <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>
+            <li><a href="{% url 'accounts:joins' %}" class="navLin">REGISTER</a></li>
             {% endif %}
         </ul>
     </div>

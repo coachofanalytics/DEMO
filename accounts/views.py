@@ -1,11 +1,11 @@
 import secrets
 import string, random
 from django.core.paginator import Paginator
+from django.contrib.auth import authenticate, login
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import  login #authenticate,
 from django.utils.decorators import method_decorator
 from accounts.choices import CategoryChoices
 from coda_project import settings
@@ -104,7 +104,30 @@ def join(request):
         msg = "error validating form"
         print(msg)
     
-    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})    
+    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})  
+def login_view(request):
+    form = LoginForm(request.POST or None)
+    msg = None
+
+    #when error occur while login/signup with social account, we are redirecting it to login page of website
+    if request.method == 'GET':
+        sociallogin = request.session.pop("socialaccount_sociallogin", None)
+        
+        if sociallogin is not None:
+            msg = 'Error with social login. check your credential or try to sing up manually.'
+    
+    if request.method == "POST":
+        if form.is_valid():
+            request.session["siteurl"] = settings.SITEURL
+            username_or_email = form.cleaned_data.get("enter_your_username_or_email")
+            enter_your_password = form.cleaned_data.get("enter_your_password")
+            account = authenticate(username=username_or_email, password=enter_your_password)
+            
+          
+        
+            
+    return render(
+        request, "accounts/registration/DC48K/login_page.html", {"form": form, "msg": msg}  )
 
 def authenticate(email=None, password=None, **kwargs):
     try:
