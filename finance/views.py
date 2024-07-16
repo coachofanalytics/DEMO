@@ -1,3 +1,4 @@
+import base64
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -9,6 +10,10 @@ from django.db.models import Sum
 from django.http import QueryDict, Http404,JsonResponse
 from requests import request
 from datetime import datetime,date
+
+import requests
+import paypalrestsdk
+from django.conf import settings
 from decimal import *
 from django.views.generic import (
     CreateView,
@@ -23,9 +28,9 @@ from accounts.models import *
 from .models import (
         Payment_Information,Payment_History,
         Default_Payment_Fees,
-        Inflow,Transaction,Outflow
+    Transaction
         )
-from .forms import InflowForm,OutflowForm
+from .forms import InflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
 from .utils import check_default_fee,get_exchange_rate,compute_amt,category_subcategory
@@ -193,55 +198,7 @@ def mycontract(request, *args, **kwargs):
         return render(request, 'management/contracts/contract_error.html',context)
 
 
-@login_required
-def newcontract(request, *args, **kwargs):
-    username = kwargs.get('username')
-    # get the current logged in user
-    user = request.user
-    user_categories = UserCategory.objects.filter(user=user)
-    category, sub_category = [(cat.category, cat.sub_category) for cat in user_categories][0] if user_categories else (None, None)
 
-    #Gets client/user information from the custom user table
-    client_data=User.objects.get(username=username)
-
-    reg_fee = 19.99
-    try:
-        service = VisaService.objects.get(sub_category=sub_category)
-        total_price = service.price + reg_fee
-    except VisaService.DoesNotExist:
-        service = None
-        total_price = reg_fee
-    # print(service)
-
-    request.session['total_price'] = total_price
-    today = date.today()
-    contract_date = today.strftime("%d %B, %Y")
-    context={
-            'client_data': client_data,
-            'contract_date': contract_date,
-            'payments': service,
-            'reg_fee': reg_fee,
-            'total_price': total_price,
-            }
-    try:
-        payment_info = Payment_Information()
-        payment_info.payment_fees = total_price
-        payment_info.down_payment = total_price
-        payment_info.customer_id = request.user
-        payment_info.fee_balance = total_price
-        payment_info.plan = sub_category
-        payment_info.payment_method = ''
-        payment_info.client_signature = ''
-        payment_info.company_rep = ''
-        payment_info.save()
-        print(payment_info)
-    except:
-        print('Problem Found')
-
-    if category == 1 and sub_category == 2 or request.user.is_superuser:
-        return render(request, 'main/contracts/client_contract.html',context)
-    else:
-        return render(request, 'main/contracts/client_contract.html',context)
 
 
 # ==================PAYMENT CONFIGURATIONS VIEWS=======================
@@ -332,21 +289,17 @@ def payment(request,method):
 def pay(request, service=None):
     if not request.user.is_authenticated:
         return redirect(reverse('accounts:account-login'))
-    contract_url = reverse('finance:newcontract', args=[request.user.username])
     payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
 
-    if not payment_info:
-        return redirect('finance:newcontract', request.user)
-    
+ 
     context = {
             "title": "PAYMENT",
             "payments": payment_info,
             "rate": rate,
-            "Fee_USD": payment_info.down_payment,
-            "Fee_KSH": payment_info.down_payment * rate,
+            
             "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
-            "link": contract_url,
-            "service": True,
+            
+            # "service": True,
         }
     return render(request, "finance/payments/pay.html", context)
 
@@ -518,250 +471,103 @@ class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         elif self.request.user.is_superuser or self.request.user.is_admin:
             return True
         return False
-        
-# ----------------------CASH INFLOW CLASS-BASED VIEWS--------------------------------
-@login_required
-def cashflows(request):
-    path_value,sub_title=path_values(request)
-    user_categories = UserCategory.objects.filter(user= request.user)
-    #categories and subcategories
-    (category,sub_category)=category_subcategory(user_categories)
-    transactions = Transaction.objects.filter(clients_category="DYC")
-    outflows=Outflow.objects.all()
-    total_outflows = sum(transact.total_payment for transact in outflows)
-   
-    (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
-    total_members = transactions.filter(clients_category="DYC").count()
-    paid_members = transactions.filter(clients_category="DYC", has_paid=True).count()
-    # print(total_price,total_amt,balance)
-    balance_amount=total_amt-total_outflows
+paypalrestsdk.configure({
+    "mode": settings.PAYPAL_MODE,  # sandbox or live
+    "client_id": settings.PAYPAL_CLIENT_ID,
+    "client_secret": settings.PAYPAL_CLIENT_SECRET,
+})
 
-    inflow_context = {
-        "transactions": transactions,
-        "total_count": total_members,
-        "paid_count": paid_members,
-        "total_price": total_price,
-        "expenditure": total_outflows,
-        "balance_amount": balance_amount,
-        "total_amt": total_amt,
-        "balance": balance,
-        "rate": rate,
-        "remaining_days": remaining_days,
-        "remaining_seconds ": int(remaining_seconds % 60),
-        "remaining_minutes ": int(remaining_minutes % 60),
-        "remaining_hours": int(remaining_hours % 24),
-        "receipt_url": receipt_url,
-    }
-    outflow_context = {
-        "transactions": outflows,
-        "total_price": total_price,
-        "expenditure": total_outflows,
-        "balance_amount": balance_amount,
-        "total_amt": total_amt,
-        "balance": balance,
-        "rate": rate,
-        "remaining_days": remaining_days,
-        "remaining_seconds ": int(remaining_seconds % 60),
-        "remaining_minutes ": int(remaining_minutes % 60),
-        "remaining_hours": int(remaining_hours % 24),
-        "receipt_url": receipt_url,
-    }
-    if sub_title == 'outflows':
-        return render(request, "finance/payments/outflows.html", outflow_context)
-    elif sub_title == 'inflows':
-        return render(request, "finance/payments/inflows.html", inflow_context)
+def paypal_payment(request, transaction_id):
+    transaction = Transaction.objects.get(id=transaction_id)
+    payment = paypalrestsdk.Payment({
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"},
+        "redirect_urls": {
+            "return_url": request.build_absolute_uri('/payments/paypal/execute/'),
+            "cancel_url": request.build_absolute_uri('/payments/paypal/cancel/')},
+        "transactions": [{
+            "item_list": {
+                "items": [{
+                    "name": transaction.description,
+                    "sku": "item",
+                    "price": str(transaction.amount),
+                    "currency": "USD",
+                    "quantity": 1}]},
+            "amount": {
+                "total": str(transaction.amount),
+                "currency": "USD"},
+            "description": transaction.description}]})
+
+    if payment.create():
+        for link in payment.links:
+            if link.rel == "approval_url":
+                approval_url = link.href
+                return redirect(approval_url)
     else:
-        return render(request, 'finance/cashflows/user_inflow.html', inflow_context)
+        return render(request, 'payments/payment_error.html', {"error": payment.error})
 
+def paypal_execute(request):
+    payment_id = request.GET.get('paymentId')
+    payer_id = request.GET.get('PayerID')
+    payment = paypalrestsdk.Payment.find(payment_id)
 
-def inflow(request):
-    if request.method == "POST":
-        form = InflowForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.instance.sender = request.user
-            form.save()
-            return redirect("/finance/inflows/")
+    if payment.execute({"payer_id": payer_id}):
+        # Update transaction status
+        transaction_id = payment.transactions[0].item_list.items[0].sku
+        transaction = Transaction.objects.get(id=transaction_id)
+        transaction.has_paid = True
+        transaction.save()
+        return redirect('transactions:transaction_detail', pk=transaction.id)
     else:
-        form = InflowForm()
-    return render(
-        request, "finance/payments/payment_form.html", {"form": form}
-    )
-
-def outflow(request):
-    if request.method == "POST":
-        form = OutflowForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.instance.sender = request.user
-            form.save()
-            return redirect("/finance/outflows/")
-    else:
-        form = OutflowForm()
-    return render(
-        request, "finance/payments/payment_form.html", {"form": form}
-    )
-
-@method_decorator(login_required, name="dispatch")
-class InflowDetailView(DetailView):
-    template_name = "finance/cashflows/inflow_detail.html"
-    model = Inflow
-    context_object_name = 'inflow'
-    ordering = ["-transaction_date"]
-
-
-def userlist(request, username):
-    user_categories = UserCategory.objects.filter(user= request.user)
-    #categories and subcategories
-    (category,sub_category)=category_subcategory(user_categories)
-    user = get_object_or_404(User, username=username)
-    transactions = Transaction.objects.filter(sender=user)
-    (total_price,total_amt,balance,receipt_url)=compute_amt(VisaService,transactions,rate,user_categories)
-    # bal=float(total_price)- float(total_amt)
-    bal=float(total_amt)
-    reg_fee = 19.99
-    # try:
-    #     service = VisaService.objects.get(sub_category=sub_category)
-    #     total_price = service.price + reg_fee
-    # except VisaService.DoesNotExist:
-    #     service = None
-    #     total_price = reg_fee
-
-    # total_price=float(total_price)*float(rate)
-    # request.session['total_price'] = total_price
-    today = date.today()
-    contract_date = today.strftime("%d %B, %Y")
-
-#     context = {
-#     "items": [
-#         {
-#             "title": "Total Amount",
-#             "amount": total_price,
-#             "description": "Total amount",
-#         },
-#         {
-#             "title": "Amount Paid",
-#             "amount": total_amt,
-#             "description": "Amount Paid",
-#         },
-#         {
-#             "title": "Balance",
-#             "amount": bal,
-#             "description": "Unpaid Amount",
-#         }
-#     ],
-#     "rate": rate,
-#     "receipt_url": receipt_url,
-#     "category": category,
-#     "sub_category": sub_category,
-# }
-
-    context={
-                "total_price": total_price,
-                "total_amt": total_amt,
-                "balance": balance,
-                'inflow': transactions,
-                "rate":rate,
-                'receipt_url': receipt_url,
-                'category': category,
-                'sub_category': sub_category,
-             }
-    return render(request, 'finance/cashflows/user_inflow.html', context)
-
-@method_decorator(login_required, name="dispatch")
-class UserInflowListView(ListView):
-    model = Inflow
-    template_name = "finance/cashflows/user_inflow.html"
-    context_object_name = "inflows"
-    ordering = ["-transaction_date"]
-
-@method_decorator(login_required, name="dispatch")
-class OutflowListView(ListView):
-    model = Outflow
-    template_name = "finance/payments/outflows.html"
-    context_object_name = "outflows"
-    ordering = ["-transaction_date"]
-
-@method_decorator(login_required, name="dispatch")
-class InflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Transaction
-    success_url = "/finance/inflows/"
-    template_name='finance/payments/payment_form.html'
-    fields = [
-        "sender",
-        "receiver",
-        "phone",
-        "sender_phone",
-        "category",
-        # "task",
-        "method",
-        "period",
-        "qty",
-        "amount",
-        "transaction_cost",
-        "receipt_link",
-        "description",
-    ]
-
-    def form_valid(self, form):
-        # form.instance.sender = self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        inflow = self.get_object()
-        if self.request.user.is_superuser or self.request.user == inflow.sender:
-            return True
-        return False
-
-@method_decorator(login_required, name="dispatch")
-class InflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Transaction
-    success_url = "/finance/inflows"
-    template_name='finance/cashflows/transaction_confirm_delete.html'
-    def test_func(self):
-        inflow = self.get_object()
-        # if self.request.user == inflow.sender:
-        if self.request.user.is_superuser:
-            return True
-        return False
+        return render(request, 'payments/payment_error.html', {"error": payment.error})        
     
-@method_decorator(login_required, name="dispatch")
-class OutflowUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Outflow
-    success_url = "/finance/outflows/"
-    template_name='finance/payments/payment_form.html'
-    fields = [
-        "sender",
-        "receiver",
-        "phone",
-        "category",
-        # "task",
-        # "method",
-        # "period",
-        "qty",
-        "amount",
-        "transaction_cost",
-        "receipt_link",
-        "description",
-    ]
+def get_mpesa_token():
+    consumer_key = settings.MPESA_CONSUMER_KEY
+    consumer_secret = settings.MPESA_CONSUMER_SECRET
+    api_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    r = requests.get(api_url, auth=(consumer_key, consumer_secret))
+    mpesa_access_token = r.json()['access_token']
+    return mpesa_access_token
 
-    def form_valid(self, form):
-        # form.instance.sender = self.request.user
-        return super().form_valid(form)
+def mpesa_payment(request, transaction_id):
+    transaction = Transaction.objects.get(id=transaction_id)
+    access_token = get_mpesa_token()
+    api_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+    headers = {'Authorization': 'Bearer %s' % access_token}
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    password = base64.b64encode((settings.MPESA_SHORTCODE + settings.MPESA_PASSKEY + timestamp).encode()).decode('utf-8')
 
-    def test_func(self):
-        outflow = self.get_object()
-        if self.request.user.is_superuser or self.request.user == outflow.sender:
-            return True
-        return False
+    payload = {
+        "BusinessShortCode": settings.MPESA_SHORTCODE,
+        "Password": password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": transaction.amount,
+        "PartyA": transaction.sender_phone,
+        "PartyB": settings.MPESA_SHORTCODE,
+        "PhoneNumber": transaction.sender_phone,
+        "CallBackURL": request.build_absolute_uri('/payments/mpesa/callback/'),
+        "AccountReference": transaction.id,
+        "TransactionDesc": transaction.description
+    }
 
-@method_decorator(login_required, name="dispatch")
-class OutflowDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Outflow
-    success_url = "/finance/outflows"
-    template_name='finance/cashflows/outflow_confirm_delete.html'
-    def test_func(self):
-        outflow = self.get_object()
-        # if self.request.user == outflow.sender:
-        if self.request.user.is_superuser:
-            return True
-        return False
+    response = requests.post(api_url, json=payload, headers=headers)
+    mpesa_response = response.json()
+    if mpesa_response.get('ResponseCode') == '0':
+        return redirect('transactions:transaction_detail', pk=transaction.id)
+    else:
+        return render(request, 'payments/payment_error.html', {"error": mpesa_response})
 
+def mpesa_callback(request):
+    mpesa_body = request.body.decode('utf-8')
+    mpesa_response = json.loads(mpesa_body)
+    transaction_id = mpesa_response['Body']['stkCallback']['MerchantRequestID']
+    transaction = Transaction.objects.get(id=transaction_id)
+    result_code = mpesa_response['Body']['stkCallback']['ResultCode']
+
+    if result_code == 0:
+        transaction.has_paid = True
+        transaction.save()
+
+    return redirect('transactions:transaction_detail', pk=transaction.id)    

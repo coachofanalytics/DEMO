@@ -6,50 +6,8 @@ from accounts.models import User
 
 from .models import (
     Transaction,
-    Outflow,
-    Inflow
+   
 )
-
-class OutflowForm(forms.ModelForm):
-    sender = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_staff=True, is_active=True),
-        label="Sender's Name",
-        empty_label="Select",
-    )
-    class Meta:
-        model = Outflow
-        fields = [
-            "id",
-            "sender",
-            "receiver",
-            "phone",
-            "department",
-            "category",
-            "type",
-            "payment_method",
-            "qty",
-            "amount",
-            "transaction_cost",
-            "description",
-            "receipt_link",
-        ]
-        labels = {
-            "phone": "Receiver Phone",
-            "department": "Department",
-            "category": "Category",
-            "type": "Type",
-            "payment_method": "Payment Method",
-            "qty": "Quantity",
-            "amount": "Unit Price",
-            "transaction_cost": "Transaction Cost",
-            "description": "Description",
-            "receipt_link": "Link",
-        }
-        widgets = {"description": forms.Textarea(attrs={"cols": 30, "rows": 1})}
-
-    def __init__(self, *args, **kwargs):
-        super(OutflowForm, self).__init__(*args, **kwargs)
-        self.fields["payment_method"].empty_label = "Select"
 
 
 

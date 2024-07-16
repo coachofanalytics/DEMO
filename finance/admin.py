@@ -11,7 +11,7 @@ from .models import (
     Payment_History,
     Default_Payment_Fees,
     Payment_Information,
-    Transaction,Inflow,Outflow
+    Transaction,
 )  # , DocUpload
 
 class Payment_HistoryAdmin(admin.ModelAdmin):
@@ -27,8 +27,7 @@ class Payment_HistoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Transaction)
 admin.site.register(Payment_History, Payment_HistoryAdmin)
-admin.site.register(Inflow)
-admin.site.register(Outflow)
+
 admin.site.register(Payment_Information)
 admin.site.register(Default_Payment_Fees)
 

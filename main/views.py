@@ -119,7 +119,15 @@ def layout(request):
         }
     return render(request, "main/home_templates/home.html",context)
 
-    
+def History(request):
+    page_instance = Page.objects.get(page_name='About')
+    description = Description.objects.filter(page = page_instance)
+    context={
+            
+            'description': description,
+            
+        }
+    return render(request, "main/about_templates/history.html",context)
 
 class ImageCreateView(LoginRequiredMixin, CreateView):
     model = Assets
