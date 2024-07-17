@@ -25,10 +25,8 @@ class Payment_Information(models.Model):
         verbose_name=("Client Name"),
         on_delete=models.CASCADE,
         related_name="customer")
-    payment_fees=models.IntegerField()
-    down_payment=models.IntegerField(default=500, validators=[MinValueValidator(19.99), MaxValueValidator(10000)])
-    student_bonus=models.IntegerField(null=True,blank=True)
-    fee_balance=models.IntegerField(default=None)
+  
+    
     plan = models.IntegerField(null=True,blank=True)
     payment_method = models.CharField(max_length=100)
     contract_submitted_date = models.DateTimeField(default=timezone.now)

@@ -3,7 +3,7 @@ from . import views
 from .views import (
                     PaymentCreateView,#PaymentListView,
                     TransanctionDetailView,TransactionListView,
-                    TransactionUpdateView,TransactionDeleteView,
+                    TransactionUpdateView,
                     DefaultPaymentUpdateView,DefaultPaymentListView,
                     
 )
@@ -16,8 +16,7 @@ urlpatterns = [
     path('transaction/', TransactionListView.as_view(), name='transaction-list'),
     path('transaction/<int:pk>/', TransanctionDetailView.as_view(), name='transaction-detail'),
     path('transaction/<int:pk>/update/', TransactionUpdateView.as_view(template_name="finance/payments/transaction_form.html"), name='transaction-update'),
-    path('transaction/<int:pk>/delete/', TransactionDeleteView.as_view(template_name="finance/payments/transaction_confirm_delete.html"), name='transaction-delete'),
-
+  
     #=============================CLIENT CONTRACT FORM SUBMISSIONS=====================================
     path('contract_form/', views.contract_form_submission, name='finance-contract_form_submission'),
     path('mycontract/<str:username>/', views.mycontract, name='mycontract'),
@@ -32,9 +31,9 @@ urlpatterns = [
     path('defaultpayments/', DefaultPaymentListView.as_view(template_name='finance/payments/defaultpayments.html'), name='defaultpayments'),
     path('newpayment/', PaymentCreateView.as_view(template_name='finance/payments/payment_form.html'), name='newpayment'),
     path('payment/<int:pk>/update/', DefaultPaymentUpdateView.as_view(template_name='finance/payments/payment_form.html'), name='payment-update'),
-    path('paypal/<int:transaction_id>/', views.paypal_payment, name='paypal_payment'),
-    path('paypal/execute/', views.paypal_execute, name='paypal_execute'),
-    path('mpesa/<int:transaction_id>/', views.mpesa_payment, name='mpesa_payment'),
-    path('mpesa/callback/', views.mpesa_callback, name='mpesa_callback'),
+    # path('paypal/<int:transaction_id>/', views.paypal_payment, name='paypal_payment'),
+    # path('paypal/execute/', views.paypal_execute, name='paypal_execute'),
+    # path('mpesa/<int:transaction_id>/', views.mpesa_payment, name='mpesa_payment'),
+    # path('mpesa/callback/', views.mpesa_callback, name='mpesa_callback'),
    
 ]
