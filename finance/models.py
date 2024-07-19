@@ -201,4 +201,86 @@ class Transaction(models.Model):
             except:
                 total_amt_paid=0.00
             return total_amt_paid
+class BudgetCategory(models.Model):
+    name = models.CharField(max_length=100,null=True,blank=True,default='Operations')
+    description = models.TextField(max_length=1000,null=True,blank=True)
 
+    class Meta:
+        verbose_name = _("Budget Category")
+        verbose_name_plural = _("Budget Categories")
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name        
+        
+
+class Budget(models.Model):
+    # company = models.ForeignKey(
+    #     Company, 
+    #     on_delete=models.CASCADE, 
+    #     related_name="company_type",
+    #     default=1)
+    
+    # department = models.ForeignKey(
+    #     Department, 
+    #     on_delete=models.CASCADE, 
+    #     related_name="department_type",
+    #     default=1)
+    
+    budget_lead = models.ForeignKey(
+        "accounts.CustomerUser", 
+        on_delete=models.CASCADE, 
+        limit_choices_to=(Q(is_staff=True,is_active=True,category=2)|Q(is_superuser=True)),
+        related_name="budget_lead")
+    
+    category = models.ForeignKey(
+        BudgetCategory, 
+        on_delete=models.CASCADE, 
+        related_name="category_type",
+        blank=True, null=True)
+    
+    subcategory = models.CharField(max_length=25,null=True,blank=True)
+    
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+    item = models.CharField(max_length=100, null=True, default=None)
+    cases = models.PositiveIntegerField(default=1,null=True,blank=True)
+    qty = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
+    unit_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, default=None
+    )
+    description = models.TextField(max_length=1000, default=None)
+    receipt_link = models.CharField(max_length=100, blank=True, null=True)
+    is_active=models.BooleanField(default=True,null=True,blank=True)
+
+    class Meta:
+        ordering = ["-start_date"]
+
+    def __str__(self):
+        return self.item
+    
+    def get_absolute_url(self):
+        return reverse("management:inflow-detail", kwargs={"pk": self.pk})
+
+    @property
+    def days(self):
+        days = (self.end_date - self.start_date).days
+        return days
+    
+    @property
+    def receipturl(self):
+        if self.receipt_link is not None:
+            urlreceipt = self.receipt_link
+            return urlreceipt
+        else:
+            return redirect('main:layout')
+
+    @property
+    def amount(self):
+        try:
+            # total_amount = round(Decimal(self.unit_price * self.qty * self.days), 2)
+            total_amount = round(Decimal(self.unit_price * self.cases* self.qty), 2)
+        except:
+            total_amount = 0
+        return total_amount
+    

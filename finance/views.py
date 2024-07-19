@@ -26,11 +26,11 @@ import json
 from accounts.forms import UserForm
 from accounts.models import *
 from .models import (
-        Payment_Information,Payment_History,
+        Budget, Payment_Information,Payment_History,
         Default_Payment_Fees,
     Transaction
         )
-from .forms import InflowForm
+from .forms import BudgetForm, InflowForm
 from coda_project.settings import SITEURL,payment_details
 from main.utils import image_view,download_image,Meetings,path_values
 from .utils import check_default_fee,get_exchange_rate,compute_amt,category_subcategory
@@ -459,116 +459,41 @@ class TransactionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         elif self.request.user.is_admin or self.request.user.is_superuser:
             return True
         return False
+@login_required
+def add_budget_item(request):
+    if request.method == "POST":
+        form = BudgetForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            instance=form.save(commit=False)
+            print(request.user)
+            instance.budget_lead=request.user
+            instance.save()
+            return redirect("finance:budget", company_slug="coda")
+    else:
+        form = BudgetForm()
+    return render(request, "finance/budgets/newbudget.html", {"form": form})
 
-# @method_decorator(login_required, name="dispatch")
-# class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-#     model = Transaction
-#     success_url = "/finance/transaction"
+def budget(request, company_slug='coda'):
+   
+    # Fetch budgets for the company
+    company_budgets = Budget.objects.all()
+  
+    # Calculate total budgets
+    total_budget = sum(site.amount for site in company_budgets)
+   
+    # Construct link URL
+    link_url = reverse('finance:site_budget_with_subcategory', kwargs={'company_slug': company_slug, 'category': 'Web', 'subcategory': 'all'})
 
-#     def test_func(self):
-#         transaction = self.get_object()
-#         if self.request.user == transaction.sender:
-#             return True
-#         elif self.request.user.is_superuser or self.request.user.is_admin:
-#             return True
-#         return False
-# paypalrestsdk.configure({
-#     "mode": settings.PAYPAL_MODE,  # sandbox or live
-#     "client_id": settings.PAYPAL_CLIENT_ID,
-#     "client_secret": settings.PAYPAL_CLIENT_SECRET,
-# })
+    # Prepare summary data
+    summary = [
+        {"title": "Total Budget", "value": total_budget, "link": ''},
+    ]
 
-# def paypal_payment(request, transaction_id):
-#     transaction = Transaction.objects.get(id=transaction_id)
-#     payment = paypalrestsdk.Payment({
-#         "intent": "sale",
-#         "payer": {
-#             "payment_method": "paypal"},
-#         "redirect_urls": {
-#             "return_url": request.build_absolute_uri('/payments/paypal/execute/'),
-#             "cancel_url": request.build_absolute_uri('/payments/paypal/cancel/')},
-#         "transactions": [{
-#             "item_list": {
-#                 "items": [{
-#                     "name": transaction.description,
-#                     "sku": "item",
-#                     "price": str(transaction.amount),
-#                     "currency": "USD",
-#                     "quantity": 1}]},
-#             "amount": {
-#                 "total": str(transaction.amount),
-#                 "currency": "USD"},
-#             "description": transaction.description}]})
 
-#     if payment.create():
-#         for link in payment.links:
-#             if link.rel == "approval_url":
-#                 approval_url = link.href
-#                 return redirect(approval_url)
-#     else:
-#         return render(request, 'payments/payment_error.html', {"error": payment.error})
-
-# def paypal_execute(request):
-#     payment_id = request.GET.get('paymentId')
-#     payer_id = request.GET.get('PayerID')
-#     payment = paypalrestsdk.Payment.find(payment_id)
-
-#     if payment.execute({"payer_id": payer_id}):
-#         # Update transaction status
-#         transaction_id = payment.transactions[0].item_list.items[0].sku
-#         transaction = Transaction.objects.get(id=transaction_id)
-#         transaction.has_paid = True
-#         transaction.save()
-#         return redirect('transactions:transaction_detail', pk=transaction.id)
-#     else:
-#         return render(request, 'payments/payment_error.html', {"error": payment.error})        
-    
-# def get_mpesa_token():
-#     consumer_key = settings.MPESA_CONSUMER_KEY
-#     consumer_secret = settings.MPESA_CONSUMER_SECRET
-#     api_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
-#     r = requests.get(api_url, auth=(consumer_key, consumer_secret))
-#     mpesa_access_token = r.json()['access_token']
-#     return mpesa_access_token
-
-# def mpesa_payment(request, transaction_id):
-#     transaction = Transaction.objects.get(id=transaction_id)
-#     access_token = get_mpesa_token()
-#     api_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
-#     headers = {'Authorization': 'Bearer %s' % access_token}
-#     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-#     password = base64.b64encode((settings.MPESA_SHORTCODE + settings.MPESA_PASSKEY + timestamp).encode()).decode('utf-8')
-
-#     payload = {
-#         "BusinessShortCode": settings.MPESA_SHORTCODE,
-#         "Password": password,
-#         "Timestamp": timestamp,
-#         "TransactionType": "CustomerPayBillOnline",
-#         "Amount": transaction.amount,
-#         "PartyA": transaction.sender_phone,
-#         "PartyB": settings.MPESA_SHORTCODE,
-#         "PhoneNumber": transaction.sender_phone,
-#         "CallBackURL": request.build_absolute_uri('/payments/mpesa/callback/'),
-#         "AccountReference": transaction.id,
-#         "TransactionDesc": transaction.description
-#     }
-
-#     response = requests.post(api_url, json=payload, headers=headers)
-#     mpesa_response = response.json()
-#     if mpesa_response.get('ResponseCode') == '0':
-#         return redirect('transactions:transaction_detail', pk=transaction.id)
-#     else:
-#         return render(request, 'payments/payment_error.html', {"error": mpesa_response})
-
-# def mpesa_callback(request):
-#     mpesa_body = request.body.decode('utf-8')
-#     mpesa_response = json.loads(mpesa_body)
-#     transaction_id = mpesa_response['Body']['stkCallback']['MerchantRequestID']
-#     transaction = Transaction.objects.get(id=transaction_id)
-#     result_code = mpesa_response['Body']['stkCallback']['ResultCode']
-
-#     if result_code == 0:
-#         transaction.has_paid = True
-#         transaction.save()
-
-#     return redirect('transactions:transaction_detail', pk=transaction.id)    
+    context = {
+        "budget_obj": company_budgets,
+        "data": summary,
+       
+    }
+    return render(request, "finance/budgets/budget.html", context)
