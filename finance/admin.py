@@ -7,12 +7,7 @@ from datetime import datetime
 # dt_string = "12/11/2018 09:15:32"
 # Register your models here.
 from django.urls import path, reverse
-from .models import (
-    Payment_History,
-    Default_Payment_Fees,
-    Payment_Information,
-    Transaction,
-)  # , DocUpload
+from .models import *
 
 class Payment_HistoryAdmin(admin.ModelAdmin):
     list_display = (
@@ -30,4 +25,7 @@ admin.site.register(Payment_History, Payment_HistoryAdmin)
 
 admin.site.register(Payment_Information)
 admin.site.register(Default_Payment_Fees)
-
+admin.site.register(CodaBudget)
+admin.site.register(Budget)
+admin.site.register(BudgetCategory)
+admin.site.register(BudgetSubCategory)
