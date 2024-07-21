@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 from .models import Assets,Description, News, Page, Service, SubService
 from accounts.models import User
-from .utils import Meetings,image_view,path_values
+from .utils import image_view,path_values
 from main.forms import ContactForm
 from django.contrib.auth import get_user_model
 

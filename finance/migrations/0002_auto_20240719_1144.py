@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('accounts', '0003_alter_user_email'),
+        
         ('finance', '0001_initial'),
     ]
 
@@ -72,10 +72,10 @@ class Migration(migrations.Migration):
             model_name='transaction',
             name='activity_date',
         ),
-        migrations.RemoveField(
-            model_name='transaction',
-            name='department',
-        ),
+        # migrations.RemoveField(
+        #     model_name='transaction',
+        #     name='department',
+        # ),
         migrations.RemoveField(
             model_name='transaction',
             name='payment_method',

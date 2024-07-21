@@ -1,11 +1,13 @@
+import calendar
 import requests
-from datetime import datetime
+from datetime import date, datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
 from django.db.models import Sum, Max
 from django.shortcuts import get_object_or_404,render
 from django.contrib import messages
 from .models import  Transaction
+from datetime import datetime
 from decimal import *
 
 def category_subcategory(user_categories):
@@ -89,3 +91,24 @@ def DYCDefaultPayments():
             early_registration_bonus= values["early_registration_bonus"]
             print(total_amount,down_payment,early_registration_bonus)
     return total_amount,down_payment,early_registration_bonus
+date = datetime.now()
+budget_months = [
+    {
+        "month_num": (date.month - 1) % 12 or 12,  # Handle December (12 % 12 is 0)
+        "month_name": calendar.month_name[(date.month - 1) % 12 or 12],
+    },
+    {
+        "month_num": date.month,
+        "month_name": calendar.month_name[date.month],
+    },
+    {
+        "month_num": (date.month + 1) % 12 or 12,  # Handle December (12 + 1 % 12 is 1)
+        "month_name": calendar.month_name[(date.month + 1) % 12 or 12],
+    },
+]
+
+budget_years = [
+    {"budget_year": str(date.year - 1)},
+    {"budget_year": str(date.year)},
+    {"budget_year": str(date.year + 1)},
+]

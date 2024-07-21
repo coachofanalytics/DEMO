@@ -1,4 +1,4 @@
-{%extends "main/base_templates/new_base.html"%}
+{%extends "main/base_templates/base.html"%}
 {% load mathfilters %}
 {% block content %}
 <section id="rating">
@@ -76,13 +76,13 @@
                   <hr/>
                   <i><h6>{{payday}}</h6></i>
                   <div class="col-md-12" id="gi">
-                    <p><a href="{% url 'main:newcompany'%}" class="btn btn-secondary btn-sm"
+                    <p><a href="#" class="btn btn-secondary btn-sm"
                         >Add Company
                     </a></p>
                 </div>
                   <hr/>
                   <div class="col-md-12" id="gi">
-                    <p><a href="{% url 'finance:add_budget_item'%}" class="btn btn-secondary btn-sm"
+                    <p><a href="#" class="btn btn-secondary btn-sm"
                         >Add item
                     </a></p>
                 </div>

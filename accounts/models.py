@@ -4,6 +4,7 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from accounts.choices import CategoryChoices, SubCategoryChoices
+from accounts.modelmanager import DepartmentManager
 from django_countries.fields import CountryField
 
 class User(AbstractUser):
@@ -125,4 +126,61 @@ class CustomerUser(AbstractUser):
     
   
 
-    
+class Department(models.Model):
+    """Department Table will provide a list of the different departments in CODA"""
+
+    # Department
+    # BASIC = "Basic"
+    HR = "HR Department"
+    IT = "IT Department"
+    MKT = "Marketing Department"
+    FIN = "Finance Department"
+    SECURITY = "Security Department"
+    MANAGEMENT = "Management Department"
+    # Project = "Project"
+    HEALTH = "Health Department"
+    Other = "Other"
+    DEPARTMENT_CHOICES = [
+        # (BASIC, "BASIC Department"),
+        (HR, "HR Department"),
+        (IT, "IT Department"),
+        (MKT, "Marketing Department"),
+        (FIN, "Finance Department"),
+        # (Project, "Project"),
+        (SECURITY, "Security Department"),
+        (MANAGEMENT, "Management Department"),
+        (HEALTH, "Health Department"),
+        (Other, "Other"),
+    ]
+
+    name = models.CharField(
+        max_length=100,
+        choices=DEPARTMENT_CHOICES,
+        default=Other,
+    )
+
+    description = models.TextField(max_length=500, null=True, blank=True)
+    slug = models.SlugField(
+        verbose_name=("Department safe URL"), max_length=255, unique=True
+    )
+    # created_date = models.DateTimeField(_('entered on'),default=timezone.now, editable=True)
+    is_featured = models.BooleanField("Is featured", default=True)
+    is_active = models.BooleanField(default=True)
+
+    objects=DepartmentManager()
+
+    @classmethod
+    def get_default_pk(cls):
+        cat, created = cls.objects.get_or_create(
+            name="Other", defaults=dict(description="this is not an cat")
+        )
+        return cat.pk
+
+    class Meta:
+        verbose_name = ("Department")
+        verbose_name_plural = ("Departments")
+
+    # def get_absolute_url(self):
+    #     return reverse('management:department_list', args=[self.slug])
+    def __str__(self):
+        return self.name    

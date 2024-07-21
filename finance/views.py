@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
 from django.db.models import Sum
 from django.http import QueryDict, Http404,JsonResponse
+from .utils import *
 from requests import request
 from datetime import datetime,date
 
@@ -26,13 +27,13 @@ import json
 from accounts.forms import UserForm
 from accounts.models import *
 from .models import (
-        Budget, Payment_Information,Payment_History,
+        Budget, CodaBudget, Payment_Information,Payment_History,
         Default_Payment_Fees,
     Transaction
         )
-from .forms import BudgetForm, InflowForm
+from .forms import BudgetForm, DepartmentFilterForm, InflowForm
 from coda_project.settings import SITEURL,payment_details
-from main.utils import image_view,download_image,Meetings,path_values
+from main.utils import image_view,download_image,path_values
 from .utils import check_default_fee,get_exchange_rate,compute_amt,category_subcategory
 from main.utils import countdown_in_month
 
@@ -483,7 +484,7 @@ def budget(request, company_slug='coda'):
     total_budget = sum(site.amount for site in company_budgets)
    
     # Construct link URL
-    link_url = reverse('finance:site_budget_with_subcategory', kwargs={'company_slug': company_slug, 'category': 'Web', 'subcategory': 'all'})
+    #link_url = reverse('finance:site_budget_with_subcategory', kwargs={'company_slug': company_slug, 'category': 'Web', 'subcategory': 'all'})
 
     # Prepare summary data
     summary = [
@@ -497,3 +498,78 @@ def budget(request, company_slug='coda'):
        
     }
     return render(request, "finance/budgets/budget.html", context)
+def filter_transactions_by_duration_and_department(duration, department_name=None):
+    """
+    Filters transactions based on the given duration and optionally by department name.
+    """
+    if duration > 12:
+        year = duration - 1
+        if department_name:
+            return CodaBudget.objects.filter(department__name=department_name, created_at__year=str(year)).order_by('category')
+        else:
+            return CodaBudget.objects.filter(created_at__year=str(year)).order_by('category')
+    else:
+        month = duration-1
+        year=2024
+        if department_name:
+            # return CodaBudget.objects.filter(department__name=department_name, created_at__month=str(month)).order_by('category')
+            return CodaBudget.objects.filter(department__name=department_name, created_at__year=str(year), created_at__month=str(month)).order_by('category')
+        else:
+            return CodaBudget.objects.filter( created_at__year=str(year),created_at__month=str(month)).order_by('category')
+
+def budget_projection(request,subtitle='summary',duration=2024):
+    path_list, sub_title, pre_sub_title = path_values(request)
+    subtitle=path_list[2]
+    # departments = Department.objects.all()
+    # categories = BudgetCategory.objects.all()
+
+    # Validate and convert duration to an integer
+    try:
+        duration = int(duration)
+    except ValueError:
+        raise Http404("Invalid duration value")
+
+    total = 0
+    budget_items = []
+    
+    if request.method == "POST":
+        form = DepartmentFilterForm(request.POST)
+        if form.is_valid():
+            department_name = form.cleaned_data.get('name')
+            if department_name:
+                budget_items = filter_transactions_by_duration_and_department(duration, department_name)
+            else:
+                budget_items = filter_transactions_by_duration_and_department(duration)
+            total = sum(item.amount * item.qty for item in budget_items)
+    else:
+        form = DepartmentFilterForm()
+        budget_items = filter_transactions_by_duration_and_department(duration)
+        total = sum(item.amount * item.qty for item in budget_items)
+
+
+
+
+    # Aggregate data by month and category
+    budget_summary = budget_items.values('category__name','subcategory__name').annotate(
+        total_qty=Sum('qty'),
+        total_amount=Sum('unit_price')
+
+    )
+    # Create a list of unique categories
+    available_categories = budget_summary.values_list('category__name', flat=True).distinct()
+
+    context = {
+        # "departments": departments,
+        "categories": available_categories,
+        "summary": budget_summary,
+        "budget_items": budget_items,
+        "budget_months": budget_months,
+        "budget_years": budget_years,
+        "total_amt_ksh": total,
+        "total_amt": total / rate if total else 0,
+        
+    }
+    if subtitle=='detailed':
+        return render(request, "finance/budgets/detailed_budget.html", context)
+    else:
+        return render(request, "finance/budgets/summary_budget.html", context)

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import Textarea
 from django.db.models import Q
 from pyexpat import model
-from accounts.models import User
+from accounts.models import Department, User
 
 from .models import (
     Budget,
@@ -84,4 +84,8 @@ class BudgetForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BudgetForm, self).__init__(*args, **kwargs)
         # self.fields["payment_method"].empty_label = "Select"
-        
+class DepartmentFilterForm(forms.Form):
+    name = forms.ModelChoiceField(
+        queryset=Department.objects.all(),
+        label='Select a Deparment'
+    ) 
