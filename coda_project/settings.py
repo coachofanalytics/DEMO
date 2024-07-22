@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     #'users.apps.UsersConfig',
     "accounts.apps.AccountsConfig",
     "finance.apps.FinanceConfig",
+    "marketing.apps.MarketingConfig",
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -309,3 +310,41 @@ elif os.environ.get('ENVIRONMENT') == 'testing':
    SITEURL = "https://codamakutano.herokuapp.com"
 else:
     SITEURL = "http://localhost:8000"
+# private email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+EMAIL_FILE_PATH = BASE_DIR + "/emails"
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_INFO = {
+    'USER': os.environ.get('EMAIL_INFO_USER'),
+    'PASS': os.environ.get('EMAIL_INFO_PASS'),
+    'HOST': os.environ.get('EMAIL_HOST'),
+    'PORT': os.environ.get('EMAIL_PORT'),
+    'USE_TLS': os.environ.get('EMAIL_USE_TLS'),
+    'USE_SSL': os.environ.get('EMAIL_USE_SSL'),
+}
+
+EMAIL_FIN = {
+    'USER': os.environ.get('EMAIL_FIN_USER'),
+    'PASS': os.environ.get('EMAIL_FIN_PASS'),
+    'HOST': os.environ.get('EMAIL_HOST'),
+    'PORT': os.environ.get('EMAIL_PORT'),
+    'USE_TLS': os.environ.get('EMAIL_USE_TLS'),
+    'USE_SSL': os.environ.get('EMAIL_USE_SSL'),
+}
+
+EMAIL_HR = {
+    'USER': os.environ.get('EMAIL_HR_USER'),
+    'PASS': os.environ.get('EMAIL_HR_PASS'),
+    'HOST': os.environ.get('EMAIL_HOST'),
+    'PORT': os.environ.get('EMAIL_PORT'),
+    'USE_TLS': os.environ.get('EMAIL_USE_TLS'),
+    'USE_SSL': os.environ.get('EMAIL_USE_SSL'),
+}    

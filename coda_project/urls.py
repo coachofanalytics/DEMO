@@ -70,6 +70,7 @@ urlpatterns = [
     path("", include("main.urls", namespace="main")),
     path("accounts/", include("accounts.urls")),
     path("finance/", include("finance.urls"), name="finance"),
+    path("marketing/", include("marketing.urls", namespace="marketing")),
 ]
 
 if settings.DEBUG:
