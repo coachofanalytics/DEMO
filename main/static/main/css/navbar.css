@@ -1,25 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #002f2f 0%, #004d4d 100%);
+  padding: 10px 20px;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  width: 100%;
-  background-color: #35bdbd;
   z-index: 1000;
- 
-
 }
 
-.navbar img{
-  margin-left: 40px;
-  width: 6%;
-  height:6%
+.navbar img {
+  border-radius: 50%;
+  height: 50px; /* Adjust as needed */
+  width: 50px; /* Adjust as needed */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-/* .logos {
-  padding: 0.1rem;
-  font-weight: 900;
-  font-size: 20px;
-} */
+.navbar img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
 .logolink:hover {
             text-decoration: none; /* Remove underline on hover */
         }

@@ -1,223 +1,486 @@
-{%extends "main/base_templates/base.html"%} 
+{% extends "main/base_templates/base.html" %}
 {% load static %}
 {% block content %}
 {% load custom_filters %}
-<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css"> 
+
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/home.css' %}" />
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 <link
 rel="stylesheet"
 type="text/css"
-href="{% static 'main/css/home.css' %}"
-/>
-
-<div class="swiper-container">
-      <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <img src="{% static 'main/img/home/image1.png' %}" alt="Slide 1">
-            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
-          </div>
-          <div class="swiper-slide">
-            <img src="{% static 'main/img/background/swiper2.jpg' %}" alt="Slide 2">
-            <div class="text"><a href="">PLan for th2 Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
-          </div>
-          <div class="swiper-slide">
-            <img src="{% static 'main/img/home/image2.png' %}" alt="Slide 3">
-            <div class="text"><a href="">PLan for the Diaspora  <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
-          </div>
-          <div class="swiper-slide">
-            <img src="{% static 'main/img/home/image4.png' %}" alt="Slide 1">
-            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
-          </div>
-          <div class="swiper-slide">
-            <img src="{% static 'main/img/home/image5.png' %}" alt="Slide 1">
-            <div class="text"><a href="">PLan for the Diaspora <span style="font-weight: 650; font-size: 29px; ">></span></a></div>
-          </div>
-         
-        </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
+href="{% static 'main/css/homes.css' %}"/>
+<!-- Hero Section -->
+<div class="hero-section animate-on-scroll" style="margin-top: -40px;">
+    <div class="hero-content">
+        <h1>Kenya’s Global Trade, Business, and Investment Hub</h1>
+        <p>Together, we will build a vibrant ecosystem that empowers entrepreneurs, attracts investments, and strengthens the bonds between Kenya and the world.</p>
+        <a href="#" class="hero-button">Get started</a>
+    </div>
+    <div class="hero-image">
+        <img src="{% static 'main/img/home/her.png' %}" alt="Hiker">
+    </div>
 </div>
 
-<div class="services-div">
-  <div class="container-lg">
-      <div class="row flex-column-reverse flex-md-row">
-          <div class="col-md-6 pe-lg-5">
-            {% for item in description%}
-            {% if item.name == 'Diaspora County 48 Kenya' %}
-            <div style="align-items: center;margin-left: 130px;">
-              <h3 class="mt-4 mt-md-0" style="color: #35bdbd;font-size: 30px;font-weight: 900;">Bernard Kavyu <span style="color: red;font-size: 17px; font-weight: 400;"><li style="list-style: none; margin-left: 70px;margin-top: 7px;">GOVERNOR</li></span></h3>
-              <h5 class="mt-4 mt-md-0" style="color: black;">{{item.name}}</h5>
-            </div>
-            <p style="font-size: 19px;font-family: fantasy;">
-              {{item.content|split_paragraphs:3 }}
+<!-- Our Mission and Vision Section -->
+<div class="mission-vision-section animate-on-scroll">
+    <div class="mission card">
+        {% for item in description %}
+            {% if item.name == 'Our Mission' %}
+            <h2 style=" margin-bottom: 10px;"><i class="fas fa-bullseye"></i> {{item.name}}</h2>
+            <p style="font-size: 15px;">
+            {{item.content}}
             </p>
             {% endif %}
-            {% endfor %}
-           
-           <button type="button" style="background-color: white;color: black;" class="btn btn-secondary">MORE INFORMATION</button>
-          </div>
-          <div class="col-md-6" >
-              <!-- <img class="img-fluid ps-lg-5" style="border-radius: 800% 0 0 800%;box-shadow: 0 0 7px rgba(0, 128, 0, 0.7);" src="{% static 'main/img/home/Kavyu.png' %}" alt=""> -->
-              <div class="side-news">
-                <h3>Latest News</h3>
-                <ul>
-                    {% for news in news %}
-                    <li>
-                        <a href="{{ news.link }}">{{ news.title }}</a>
-                       
-                    </li>
-                    {% endfor %}
-                </ul>
-                <h3>See more</h3>
-                <div class="social-icon">
-                  
-                  <a href="#" target="_blank" class="fab fa-linkedin-in"></a>
-                  <a href="#" target="_blank" class="fab fa-facebook-f"></a>
-                  <a href="#" target="_blank" class="fab fa-youtube"></a>
-                </div>
-              </div>
-          </div>
-      </div>
-     
+        {% endfor %}
+    </div>
+    <div class="vision card">
+        {% for item in description %}
+            {% if item.name == 'OUR VISION' %}
+            <h2><i class="fas fa-lightbulb"></i> {{item.name}}</h2>
+            <p style="font-size: 15px;">
+                {{item.content}}
+            </p>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
-     
-  </div>
+<!-- Services Section -->
+<div class="services-section animate-on-scroll">
+    <div class="container">
+        <h2>Our Services</h2>
+        <div class="section-divider">
+            <div class="line"></div>
+            <p>We are a full-service Trade, Training, and Investment Hub here to facilitate every aspect of your transition to Ghana from A to Z</p>
+        </div>
+        <div class="services-carousel">
+            <div class="carousel-track">
+                {% for item in service %}
+                    
+                    <div class="service-card" style="background-image: url('{{ item.image.url }}');" >
+                        <div class="service-card-inner">
+                            <div class="service-card-front">
+                                <h3>{{item.title}}</h3>
+                            </div>
+                            <div class="service-card-back">
+                                <p>{{item.description|safe|truncatechars:110}}</p>
+                                <a href="#" class="read-more">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+               
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
 </div>
-<div class="mission">
-  <div class="left">
-      <img src="{% static 'main/img/home/Kavyu2.png' %}" alt="Mission Image">
-  </div>
-  <div class="right">
-    {% for item in description%}
-    {% if item.name == 'Our Mission' %}
-        <h2>{{item.name}}</h2>
-        <p>
-          {{item.content}}
-        </p>
-    {% endif %}
-    {% endfor %}    
-  </div>
-  
-</div>
-<div class="about">
-  {% for item in description%}
-  {% if item.name == 'More about us' %}
-  <h2>{{item.name}} <span style="font-size: 20px;">***</span></h2>
-  <p>
-    {{item.content}}
-  </p>
-  {% endif %}
-  {% endfor %}  
-</div>
-<div class="contact-section">
-  <div class="left">
-    {% for item in description%}
-    {% if item.name == 'Need More Info?' %}
-      <h4>{{item.name}}</h4>
-     <p>
-        {{item.content|split_help:1}}
-      </p>
-    {% endif %}
-    {% endfor %}
-      <div class="social-icons">
-          <p>Contact US On:</p>
-          <a href="#" target="_blank" class="fab fa-linkedin-in"></a>
-          <a href="#" target="_blank" class="fab fa-facebook-f"></a>
-          <a href="#" target="_blank" class="fab fa-whatsapp"></a>
-          <a href="#" target="_blank" class="fab fa-youtube"></a>
-          <a href="#" class="fas fa-envelope"></a>
-      </div>
-  </div>
-  <div class="right">
-      <form method="POST" enctype="multipart/form-data" autocomplete="off">
-              {% csrf_token %}
-          <h4>Leave a Message here!</h4>
-          <div class="contact-form">
-              <div class="col-md-12">
-                <!-- Name input field -->
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+
+<!-- About Section -->
+    <div class="how-it-works-section animate-on-scroll">
+        <div class="container">
+            <h2>WHy Us</h2>
+            <div class="sec">
+                <div class="lines"></div>
+            </div>
+            <div class="how-it-works-content">
+                <div class="how-it-works-card">
+                    <div class="icon-container">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Experienced Professionals</h3>
+                    <p>Schedule a 15-minute exploratory call with a Diaspora Transition Specialist to identify your goals and Africa plan.</p>
                 </div>
-                
-                <!-- Email input field -->
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                <div class="how-it-works-card">
+                    <div class="icon-container">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Global Reach</h3>
+                    <p>Book the relevant services on our website as outlined within your Africa Plan.</p>
+             
                 </div>
-                
-                <!-- Message textarea field -->
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                <div class="how-it-works-card">
+                    <div class="icon-container">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Trustworthy Services</h3>
+                    <p>Receive a seamless travel or relocation experience to Ghana guided by the Diaspora Resource Centre team.</p>
                 </div>
             </div>
-            
-            <!-- Submit button -->
-            
-          </div>
-          <button class="btn btn-dark" style="background-color: #35bdbd;margin-left: 15px;" type="submit">Send Message</button>
-      </form>
-  </div>
+        </div>
+    </div>
+<div class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to get <span class="highlight">started</span></h2>
+                <p>Book your 15-minute exploratory call to custom curate your Africa plan today!</p>
+            </div>
+            <div class="cta-button">
+                <a href="#" class="btn">FREE DISCOVERY CALL</a>
+            </div>
+        </div>
 </div>
-
-
+<!-- Contact Section -->
+<!-- Contact Section -->
+<div class="contact-section animate-on-scroll">
+    <div class="container">
+        <div class="contact-content">
+            <div class="info-section">
+                <div class="contact-info">
+                    {% for item in description %}
+                    {% if item.name == 'Need More Info?' %}
+                    <h4>{{ item.name }}</h4>
+                    <p>{{ item.content|split_help:1 }}</p>
+                    {% endif %}
+                    {% endfor %}
+                    <p>Contact Us:</p>
+                    <div class="social-icons">
+                        
+                        <a href="#" target="_blank" class="fab fa-linkedin-in"></a>
+                        <a href="#" target="_blank" class="fab fa-facebook-f"></a>
+                        <a href="#" target="_blank" class="fab fa-whatsapp"></a>
+                        <a href="#" target="_blank" class="fab fa-youtube"></a>
+                        <a href="#" class="fas fa-envelope"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="news-section">
+                <div class="side-news">
+                    <h3>Latest News</h3>
+                    <ul>
+                        {% for news in news %}
+                        <li>
+                            {% if news.image %}
+                            <img src="{{ news.image.url }}" alt="News Image" class="news-image">
+                            {% endif %}
+                            <a href="{{ news.link }}">{{ news.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div> 
+            </div>
+        </div>
+    </div>
 </div>
-
 
 <style>
-  
-  .side-news {
-      width: 60%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      margin-left: 100px;
-  }
+.contact-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #e0f7fa, #80deea, #00bcd4, #0097a7);
+    color: #fff;
+}
 
-  .side-news h3 {
-      font-size: 20px;
-      margin-bottom: 5px;
-  }
+.contact-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+}
 
-  .side-news ul {
-      list-style: none;
-      padding: 0;
-      margin-left: 35px;
-  }
+.info-section, .news-section {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
-  .side-news li {
-      margin-bottom: 0px;
-  }
+.contact-info, .side-news {
+    color: #333;
+}
 
-  .side-news a {
-      font-size: 12px;
-     
-      color: #333;
-      background-color: #fff;
-      /* text-decoration: none; */
-      transition: color 0.3s, text-shadow 0.3s;
-  }
-  .side-news li:hover{
-    box-shadow: #333;
-  }
+.contact-info h4, .side-news h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
 
-  .side-news a:hover {
-        color: #35bdbd;
-        text-shadow: 0 0 5px rgba(53, 189, 189, 0.5);
-        text-decoration:underline;
+.contact-info p, .side-news ul {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.side-news ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-news ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.side-news ul li img.news-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.side-news ul li a {
+    color: #00bcd4;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.side-news ul li a:hover {
+    color: #00796b;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons p {
+    color: black;
+    margin-bottom: 10px;
+}
+
+.social-icons a {
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #2c2c6b;
+}
+
+.social-icons a {
+    margin: 0 10px;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+/* LinkedIn */
+.social-icons .fa-linkedin-in {
+    color: #0077b5;
+}
+
+/* Facebook */
+.social-icons .fa-facebook-f {
+    color: #3b5998;
+}
+
+/* WhatsApp */
+.social-icons .fa-whatsapp {
+    color: #25D366;
+}
+
+/* YouTube */
+.social-icons .fa-youtube {
+    color: #FF0000;
+}
+
+/* Email */
+.social-icons .fa-envelope {
+    color: #D44638;
+}
+
+.social-icons a:hover {
+    color: #d1d1e0; /* Light color on hover for all icons */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .contact-content {
+        flex-direction: column;
+        align-items: center;
     }
-    .social-icon {
-     margin-left: 35px;
-  }
 
-  .social-icon a {
-      color: #333;
-      margin: 0 5px;
-      font-size:1.5rem;
-      transition: color 0.3s ease;
-  }
+    .info-section, .news-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .social-icons {
+        margin-left: 0;
+        justify-content: center;
+    }
+}
+
 
 </style>
 
- 
+
+
+<script>
+    // JavaScript for infinite scrolling effect
+    document.addEventListener('DOMContentLoaded', function () {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    });
+
+    elements.forEach(element => {
+        observer.observe(element);
+    });
+
+    const carouselTrack = document.querySelector('.carousel-track');
+    const animationSpeed = 4; // Speed of the animation
+    const pauseDuration = 5; // Pause duration in seconds
+
+    // Define keyframes with pause
+    const keyframes = `
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            ${100 / (animationSpeed + pauseDuration) * animationSpeed}% { transform: translateX(-100%); }
+            100% { transform: translateX(-100%); }
+        }
+    `;
+
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = keyframes;
+    document.head.appendChild(styleSheet);
+
+    // Apply the animation with speed and pause
+    carouselTrack.style.animation = `scroll ${(animationSpeed + pauseDuration) * carouselTrack.children.length}s linear infinite`;
+
+});
+
+
+
+</script>
+<style>
+  .how-it-works-section {
+      text-align: center;
+      padding: 50px 0;
+  }
+  
+  .how-it-works-section h2 {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 10px;
+      font-weight: 905;
+      color: #333;
+  
+  }
+  
+  .sec {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
+  }
+  
+  .sec .lines {
+      width: 60px;
+      height: 4px;
+      background: #000;
+      
+  }
+  
+  .how-it-works-content {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+  }
+  
+  .how-it-works-card {
+      flex: 1;
+      max-width: 30%;
+      min-width: 200px;
+      margin: 20px;
+      text-align: center;
+  }
+  
+  .icon-container {
+      background-color: #800000;
+      color: white;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 20px;
+  }
+  
+  .how-it-works-card h3 {
+      font-size: 1.4em;
+      margin-bottom: 10px;
+      color: #333;
+      font-weight: 200;
+  }
+  
+  .how-it-works-card p {
+      font-size: 1em;
+      color: #333
+  }
+  .cta-section {
+      background-color: #fff;
+      padding: 40px 0;
+      height: 220px;
+      text-align: center;
+      box-shadow: 0px 10px 10px 10px rgba(0, 0, 0, 0.2);
+      
+  }
+  
+  .cta-section .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      /* margin: 0 auto; */
+      margin-left: -0px;
+      
+  }
+  
+  .cta-content {
+      flex: 1;
+  }
+  
+  .cta-content h2 {
+      font-size: 36px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+  }
+  
+  .cta-content h2 .highlight {
+      color: #FFD700; /* Yellow color for 'started' */
+  }
+  
+  .cta-content p {
+      font-size: 16px;
+      color: #666;
+  }
+  
+  .cta-button {
+      flex-shrink: 0;
+  }
+  
+  .cta-button .btn {
+      display: inline-block;
+      background-color: #3C0202; /* Dark red color */
+      color: #fff;
+      padding: 15px 30px;
+      font-size: 16px;
+      text-decoration: none;
+      border-radius: 5px;
+  }
+  
+  .cta-button .btn:hover {
+      background-color: #5E0303; /* Slightly lighter dark red */
+  }
+</style>
+
+
 {% endblock %}

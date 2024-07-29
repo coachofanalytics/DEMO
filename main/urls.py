@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-# from .utils import convert_html_to_pdf
+
 
 app_name = 'main'
 urlpatterns = [

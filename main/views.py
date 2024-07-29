@@ -87,8 +87,8 @@ def layout(request):
     description = Description.objects.filter(page = page_instance)
     service = Service.objects.all()
     subservice = SubService.objects.all()
-    news = News.objects.all().order_by('-published_date')[:3] 
-    print(news)
+    news = News.objects.all().order_by('-published_date')[:5] 
+    # print(news)
    
     if request.method == "POST":
         form = ContactForm(request.POST, request.FILES)
