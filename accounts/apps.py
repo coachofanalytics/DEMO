@@ -5,5 +5,4 @@ class AccountsConfig(AppConfig):
     name = 'accounts'
 
     def ready(self):
-        #import users.signals
-        pass
+        import accounts.signals

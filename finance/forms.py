@@ -2,7 +2,7 @@ from django import forms
 from django.forms import Textarea
 from django.db.models import Q
 from pyexpat import model
-from accounts.models import Department, User
+from accounts.models import Department
 
 from .models import (
     Budget,

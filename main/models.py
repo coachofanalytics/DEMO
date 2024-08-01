@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from accounts.models import User
+
 
 # from tableauhyperapi import DatabaseName
 

@@ -1,13 +1,10 @@
 from django.db import models
 
 class CategoryChoices(models.IntegerChoices):
-    Job_Applicant = 1
-    Coda_Staff_Member = 2
-    Jobsupport = 3
-    Student = 4 
-    investor = 5
-    Vendor=6
-    General_User = 7
+    Bussines_Training = 1
+    Jobsupport = 2
+    investor = 4
+    General_User = 5
 
     
 class SubCategoryChoices(models.IntegerChoices):

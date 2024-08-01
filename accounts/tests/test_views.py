@@ -1,18 +1,8 @@
 from django.test import TestCase, Client
 from django.shortcuts import redirect
-from accounts.models import User, Tracker
+from accounts.models import CustomerUser, Tracker
 from accounts.views import *
 
-# class TestHomeView(TestCase):
-
-#     def setUp(self):
-#         self.client = Client()
-#         self.home_url = redirect('')
-
-#     def test_home_view(self):
-#         response = self.client.get(self.home_url)
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, 'main/home_templates/layout.html')
 
 class TestTrackView(TestCase):
 
@@ -57,18 +47,18 @@ class TestUserTrackerView(TestCase):
         self.user_tracker_url = redirect('/accounts/tracker')
 
     def test_user_tracker_view(self):
-        self.user =  User.objects.create(
+        self.user =  CustomerUser.objects.create(
             first_name='John',
             last_name='Doe',
             email= 'johndoe@gmail.com',
             gender='1',
-            is_staff=True,
+            # is_employee=True,
             is_active=True,
             username='johndoee',
         )
 
         response = self.client.post(self.user_tracker_url)
-        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(CustomerUser.objects.count(), 1)
 
         # self.assertEqual(response.status_code, 200)
         # self.assertTemplateUsed(response, 'accounts/usertracker.html')
@@ -82,18 +72,18 @@ class TestUserDeleteView(TestCase):
         self.client = Client()
 
     def test_user_delete_view(self):
-        self.user =  User.objects.create(
+        self.user =  CustomerUser.objects.create(
             first_name='John',
             last_name='Doe',
             email= 'johndoe@gmail.com',
             gender='1',
-            is_staff=True,
+            # is_employee=True,
             is_active=True,
             username='johndoee',
         )
-        self.assertEqual(User.objects.all().count(), 1)
+        self.assertEqual(CustomerUser.objects.all().count(), 1)
         self.user.delete()
-        self.assertEqual(User.objects.all().count(), 0)
+        self.assertEqual(CustomerUser.objects.all().count(), 0)
 
 
 class TestClientView(TestCase):
@@ -102,7 +92,7 @@ class TestClientView(TestCase):
         self.client = Client()
 
     def test_client_create_view(self):
-        self.user =  User.objects.create(
+        self.user =  CustomerUser.objects.create(
             first_name='John',
             last_name='Doe',
             email= 'johndoe@gmail.com',
@@ -111,10 +101,10 @@ class TestClientView(TestCase):
             is_client=True,
             username='johndoee',
         )
-        self.assertEqual(User.objects.all().count(), 1)
+        self.assertEqual(CustomerUser.objects.all().count(), 1)
     
     def test_client_update_view(self):
-        self.user =  User.objects.create(
+        self.user =  CustomerUser.objects.create(
             first_name='John',
             last_name='Doe',
             email= 'johndoe@gmail.com',
@@ -123,14 +113,14 @@ class TestClientView(TestCase):
             is_client=True,
             username='johndoee',
         )
-        self.assertEqual(User.objects.all().count(), 1)
+        self.assertEqual(CustomerUser.objects.all().count(), 1)
         self.user_update = self.user
         self.user_update.first_name = 'Jane'
         self.user_update.save()
         self.assertEqual(self.user_update.first_name, 'Jane')
     
     def test_client_delete_view(self):
-        self.user =  User.objects.create(
+        self.user =  CustomerUser.objects.create(
             first_name='John',
             last_name='Doe',
             email= 'johndoe@gmail.com',
@@ -139,6 +129,6 @@ class TestClientView(TestCase):
             is_client=True,
             username='johndoee',
         )
-        self.assertEqual(User.objects.all().count(), 1)
+        self.assertEqual(CustomerUser.objects.all().count(), 1)
         self.user.delete()
-        self.assertEqual(User.objects.all().count(), 0)
+        self.assertEqual(CustomerUser.objects.all().count(), 0)

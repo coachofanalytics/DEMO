@@ -1,7 +1,7 @@
-{%extends "main/base_templates/base.html"%}
+{%extends "main/base_templates/new_base.html"%}
 {% block title %}Register{% endblock %}
 {%load crispy_forms_tags%}{% block content %}
-
+{% load socialaccount %}
 <style>
   /* Shared */
   .loginBtn {
@@ -86,9 +86,9 @@ crossorigin="anonymous">
   <form method="POST" id="signupForm" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <fieldset class="form-group">
-      <div class="row" >
+      <div class="row">
         <div class="col-lg-6 introduction-div ">
-          <div class="row" >
+          <div class="row">
             <div class="select-div">
               <h1 class="position-relative">SIGN-UP</h1>
               <div class="content">
@@ -278,17 +278,19 @@ crossorigin="anonymous">
             <div class="col-md-6">
               <small class="text-muted text-center">
                 Already Have An Account?
-                <a class="ml-2" href="#" >Sign In</a>
+                <a class="ml-2" href="{% url 'accounts:account-login' %}" >Sign In</a>
               </small>
             </div>
           </div>
           <p class="text-center mt-2">or</p>
           <div class="row" style="display: flex; justify-content: center; align-items: center;">
             <div class="col-md-3 d-flex justify-content-center">
-              <a id="google-signin-link" style="color: black;" href="#" onclick="return enableSocialSignInLink(event, this, 'google_login')"  class="loginBtn loginBtn--google">
+              <a id="google-signin-link" style="color: black;" href="{% url 'custom_social_login' %}" onclick="return enableSocialSignInLink(event, this, 'google_login')"  class="loginBtn loginBtn--google">
                 Login with Google
               </a>
-            
+              <!-- <a id="facebook-signin-link" href="{% url 'custom_social_login' %}" onclick="return enableSocialSignInLink(event, this, 'facebook_login')" type='button' class="loginBtn loginBtn--facebook">
+                Login with Facebook
+              </a> -->
             </div>
           </div>
         </div>

@@ -21,7 +21,9 @@ href="{% static 'main/css/homes.css' %}"/>
     <div class="hero-content">
         <h1>Kenya’s Global Trade, Business, and Investment Hub</h1>
         <p>Together, we will build a vibrant ecosystem that empowers entrepreneurs, attracts investments, and strengthens the bonds between Kenya and the world.</p>
-        <a href="#" class="hero-button">Get started</a>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'accounts:join' %}" class="hero-button">Get started</a>
+        {% endif %}
     </div>
     <div class="hero-image">
         <img src="{% static 'main/img/home/her.png' %}" alt="Hiker">
@@ -173,9 +175,10 @@ href="{% static 'main/css/homes.css' %}"/>
 
 <style>
 .contact-section {
-    padding: 60px 0;
-    background: linear-gradient(135deg, #e0f7fa, #80deea, #00bcd4, #0097a7);
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
     color: #fff;
+    font-family: 'Arial', sans-serif;
 }
 
 .contact-content {
@@ -183,17 +186,19 @@ href="{% static 'main/css/homes.css' %}"/>
     justify-content: space-between;
     align-items: stretch;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .info-section, .news-section {
     flex: 1;
     background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .contact-info, .side-news {
@@ -202,12 +207,15 @@ href="{% static 'main/css/homes.css' %}"/>
 
 .contact-info h4, .side-news h3 {
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
 }
 
 .contact-info p, .side-news ul {
     color: #666;
     margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .side-news ul {
@@ -222,8 +230,8 @@ href="{% static 'main/css/homes.css' %}"/>
 }
 
 .side-news ul li img.news-image {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 5px;
     margin-right: 10px;
 }
@@ -240,27 +248,19 @@ href="{% static 'main/css/homes.css' %}"/>
 
 .social-icons {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .social-icons p {
-    color: black;
+    color: #333;
     margin-bottom: 10px;
 }
 
 .social-icons a {
-    font-size: 20px;
+    font-size: 1.75rem;
     transition: color 0.3s;
-}
-
-.social-icons a:hover {
-    color: #2c2c6b;
-}
-
-.social-icons a {
-    margin: 0 10px;
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
 }
 
 /* LinkedIn */
@@ -289,7 +289,7 @@ href="{% static 'main/css/homes.css' %}"/>
 }
 
 .social-icons a:hover {
-    color: #d1d1e0; /* Light color on hover for all icons */
+    color: #2c2c6b;
 }
 
 /* Media Queries */
@@ -303,12 +303,8 @@ href="{% static 'main/css/homes.css' %}"/>
         width: 100%;
         margin-bottom: 20px;
     }
-
-    .social-icons {
-        margin-left: 0;
-        justify-content: center;
-    }
 }
+
 
 
 </style>
@@ -331,26 +327,20 @@ href="{% static 'main/css/homes.css' %}"/>
         observer.observe(element);
     });
 
+    // JavaScript for infinite scrolling effect
     const carouselTrack = document.querySelector('.carousel-track');
-    const animationSpeed = 4; // Speed of the animation
-    const pauseDuration = 5; // Pause duration in seconds
+    let animationSpeed = 3; // Adjust this value to control the speed of the animation
+    let keyframes = `@keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }`;
 
-    // Define keyframes with pause
-    const keyframes = `
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            ${100 / (animationSpeed + pauseDuration) * animationSpeed}% { transform: translateX(-100%); }
-            100% { transform: translateX(-100%); }
-        }
-    `;
-
-    const styleSheet = document.createElement("style");
+    let styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = keyframes;
     document.head.appendChild(styleSheet);
 
-    // Apply the animation with speed and pause
-    carouselTrack.style.animation = `scroll ${(animationSpeed + pauseDuration) * carouselTrack.children.length}s linear infinite`;
+    carouselTrack.style.animation = `scroll ${animationSpeed * carouselTrack.children.length}s linear infinite loop`;
 
 });
 
@@ -426,10 +416,10 @@ href="{% static 'main/css/homes.css' %}"/>
   }
   .cta-section {
       background-color: #fff;
-      padding: 40px 0;
+      padding: 60px 0;
       height: 220px;
       text-align: center;
-      box-shadow: 0px 10px 10px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
       
   }
   

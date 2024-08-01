@@ -68,21 +68,5 @@ class Migration(migrations.Migration):
                 ('agree', models.BooleanField()),
             ],
         ),
-        migrations.RemoveField(
-            model_name='location',
-            name='user',
-        ),
-        migrations.RemoveField(
-            model_name='usercategory',
-            name='user',
-        ),
-        migrations.DeleteModel(
-            name='UserProfile',
-        ),
-        migrations.DeleteModel(
-            name='Location',
-        ),
-        migrations.DeleteModel(
-            name='UserCategory',
-        ),
+        
     ]

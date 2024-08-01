@@ -27,10 +27,10 @@ ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = ['127.0.0.1','localhost','codatrainingapp.herokuapp.com','www.codanalytics.net','codanalytics.net']
 # ALLOWED_HOSTS = []
 
-# AUTH_USER_MODEL = "accounts.User"
-AUTH_USER_MODEL = "accounts.User"
 
-AUTHENTICATION_BACKENDS = (("django.contrib.auth.backends.ModelBackend"),)
+AUTH_USER_MODEL = "accounts.CustomerUser"
+AUTHENTICATION_BACKENDS = (("accounts.custom_backend.EmailOrUsernameModelBackend"), ("django.contrib.auth.backends.ModelBackend"))
+
 
 # Application definition
 INSTALLED_APPS = [

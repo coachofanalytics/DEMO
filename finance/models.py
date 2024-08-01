@@ -23,7 +23,7 @@ User = get_user_model()
 class Payment_Information(models.Model):
     # id = models.AutoField(primary_key=True)
     customer_id = models.ForeignKey(
-        "accounts.User",
+        "accounts.CustomerUser",
         verbose_name=("Client Name"),
         on_delete=models.CASCADE,
         related_name="customer")
@@ -147,7 +147,7 @@ class Transaction(models.Model):
         default="Other",
     )
     sender = models.ForeignKey(
-    "accounts.User", 
+    "accounts.CustomerUser", 
     on_delete=models.CASCADE, 
     related_name="transaction_sender",
     default=1)

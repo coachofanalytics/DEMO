@@ -16,8 +16,8 @@
 
 .navbar img {
     border-radius: 50%;
-    height: 50px; /* Adjust as needed */
-    width: 50px; /* Adjust as needed */
+    height: 60px; /* Adjust as needed */
+    width: 60px; /* Adjust as needed */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -153,7 +153,7 @@
 </style>
 
 <nav class="navbar">
-    <img src="{% static 'main/img/home/logo.png' %}" alt="Logo">
+   <a href="/">  <img src="{% static 'main/img/home/logo.png' %}" alt="Logo"></a>
     <div class="logos">
         <ul class="navList">
             <div class="menu-icon" onclick="toggleNavbar()">
@@ -165,28 +165,28 @@
         <ul class="navList">
             <li><a href="/" class="navLin">HOME</a></li>
             <li class="dropdown">
-                <a href="/about" class="navLin">ABOUT US</a>
+                <a  class="navLin">ABOUT US</a>
                 <div class="dropdown-content">
                     <a href="{% url 'main:history' %}">Our History</a>
                     <div class="sub-dropdown">
                         <a href="#">Our Team</a>
-                        <div class="sub-dropdown-content">
+                        <!-- <div class="sub-dropdown-content">
                             <a href="#">Local Leadership</a>
                             <a href="#">Global Leadership</a>
-                        </div>
+                        </div> -->
                     </div>
-                    <div class="sub-dropdown">
+                    <!-- <div class="sub-dropdown">
                         <a href="#">Structure</a>
                         <div class="sub-dropdown-content">
                             <a href="#">Our Governance</a>
                             <a href="#">Global Administration</a>
                             <a href="#">Ward Administration</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </li>
             <li class="dropdown">
-                <a href="/services" class="navLin">SERVICES</a>
+                <a  class="navLin">SERVICES</a>
                 <div class="dropdown-content">
                     {% for service in service %}
                     <div class="sub-dropdown">
@@ -200,15 +200,24 @@
                     {% endfor %}
                 </div>
             </li>
-            <li><a href="/news" class="navLin">SUPPORT</a></li>
-            <li><a href="/contact-us" class="navLin">CONTACT US</a></li>
-           
             {% if user.is_authenticated %}
-            <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGOUT</a></li>
+            <li><a href="/news" class="navLin">RESOURCES</a></li>
+            <li class="dropdown">
+                <a  class="navLin">ACCOUNT</a>
+                <div class="dropdown-content">
+                    <div class="sub-dropdown">
+                        <a href="#">PROFILE</a>
+                       
+                        <a href="{% url 'account-logout' %}">LOGOUT</a>
+                    </div>  
+                </div>
+            </li>
+            <li><a href="/news" class="navLin">SUPPORT</a></li>
             {% else %}
             <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>
-            <li><a href="{% url 'accounts:joins' %}" class="navLin">REGISTER</a></li>
+            <li><a href="{% url 'accounts:join' %}" class="navLin">REGISTER</a></li>
             {% endif %}
+           
         </ul>
     </div>
 </nav>
