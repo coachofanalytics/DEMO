@@ -310,7 +310,7 @@ def paymentComplete(request):
     customer = request.user
     body = json.loads(request.body)
     payment_fees = body["payment_fees"]
-    down_payment = payments.down_payment
+    down_payment = '$300'
     studend_bonus = payments.student_bonus
     plan = payments.plan
     fee_balance = payments.fee_balance

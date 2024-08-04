@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum, F, ExpressionWrapper, fields,Q
 from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404, redirect, render
+
+from django.contrib.auth import get_user_model
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -102,7 +104,7 @@ def join(request):
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
-
+    
     #when error occur while login/signup with social account, we are redirecting it to login page of website
     if request.method == 'GET':
         sociallogin = request.session.pop("socialaccount_sociallogin", None)
@@ -115,15 +117,16 @@ def login_view(request):
             request.session["siteurl"] = settings.SITEURL
             username_or_email = form.cleaned_data.get("enter_your_username_or_email")
             enter_your_password = form.cleaned_data.get("enter_your_password")
-            
             account = authenticate(username=username_or_email, password=enter_your_password)
-            print(account)
+            if account is None:
+                account = authenticate(email=username_or_email, password=enter_your_password)
+            
             
             # If Category is Staff/employee
             if account is not None and account.category == CategoryChoices.Bussines_Training:
                
                 login(request, account)
-                return redirect("/")
+                return redirect("main:import")
 
             # If Category is client/customer:# Student # Job Support
             elif account is not None and (account.category == CategoryChoices.Jobsupport or account.category == CategoryChoices.Student) :

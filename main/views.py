@@ -85,8 +85,7 @@ from django.shortcuts import get_object_or_404
 def layout(request):
     page_instance = Page.objects.get(page_name='Home')
     description = Description.objects.filter(page = page_instance)
-    service = Service.objects.all()
-    subservice = SubService.objects.all()
+    
     news = News.objects.all().order_by('-published_date')[:5] 
     # print(news)
    
@@ -113,11 +112,12 @@ def layout(request):
             # "posts":posts,
             "form": form,
             'description': description,
-            'service': service,
+           
             'news':news,
-            'subservice':subservice
+            
         }
     return render(request, "main/home_templates/home.html",context)
+
 
 def History(request):
     page_instance = Page.objects.get(page_name='About')
@@ -155,3 +155,11 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return reverse('main:images') 
+def Import_training(request):
+    return render(request , 'main/training/import.html')    
+def Export_training(request):
+    return render(request , 'main/training/export.html')  
+def G2B_training(request):
+    return render(request , 'main/training/G2B.html') 
+def Plan_training(request):
+    return render(request , 'main/training/plans.html')  

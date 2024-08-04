@@ -26,22 +26,6 @@ class Description(models.Model):
     def __str__(self):
         return f"{self.name} for {self.page.page_name}"
 
-class Team(models.Model):
-  
-
-    name = models.CharField(max_length=255)
-    role = models.CharField(max_length=50)
-    region = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='people/')
-    bio = models.TextField()
-    facebook_link = models.URLField(blank = True, null = True)
-    linkedin_link = models.URLField(blank = True, null = True)
-    twitter_link = models.URLField(blank = True, null = True)
-
-
-    def __str__(self):
-        return self.name
-
 class Content(models.Model):
     SECTION_CHOICES = [
         ('Our Story', 'Our Story'),
@@ -95,6 +79,7 @@ class Feedback(models.Model):
 class Service(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    link = models.SlugField(null= True,blank=True)
     image = models.ImageField(upload_to='service_images/', blank=True, null=True)  # Add this line for image field
 
 

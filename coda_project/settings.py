@@ -101,8 +101,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "main.context_processors.images",
-                "main.context_processors.googledriveurl",
+                "main.context_processors.services_context",
             ],
             # 'libraries': {
             #     'customfilters': 'application.templatetags.customfilters',
@@ -147,21 +146,21 @@ host,dbname,user,password=dba_values() #herokuprod() #herokudev() #dblocal()  #h
 #         "HOST": host
 #     }
 # }
-# DATABASES = {
-#     'default': {
-#         "ENGINE": 'django.db.backends.postgresql',
-#         "NAME": 'd2l066ajig78uh',
-#         "USER": 'uf4o5nponalopo',
-#         "PASSWORD": 'p2f315d6b9430b965799ae1813941756fa47e03c99328df5d063d7049455884a1',
-#         "HOST": 'ce0lkuo944ch99.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
-#     }
-# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    'default': {
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": 'darj3e5nhejub5',
+        "USER": 'u50car6idtqmkc',
+        "PASSWORD": 'pead14b56da8441a77e91ba98cc32c856e74f880613f3595d87611592da8830d4',
+        "HOST": 'ceqbglof0h8enj.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
     }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#     }
+# }
 
 
 db_from_env = dj_database_url.config(conn_max_age=600)

@@ -10,19 +10,19 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Department',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('HR Department', 'HR Department'), ('IT Department', 'IT Department'), ('Marketing Department', 'Marketing Department'), ('Finance Department', 'Finance Department'), ('Security Department', 'Security Department'), ('Management Department', 'Management Department'), ('Health Department', 'Health Department'), ('Other', 'Other')], default='Other', max_length=100)),
-                ('description', models.TextField(blank=True, max_length=500, null=True)),
-                ('slug', models.SlugField(max_length=255, unique=True, verbose_name='Department safe URL')),
-                ('is_featured', models.BooleanField(default=True, verbose_name='Is featured')),
-                ('is_active', models.BooleanField(default=True)),
-            ],
-            options={
-                'verbose_name': 'Department',
-                'verbose_name_plural': 'Departments',
-            },
-        ),
+        # migrations.CreateModel(
+        #     name='Department',
+        #     fields=[
+        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #         ('name', models.CharField(choices=[('HR Department', 'HR Department'), ('IT Department', 'IT Department'), ('Marketing Department', 'Marketing Department'), ('Finance Department', 'Finance Department'), ('Security Department', 'Security Department'), ('Management Department', 'Management Department'), ('Health Department', 'Health Department'), ('Other', 'Other')], default='Other', max_length=100)),
+        #         ('description', models.TextField(blank=True, max_length=500, null=True)),
+        #         ('slug', models.SlugField(max_length=255, unique=True, verbose_name='Department safe URL')),
+        #         ('is_featured', models.BooleanField(default=True, verbose_name='Is featured')),
+        #         ('is_active', models.BooleanField(default=True)),
+        #     ],
+        #     options={
+        #         'verbose_name': 'Department',
+        #         'verbose_name_plural': 'Departments',
+        #     },
+        # ),
     ]

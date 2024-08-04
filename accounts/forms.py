@@ -160,4 +160,4 @@ class LoginForm(forms.Form):
         if not username_or_email:
             self.add_error('enter_your_username_or_email', "This field is required.")
         if not password:
-            self.add_error('password', "This field is required.")    
+            self.add_error('password', "This field is required.")   

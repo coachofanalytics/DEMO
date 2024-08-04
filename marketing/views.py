@@ -18,7 +18,7 @@ from django.views.generic import (
         CreateView,
         UpdateView,
     )
-from main.context_processors import images
+
 from django.contrib.auth import get_user_model
 # from .utils import update_ads_by_pricing
 #from main.permission import check_payment_history_permission

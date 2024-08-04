@@ -170,19 +170,8 @@
                     <a href="{% url 'main:history' %}">Our History</a>
                     <div class="sub-dropdown">
                         <a href="#">Our Team</a>
-                        <!-- <div class="sub-dropdown-content">
-                            <a href="#">Local Leadership</a>
-                            <a href="#">Global Leadership</a>
-                        </div> -->
+                       
                     </div>
-                    <!-- <div class="sub-dropdown">
-                        <a href="#">Structure</a>
-                        <div class="sub-dropdown-content">
-                            <a href="#">Our Governance</a>
-                            <a href="#">Global Administration</a>
-                            <a href="#">Ward Administration</a>
-                        </div>
-                    </div> -->
                 </div>
             </li>
             <li class="dropdown">
@@ -190,9 +179,14 @@
                 <div class="dropdown-content">
                     {% for service in service %}
                     <div class="sub-dropdown">
+                        {% if service.title == 'Training and Development' %}
+                        <a href="{% url 'main:import' %}">{{ service.title }}</a>
+                        {% else %}
                         <a href="#">{{ service.title }}</a>
+                        {% endif %}
                         <div class="sub-dropdown-content">
                             {% for subservice in service.subservices.all %}
+                            
                             <a href="#">{{ subservice.title }}</a>
                             {% endfor %}
                         </div>
@@ -201,22 +195,29 @@
                 </div>
             </li>
             {% if user.is_authenticated %}
-            <li><a href="/news" class="navLin">RESOURCES</a></li>
-            <li class="dropdown">
-                <a  class="navLin">ACCOUNT</a>
-                <div class="dropdown-content">
-                    <div class="sub-dropdown">
-                        <a href="#">PROFILE</a>
-                       
-                        <a href="{% url 'account-logout' %}">LOGOUT</a>
-                    </div>  
-                </div>
-            </li>
-            <li><a href="/news" class="navLin">SUPPORT</a></li>
+                <li><a href="/news" class="navLin">RESOURCES</a></li>
+                <li class="dropdown">
+                    <a class="navLin">ACCOUNT</a>
+                    <div class="dropdown-content">
+                        <div class="sub-dropdown">
+                            <a href="#">PROFILE</a>
+                            <a href="{% url 'account-logout' %}">LOGOUT</a>
+                        </div>  
+                    </div>
+                </li>
+                <li><a href="/news" class="navLin">SUPPORT</a></li>
+                <!-- {% if user.category == 1 %}
+                    <li><a href="/admin" class="navLin">ADMIN PANEL</a></li>
+                {% elif user.category == 'member' %}
+                    <li><a href="/member-dashboard" class="navLin">DASHBOARD</a></li>
+                {% elif user.category == 'guest' %}
+                    <li><a href="/guest-info" class="navLin">GUEST INFO</a></li>
+                {% endif %} -->
             {% else %}
-            <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>
-            <li><a href="{% url 'accounts:join' %}" class="navLin">REGISTER</a></li>
+                <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>
+                <li><a href="{% url 'accounts:join' %}" class="navLin">REGISTER</a></li>
             {% endif %}
+
            
         </ul>
     </div>

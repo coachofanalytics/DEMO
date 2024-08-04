@@ -88,7 +88,7 @@ def path_values(request):
     path_values = [i for i in current_value if i.strip()]
     sub_title = path_values[-1]
 
-    return path_values, sub_title, pre_sub_title
+    return path_values, sub_title
 
 #===============Downloading Image==================
 def download_image(url):

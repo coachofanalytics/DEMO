@@ -1,15 +1,9 @@
-from .utils import image_view
+from .models import Service, SubService
 
-#availabity of images in this app
-
-def images(request):
-    images,image_names=image_view(request)
+def services_context(request):
+    service = Service.objects.all()
+    subservice = SubService.objects.all()
     return {
-        'images': images,
-        "image_names":image_names
-    }
-
-def googledriveurl(request):
-    return {
-        'googledriveurl':'http://drive.google.com/uc?export=view&id'
+        'subservice': subservice,
+        'service': service
     }
