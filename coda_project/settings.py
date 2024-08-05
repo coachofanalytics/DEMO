@@ -287,7 +287,6 @@ CELERYBEAT_SCHEDULE = {
 }
 
 #==================PAYMENT SETTINGS=================
-# Testing Payment methods
 def payment_details(request):
     # ================MPESA/CASHAPP/VENMO========================
     phone_number =os.environ.get('MPESA_PHONE_NUMBER')
