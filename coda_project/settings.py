@@ -146,21 +146,21 @@ host,dbname,user,password=dba_values() #herokuprod() #herokudev() #dblocal()  #h
 #         "HOST": host
 #     }
 # }
-DATABASES = {
-    'default': {
-        "ENGINE": 'django.db.backends.postgresql',
-        "NAME": 'darj3e5nhejub5',
-        "USER": 'u50car6idtqmkc',
-        "PASSWORD": 'pead14b56da8441a77e91ba98cc32c856e74f880613f3595d87611592da8830d4',
-        "HOST": 'ceqbglof0h8enj.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
-    }
-}
 # DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#     'default': {
+#         "ENGINE": 'django.db.backends.postgresql',
+#         "NAME": 'darj3e5nhejub5',
+#         "USER": 'u50car6idtqmkc',
+#         "PASSWORD": 'pead14b56da8441a77e91ba98cc32c856e74f880613f3595d87611592da8830d4',
+#         "HOST": 'ceqbglof0h8enj.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
 #     }
 # }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    }
+}
 
 
 db_from_env = dj_database_url.config(conn_max_age=600)
