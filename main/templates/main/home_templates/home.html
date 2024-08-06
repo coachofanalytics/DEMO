@@ -80,7 +80,7 @@ href="{% static 'main/css/homes.css' %}"/>
                 {% endfor %}
             </div>
             <div class="swiper-pagination"></div>
-            <div class="swiper-slide-button swiper-button-prev"></div>
+            <div class="swiper-sl {{item.content}}ide-button swiper-button-prev"></div>
             <div class="swiper-slide-button swiper-button-next"></div>
         </div>
     </div>
@@ -99,23 +99,35 @@ href="{% static 'main/css/homes.css' %}"/>
                     <div class="icon-container">
                         <i class="fas fa-star"></i>
                     </div>
-                    <h3>Experienced Professionals</h3>
-                    <p>Schedule a 15-minute exploratory call with a Diaspora Transition Specialist to identify your goals and Africa plan.</p>
+                    {% for item in description %}
+                        {% if item.name == 'Experienced Professionals' %}
+                            <h3>{{item.name}}</h3>
+                            <p>{{item.content}}</p>
+                        {% endif %}
+                    {% endfor %}        
                 </div>
                 <div class="how-it-works-card">
                     <div class="icon-container">
                         <i class="fas fa-globe"></i>
                     </div>
-                    <h3>Global Reach</h3>
-                    <p>Book the relevant services on our website as outlined within your Africa Plan.</p>
+                    {% for item in description %}
+                        {% if item.name == 'Global Reach' %}
+                            <h3>{{item.name}}</h3>
+                            <p>{{item.content}}</p>
+                        {% endif %}
+                    {% endfor %}      
              
                 </div>
                 <div class="how-it-works-card">
                     <div class="icon-container">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Trustworthy Services</h3>
-                    <p>Receive a seamless travel or relocation experience to Ghana guided by the Diaspora Resource Centre team.</p>
+                    {% for item in description %}
+                        {% if item.name == 'Trustworthy Services' %}
+                            <h3>{{item.name}}</h3>
+                            <p>{{item.content}}</p>
+                        {% endif %}
+                    {% endfor %}      
                 </div>
             </div>
         </div>

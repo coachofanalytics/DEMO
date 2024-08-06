@@ -128,4 +128,17 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name    
-    
+class Training(models.Model):
+    LEVEL_CHOICES = [
+        ('Introductory', 'Introductory'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced/Specialized'),
+    ]
+
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    link = models.URLField()
+
+    def __str__(self):
+        return self.title

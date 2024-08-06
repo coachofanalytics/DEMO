@@ -12,5 +12,6 @@ admin.site.register(Content)
 admin.site.register(Service)
 admin.site.register(SubService)
 admin.site.register(News)
+admin.site.register(Training)
 
 
