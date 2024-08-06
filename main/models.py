@@ -134,11 +134,18 @@ class Training(models.Model):
         ('Intermediate', 'Intermediate'),
         ('Advanced', 'Advanced/Specialized'),
     ]
+    training = [
+        ('Import','Import'),
+        ('Export','Export'),
+        ('G2B', 'G2B'),
+        ('B2B','B2B')
+    ]
 
-    title = models.CharField(max_length=200)
-    description = models.TextField()
+    training_title = models.CharField(max_length=20, choices=training)
+    course_title = models.CharField(max_length=20)
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
-    link = models.URLField()
+    description = models.TextField(null=True,blank=True)
+    link = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.training_title}-{self.course_title}"
