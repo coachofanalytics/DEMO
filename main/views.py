@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService
+from .models import Assets,Description, News, Page, Service, SubService,Training
 
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -156,9 +156,24 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
     def get_success_url(self):
         return reverse('main:images') 
 def Import_training(request):
-    return render(request , 'main/training/import.html')    
+    course = Training.objects.all()
+    page_instance = Page.objects.get(page_name='Import Training')
+    description = Description.objects.filter(page = page_instance)
+    context = {
+        'description': description,
+        'course': course
+    }
+   
+    return render(request , 'main/training/import.html', context)    
 def Export_training(request):
-    return render(request , 'main/training/export.html')  
+    course = Training.objects.all()
+    page_instance = Page.objects.get(page_name='Export Training')
+    description = Description.objects.filter(page = page_instance)
+    context = {
+        'description': description,
+        'course': course
+    }
+    return render(request , 'main/training/export.html',context)  
 def G2B_training(request):
     return render(request , 'main/training/G2B.html') 
 def Plan_training(request):
