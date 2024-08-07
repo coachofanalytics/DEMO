@@ -67,10 +67,12 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    z-index: 1;
     background-color:#35bdbd;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     width: max-content; /* Adjust width as needed */
+    z-index: 1;
+    border-radius: 4px;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .dropdown-content .sub-dropdown {
@@ -80,12 +82,12 @@
 .sub-dropdown-content {
     display: none;
     position: absolute;
-    margin-left: 3px;
+    margin-left: 1px;
     top: 0;
     left: 100%; /* Position the sub-dropdown to the right of the main dropdown */
     background-color: #3b5d5f;
     border-radius: 4px;
-    min-width: 200px; /* Adjust width as needed */
+    width: max-content; /* Adjust width as needed */
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
@@ -97,11 +99,13 @@
 
 .dropdown-content a, .sub-dropdown-content a {
     color:  white;
-    font-size: 12px;
+    font-size: 14px;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
 }
+
 
 .dropdown-content a:hover, .sub-dropdown-content a:hover {
     background-color: #ddd;
