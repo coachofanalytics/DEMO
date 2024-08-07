@@ -172,10 +172,10 @@
                 <div class="dropdown-content">
                     {% for service in service %}
                     <div class="sub-dropdown">
-                        <a href="{{ service.url }}">{{ service.title }}</a>
+                        <a href="#">{{ service.title }}</a>
                         <div class="sub-dropdown-content">
                             {% for subservice in service.subservices.all %}
-                            <a href="{{ subservice.url }}">{{ subservice.title }}</a>
+                            <a href="{{ subservice.link }}">{{ subservice.title }}</a>
                             {% endfor %}
                         </div>
                     </div>
