@@ -79,7 +79,7 @@ class Feedback(models.Model):
 class Service(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    link = models.SlugField(null= True,blank=True)
+    link = models.URLField(null= True,blank=True)
     image = models.ImageField(upload_to='service_images/', blank=True, null=True)  # Add this line for image field
 
 
@@ -89,6 +89,7 @@ class Service(models.Model):
 class SubService(models.Model):
     service = models.ForeignKey(Service, related_name='subservices', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
+    link = models.URLField(null= True,blank=True)
     description = models.TextField()
 
     def __str__(self):
