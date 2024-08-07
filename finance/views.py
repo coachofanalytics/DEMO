@@ -573,3 +573,4 @@ def budget_projection(request,subtitle='summary',duration=2024):
         return render(request, "finance/budgets/detailed_budget.html", context)
     else:
         return render(request, "finance/budgets/summary_budget.html", context)
+    
