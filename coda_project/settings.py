@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = "!cxl7yhjsl00964n=#e-=xblp4u!hbajo2k8u#$v9&s6__5=xf"
 
 DEBUG = True
-ALLOWED_HOSTS = ['biasharabridges.org', 'www.biasharabridges.org', 'biasharadev-68034baaf749.herokuapp.com','http://localhost:8000/']
+ALLOWED_HOSTS = ['biasharabridges.org', 'www.biasharabridges.org', 'biasharadev-68034baaf749.herokuapp.com','localhost']
 #ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = "accounts.CustomerUser"
 AUTHENTICATION_BACKENDS = (("accounts.custom_backend.EmailOrUsernameModelBackend"), ("django.contrib.auth.backends.ModelBackend"))
