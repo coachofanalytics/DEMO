@@ -290,19 +290,20 @@ def payment(request,method):
 def pay(request, service=None):
     if not request.user.is_authenticated:
         return redirect(reverse('accounts:account-login'))
+    
+    # Get the price from the query parameters
+    price = request.GET.get('price')
+    print(price)
+    
     payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
 
- 
     context = {
-            "title": "PAYMENT",
-            "payments": payment_info,
-            "rate": rate,
-            'user': request.user,
-            
-            "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
-            
-            # "service": True,
-        }
+        "title": "PAYMENT",
+        "payments": payment_info,
+        "rate": price,  # Use the price in the context
+        'user': request.user,
+        "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
+    }
     return render(request, "finance/payments/pay.html", context)
 
 def paymentComplete(request):

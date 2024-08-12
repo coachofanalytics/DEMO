@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import *
+from .models import Assets,Feedback,Description,Page,Team,Content,Service,SubService,News,Training,Pricing
 
 # Register your models here.
 admin.site.register(Assets)
@@ -13,5 +13,6 @@ admin.site.register(Service)
 admin.site.register(SubService)
 admin.site.register(News)
 admin.site.register(Training)
+admin.site.register(Pricing)
 
 

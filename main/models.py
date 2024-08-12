@@ -150,3 +150,13 @@ class Training(models.Model):
 
     def __str__(self):
         return f"{self.training_title}-{self.course_title}"
+class Pricing(models.Model):
+    training = models.ForeignKey(Training, on_delete=models.CASCADE, related_name='pricing')
+    price = models.FloatField()
+    discounted_price = models.FloatField(null=True, blank=True)
+    duration = models.PositiveIntegerField(null=True, blank=True, help_text="Duration in hours")
+    # contract_length = models.IntegerField(choices=Contract.choices, default=Contract.THREE_MONTHS)
+
+    def __str__(self):
+        return f"{self.training.course_title} - ${self.price}"    
+    

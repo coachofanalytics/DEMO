@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService,Training
+from .models import Assets,Description, News, Page, Pricing, Service, SubService,Training
 
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -158,7 +158,7 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 def Import_training(request):
     course = Training.objects.all()
     page_instance = Page.objects.get(page_name='Import Training')
-    description = Description.objects.filter(page = page_instance)
+    description = Description.objects.filter(page = page_instance)  
     context = {
         'description': description,
         'course': course
@@ -176,5 +176,10 @@ def Export_training(request):
     return render(request , 'main/training/export.html',context)  
 def G2B_training(request):
     return render(request , 'main/training/G2B.html') 
-def Plan_training(request):
-    return render(request , 'main/training/plans.html')  
+def Plan_training(request, course_id):
+    # Retrieve the specific Training object by ID
+    training = get_object_or_404(Training, id=course_id)
+    
+    # Pass the training object and its related Pricing objects to the template
+    return render(request, 'main/training/plans.html', {'training': training})
+

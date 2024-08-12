@@ -29,8 +29,8 @@
             </div>
         </div>
         <div class="card right-card">
-            <h1>US Import/Export Basics</h1>
-            <h3>C20u - Intro to US Export-Import Basics: Transaction Negotiation, Incoterms, Payment Terms</h3>
+            <h1>{{ training.course_title }}</h1>
+            <h3>{{ training.level }}</h3>
             <div class="info">
                 <div>
                     <span>⏱</span> update your skills <span class="highlight">fast</span>
@@ -45,19 +45,27 @@
                     <span>📄</span> Instant <span class="highlight">Certificate of Completion</span>
                 </div>
             </div>
+            {% for pricing in training.pricing.all %}
             <div class="course-details">
                 <div>
                     <p>Study Time</p>
-                    <p>21 (Hrs)</p>
+                    <p>{{ pricing.duration }} (Hrs)</p>
                 </div>
                 <div>
                     <p>CE Credits</p>
                     <p>N/A</p>
                 </div>
             </div>
-            <p class="price"><span>Price: </span>$339</p>
-            <a class="enroll-btn" href="{% url 'finance:pay' %}" style="text-decoration: none;color: white;">Enroll Now</a>
+            <p class="price"><span>Price: </span>${{ pricing.price }}</p>
+            <!-- {% if pricing.discounted_price %}
+            <p class="discounted-price"><span>Discounted Price: </span>${{ pricing.discounted_price }}</p>
+           
+            {% endif %} -->
+            
+            <a class="enroll-btn" href="{% url 'finance:pay' %}?price={{ pricing.price }}" style="text-decoration: none;color: white;">Enroll Now</a>
+            {% endfor %}
         </div>
+
     </div>
 
     <div class="accordion">

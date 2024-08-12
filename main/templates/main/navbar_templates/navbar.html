@@ -55,7 +55,6 @@
     }
 
     .navbar .navList .navLin:hover {
-        background-color: #35bdbd;
         color: #002f2f;
         transform: scale(1.05);
     }
@@ -111,7 +110,18 @@
     .sub-dropdown-content a:hover {
         background-color: #ddd;
     }
-
+      /* Indicator icon styling */
+   
+    .indicator-icon {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 5px;
+        vertical-align: middle;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 5px solid white; /* Adjust color as needed */
+    }
     /* Media query for smaller screens */
     @media screen and (max-width: 768px) {
         
@@ -227,7 +237,12 @@
                 <div class="dropdown-content">
                     {% for service in service %}
                     <div class="sub-dropdown">
-                        <a href="#">{{ service.title }}</a>
+                        <a href="#">{{ service.title }}
+                            {% if service.subservices.exists %}
+                            <span class="indicator-icon"></span>
+                            {% endif %}
+                        </a>
+                        
                         <div class="sub-dropdown-content">
                             {% for subservice in service.subservices.all %}
                             <a href="{{ subservice.link }}">{{ subservice.title }}</a>

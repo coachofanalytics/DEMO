@@ -11,7 +11,7 @@ urlpatterns = [
     path('import_training', views.Import_training , name = 'import'),
     path('export_training', views.Export_training , name = 'export'),
     path('G2B_training', views.G2B_training , name = 'G2B'),
-    path('plan_training', views.Plan_training , name = 'plan'),
+    path('plan/<int:course_id>/', views.Plan_training, name='plan'),
     
     
    #==============ERRORS==============================================
