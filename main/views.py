@@ -13,6 +13,12 @@ from .models import Assets,Description, News, Page, Pricing, Service, SubService
 from .utils import image_view,path_values
 from main.forms import ContactForm
 from django.contrib.auth import get_user_model
+from django.shortcuts import render
+from .models import Team
+
+
+
+
 
 User=get_user_model()
 
@@ -183,3 +189,8 @@ def Plan_training(request, course_id):
     # Pass the training object and its related Pricing objects to the template
     return render(request, 'main/training/plans.html', {'training': training})
 
+
+def about_view(request):
+    teams = Team.objects.all()
+    print(teams     )
+    return render(request, 'main/about_templates/about.html', {'teams': teams})

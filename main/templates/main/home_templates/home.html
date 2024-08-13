@@ -19,7 +19,7 @@ href="{% static 'main/css/homes.css' %}"/>
 <!-- Hero Section -->
 <div class="hero-section animate-on-scroll" style="margin-top: -40px;">
     <div class="hero-content">
-        <h1>Kenya’s Global Trade, Business, and Investment Hub</h1>
+        <h1 style="color: #5E0303;">Kenya’s Global Trade, Business, and Investment Hub</h1>
         <p>Together, we will build a vibrant ecosystem that empowers entrepreneurs, attracts investments, and strengthens the bonds between Kenya and the world.</p>
         {% if not user.is_authenticated %}
         <a href="{% url 'accounts:join' %}" class="hero-button">Get started</a>

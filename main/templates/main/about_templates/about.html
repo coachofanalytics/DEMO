@@ -1,0 +1,149 @@
+
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* Card Styles */
+    .team-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .team-member {
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+        width: 300px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .team-member:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .team-member img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-top: 20px;
+        transition: transform 0.3s;
+    }
+
+    .team-member img:hover {
+        transform: scale(1.1);
+    }
+
+    .team-member h3 {
+        margin: 15px 0 5px;
+        color: #444;
+    }
+
+    .team-member p {
+        color: #666;
+        font-size: 14px;
+        padding: 0 20px 20px;
+    }
+
+    /* Table Styles */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 40px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .table td img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+
+    .contact-info, .client-list, .about-info {
+        margin-top: 40px;
+    }
+
+    .contact-info div, .client-list div, .about-info div {
+        margin-bottom: 20px;
+    }
+
+    .contact-info div span, .client-list div span, .about-info div span {
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+
+    <!-- Our Team Section with Cards -->
+    <h2>Our Team</h2>
+    <div class="team-section">
+        {% for team in teams %}
+        <div class="team-member">
+            <img src="{{ team.image.url }}" alt="{{ team.name }}">
+            <h3>{{ team.name }}</h3>
+            <p><strong>{{ team.role }}</strong></p>
+            <p>{{ team.bio }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Team Table -->
+    <h2>Our Team Table</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Leadership</th>
+                <th>Role</th>
+                <th>Region</th>
+                <th>Image</th>
+                <th>Bio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.name }}</td>
+                <td>{{ team.leadership }}</td>
+                <td>{{ team.role }}</td>
+                <td>{{ team.region }}</td>
+                <td><img src="{{ team.image.url }}" alt="{{ team.name }}"></td>
+                <td>{{ team.bio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
