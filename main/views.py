@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Pricing, Service, SubService,Training
+from .models import Assets,Description,TeamMember, News, Page, Pricing, Service, SubService,Training
 
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -183,3 +183,9 @@ def Plan_training(request, course_id):
     # Pass the training object and its related Pricing objects to the template
     return render(request, 'main/training/plans.html', {'training': training})
 
+
+
+def teammember_list(request):
+    info = TeamMember.objects.all()
+    print("info==================", info)
+    return render(request, 'main/snippets_templates/table/team.html', {'team_members': info})
