@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>our Team</title>
+    <style>
+        /* Basic styling for the team member list */
+        .team-member {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .team-member img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 50%;
+        }
+        .team-member h2 {
+            font-size: 24px;
+            margin-top: 8px;
+        }
+        .team-member p {
+            font-size: 16px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Our Team</h1>
+    <div id="team-list">
+        {% for member in team_members %}
+            <div class="team-member">
+                <img src="{{ member.image.url }}" alt="{{ member.name }}">
+                <h2>{{ member.name }}</h2>
+                <p>{{ member.description }}</p>eddit <button type="button"></button>
+            </div>
+        {% empty %}
+            <p> team members found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
