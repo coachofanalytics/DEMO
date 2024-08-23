@@ -32,3 +32,12 @@ class ContactForm(forms.ModelForm):
 
 
 
+from .models import TeamMember
+
+class TeamMemberForm(forms.ModelForm):
+    class Meta:
+        model = TeamMember
+        fields = ['name', 'description', 'image']
+        widgets = {
+            'description': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
+        }

@@ -189,3 +189,31 @@ def teammember_list(request):
     info = TeamMember.objects.all()
     print("info==================", info)
     return render(request, 'main/snippets_templates/table/team.html', {'team_members': info})
+
+
+from django.shortcuts import render, redirect
+from .models import TeamMember
+from .forms import TeamMemberForm
+
+def teammember_create(request):
+    if request.method == 'POST':
+        form = TeamMemberForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('main:teammember_list')
+    else:
+        form = TeamMemberForm()
+    return render(request, 'main/snippets_templates/table/create.html', {'form': form})
+
+
+
+def teammember_update(request, pk):
+    team_member = get_object_or_404(TeamMember, pk=pk)
+    if request.method == 'POST':
+        form = TeamMemberForm(request.POST, request.FILES, instance=team_member)
+        if form.is_valid():
+            form.save()
+            return redirect('main:teammember_update', pk=pk)
+    else:
+        form = TeamMemberForm(instance=team_member)
+    return render(request, 'main/snippets_templates/tableupdate.html', {'form': form})

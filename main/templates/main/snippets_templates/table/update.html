@@ -1,0 +1,14 @@
+main/templates/main/team_form.html 
+
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Team Member</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+        {% if form.instance.pk %}Update{% else %}Save{% endif %}
+    </button>
+    <a href="{% url 'main:teammember_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

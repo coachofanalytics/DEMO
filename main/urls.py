@@ -8,8 +8,8 @@ urlpatterns = [
     path('', views.layout, name='layout'),
     # path('about/', views.about, name='about'),
     path('teammember_list',views.teammember_list, name ='teammember_list'),
-    path('import_training', views.Import_training , name = 'import'),
-    path('export_training', views.Export_training , name = 'export'),
+    path('teammember_create', views.teammember_create , name = 'teammember_create'),
+    path('team/<int:pk>/edit/', views.teammember_update, name='teammember_update'),
     path('G2B_training', views.G2B_training , name = 'G2B'),
     path('plan/<int:course_id>/', views.Plan_training, name='plan'),
     
