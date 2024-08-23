@@ -160,3 +160,14 @@ class Pricing(models.Model):
     def __str__(self):
         return f"{self.training.course_title} - ${self.price}"    
     
+
+
+
+    
+class TeamMembers(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.ImageField(upload_to='team_images/')
+
+    def __str__(self):
+        return self.name
