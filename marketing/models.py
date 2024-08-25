@@ -169,3 +169,20 @@ class ReplyMail(models.Model):
 
 	def __str__(self):
 		return self.subject
+class Event(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Email(models.Model):
+    subject = models.CharField(max_length=200)
+    body = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='emails')
+
+    def __str__(self):
+        return self.subject
