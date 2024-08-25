@@ -4,6 +4,8 @@ from .models import CustomerUser,CredentialCategory,Credential,LoginHistory
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import  RegexValidator,validate_email
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 import re
 # from django.db import transaction
 
@@ -111,6 +113,27 @@ class LoginHistoryForm(forms.ModelForm):
         model = LoginHistory
         fields = ['login_time', 'logout_time']
 
+class CustomUserCreationForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    email = forms.EmailField(required=True)
+    phone = forms.CharField(max_length=15, required=True)
+    country = forms.CharField(max_length=50, required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'country', 'password1', 'password2')
+
+    def save(self, commit=True):
+        user = super(CustomUserCreationForm, self).save(commit=False)
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email']
+        user.profile.phone = self.cleaned_data['phone']
+        user.profile.country = self.cleaned_data['country']
+        if commit:
+            user.save()
+        return user
 #==========================CREDENTIAL FORM================================
 class CredentialCategoryForm(forms.ModelForm):  
     class Meta:  

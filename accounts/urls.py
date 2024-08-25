@@ -20,7 +20,7 @@ urlpatterns = [
     path('superuser/<int:pk>/update/', SuperuserUpdateView.as_view(template_name='accounts/admin/user_update_form.html'), name='superuser-update'),
     #path('user/<int:pk>/update/', UserUpdateView.as_view(template_name='accounts/registration/join.html'), name='user-update'),
     path('user/<int:pk>/delete/', UserDeleteView.as_view(template_name='accounts/admin/user_delete.html'), name='user-delete'),
-
+    path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
 #=============================CREDENTIALS VIEWS=====================================
     path('credentials/', views.credential_view, name='account-crendentials'),
     path('newcredentialcategory/', views.newcredentialCategory, name='account-newcredentialcategory'),

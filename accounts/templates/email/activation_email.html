@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Your Account</title>
+    <style>
+        /* Inline CSS to ensure compatibility across email clients */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .email-header img {
+            max-width: 100px;
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .email-body h2 {
+            color: #333;
+        }
+        .email-body p {
+            line-height: 1.6;
+        }
+        .email-footer {
+            text-align: center;
+            padding-top: 20px;
+        }
+        .email-footer p {
+            font-size: 12px;
+            color: #999;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <img src="https://yourdomain.com/logo.png" alt="Your Logo">
+        </div>
+        <div class="email-body">
+            <h2>Welcome to [Your Site Name]!</h2>
+            <p>Thank you for registering. Please click the button below to activate your account:</p>
+            <a href="{{ activation_url }}" class="btn">Activate Account</a>
+            <p>If the button doesn't work, copy and paste the following link into your browser:</p>
+            <p>{{ activation_url }}</p>
+        </div>
+        <div class="email-footer">
+            <p>If you didn't request this email, please ignore it.</p>
+        </div>
+    </div>
+</body>
+</html>

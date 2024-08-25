@@ -29,12 +29,31 @@ from finance.models import Payment_History,Payment_Information
 from mail.custom_email import send_email
 import string, random
 
-from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.conf import settings
+from .models import CustomerUser
+from .forms import UserForm
+from accounts.choices import CategoryChoices
+from django.utils.http import urlsafe_base64_decode
+import datetime
+from django.contrib.auth import get_user_model
+                             
 # from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 # from allauth.core.exceptions import ImmediateHttpResponse
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from accounts.choices import CategoryChoices
+from django.contrib.auth import login
+from django.utils.encoding import force_text
+
 
 # Create your views here..
 
@@ -51,56 +70,56 @@ def thank(request):
 
 
 # ---------------ACCOUNTS VIEWS----------------------
+
+
 def join(request):
-    form = UserForm()  # Define form variable with initial value
+    form = UserForm()  # Initialize form
     if request.method == "POST":
         previous_user = CustomerUser.objects.filter(email=request.POST.get("email"))
-        if len(previous_user) > 0:
-            messages.success(request, f'User already exists with this email')
+        if previous_user.exists():
+            messages.success(request, 'User already exists with this email')
             return redirect("/password-reset")
         else:
-            contract_data, contract_date = agreement_data(request)
-            form = UserForm(request.POST)  # Assign form with request.POST data
+            form = UserForm(request.POST)
             if form.is_valid():
-                if form.cleaned_data.get('category') in [CategoryChoices.Jobsupport,CategoryChoices.Bussines_Training,CategoryChoices.investor,CategoryChoices.General_User]:
-
+                if form.cleaned_data.get('category') in [CategoryChoices.Jobsupport, CategoryChoices.Bussines_Training, CategoryChoices.investor, CategoryChoices.General_User]:
                     random_password = generate_random_password(8)
                     form.instance.username = form.cleaned_data.get('email')
-                    form.instance.password1 = random_password
-                    form.instance.password2 = random_password
-                    form.instance.gender = None
-                    # form.instance.phone = "0000000000"
+                    form.instance.set_password(random_password)  # Set password securely
+                    form.instance.is_active = False  # User is inactive until email verification
+                    form.save()
 
-                # if form.cleaned_data.get("category") == CategoryChoices.Coda_Staff_Member:
-                #     form.instance.is_staff = True
-                # elif form.cleaned_data.get("category") == CategoryChoices.Jobsupport or form.cleaned_data.get("category") == CategoryChoices.Student or form.cleaned_data.get("category") == CategoryChoices.investor:
-                #     form.instance.is_client = True
-                # else:
-                #     form.instance.is_applicant = True
+                    # Send verification email
+                    current_site = get_current_site(request)
+                    mail_subject = 'Activate your account.'
+                    
+                    # Encode user ID and token
+                    uid = urlsafe_base64_encode(force_bytes(form.instance.pk))
+                    token = default_token_generator.make_token(form.instance)
+                    # Reverse URL to activation view
+                    activation_link = reverse('accounts:activate', kwargs={'uidb64': uid, 'token': token})
 
-                form.save()
+                    # Construct full URL
+                    activation_url = f"http://{current_site.domain}{activation_link}"
 
-                if form.cleaned_data.get('category') in [CategoryChoices.Jobsupport,CategoryChoices.Bussines_Training,CategoryChoices.investor,CategoryChoices.General_User]:
-                    subject = "Biashara Credential"
-                    try:
-                        send_email( category=2,
-                        to_email=[form.instance.email], #[request.user.email,],
-                        subject=subject, 
-                        html_template='email/user_credential.html',
-                        context={'user': form.instance, 'password': random_password})
-                    except Exception as e:
-                        # Handle any other exceptions
-                        print(f"An unexpected error occurred: {e}")
-                return redirect('accounts:account-login')
-    else:
-        msg = "error validating form"
-        print(msg)
+                    # Render email template with context
+                    message = render_to_string('email/activation_email.html', {
+                        'user': form.instance,
+                        'domain': current_site.domain,
+                        'uid': uid,
+                        'token': token,
+                        'activation_url': activation_url,
+                    })
+
+                    # Send email
+                    send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [form.instance.email])
+
+                    messages.success(request, 'Please confirm your email address to complete the registration.')
+                    return redirect('accounts:account-login')
+            else:
+                messages.error(request, 'Error validating form')
     
     return render(request, "accounts/registration/Biashara/join.html", {"form": form})
-
-
-
-
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
@@ -177,7 +196,22 @@ def login_view(request):
     return render(
         request, "accounts/registration/Biashara/login_page.html", {"form": form, "msg": msg}
     )
+def activate_account(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
 
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Your account has been activated successfully!')
+        return redirect('accounts:account-login')
+    else:
+        messages.error(request, 'Activation link is invalid!')
+        return redirect('accounts:account-login')
 # ================================USERS SECTION================================
 def users(request):
     # Filter active staff users and order by date joined

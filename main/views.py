@@ -122,7 +122,7 @@ def layout(request):
             'news':news,
             
         }
-    return render(request, "main/home_templates/home.html",context)
+    return render(request, "main/home_templates/home1.html",context)
 
 
 def History(request):
@@ -194,3 +194,15 @@ def about_view(request):
     teams = Team.objects.all()
     print(teams     )
     return render(request, 'main/about_templates/about.html', {'teams': teams})
+
+def investment_page(request):
+    page_instance = Page.objects.get(page_name='investment')
+    description = Description.objects.filter(page=page_instance)
+
+    content = {
+        'page_instance': page_instance,
+        'description': description,
+    }
+    print(description)
+
+    return render(request, 'main/SERVICES/investment.html', content)

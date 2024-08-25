@@ -19,7 +19,7 @@ href="{% static 'main/css/homes.css' %}"/>
 <!-- Hero Section -->
 <div class="hero-section animate-on-scroll" style="margin-top: -40px;">
     <div class="hero-content">
-        <h1 style="color: #5E0303;">Kenya’s Global Trade, Business, and Investment Hub</h1>
+        <h1 style="color: white">Kenya’s Global Trade, Business, and Investment Hub</h1>
         <p>Together, we will build a vibrant ecosystem that empowers entrepreneurs, attracts investments, and strengthens the bonds between Kenya and the world.</p>
         {% if not user.is_authenticated %}
         <a href="{% url 'accounts:join' %}" class="hero-button">Get started</a>
@@ -56,7 +56,7 @@ href="{% static 'main/css/homes.css' %}"/>
 
 <!-- Services Section -->
 <div class="services-section animate-on-scroll">
-    <div class="container swiper">
+    <div class="container swiper"> 
         <h2>Our Services</h2>
         <div class="section-divider">
             <div class="line"></div>
@@ -66,7 +66,7 @@ href="{% static 'main/css/homes.css' %}"/>
         <div class="slider-wrapper swiper-container">
             <div class="card-list swiper-wrapper">
                 {% for item in service %}
-                <div class="card-item swiper-slide service-card" style="background-image: url('{{ item.image.url }}');">
+   <div class="card-item swiper-slide service-card" style="background-image: url('{{ item.image.url }}');">
                     <div class="service-card-inner">
                         <div class="service-card-front">
                             <h3>{{item.title}}</h3>
@@ -112,11 +112,12 @@ href="{% static 'main/css/homes.css' %}"/>
                     </div>
                     {% for item in description %}
                         {% if item.name == 'Global Reach' %}
-                            <h3>{{item.name}}</h3>
+                            <h3>{{item.name}}</h3>    
+                                
                             <p>{{item.content}}</p>
-                        {% endif %}
-                    {% endfor %}      
-             
+                            {% endif %}
+                        {% endfor %}        
+                    </div>
                 </div>
                 <div class="how-it-works-card">
                     <div class="icon-container">

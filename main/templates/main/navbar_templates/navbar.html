@@ -58,6 +58,17 @@
         color: #002f2f;
         transform: scale(1.05);
     }
+    /* Responsive Design (Optional) */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: center; /* Center items horizontally */
+    }
+
+    .nav-item a {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+}
 
     .dropdown {
         position: relative;

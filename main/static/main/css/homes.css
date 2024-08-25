@@ -1,58 +1,72 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-famiy: 'Arial', sans-serif;
 }
 
 /* Hero Section */
+
 .hero-section {
     display: flex;
-    align-items: center;
-    height: 450px;
     justify-content: space-between;
-    padding: 50px;
-    background: linear-gradient(135deg, #5f27cd, #341f97);
+    align-items: center; /* Vertically centers the content and image */
+    background-color: #007bff;
+    padding: 60px 20px;
     color: white;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
+
 
 .hero-content {
-    max-width: 50%;
+    max-width: 60%;
 }
-
 .hero-content h1 {
-    font-size: 48px;
-    font-weight: bold;
+font-size: 2.5em;
+margin-bottom: 20px;
 }
 
 .hero-content p {
-    font-size: 18px;
-    margin: 20px 0;
+font-size: 1.2em;
+margin-bottom: 30px;
 }
 
 .hero-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #5f27cd;
-    background-color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
+display: inline-block;
+padding: 15px 30px;
+font-size: 1.2em;
+color: #fff;
+background-color: #28a745;
+text-decoration: none;
+border-radius: 5px;
 }
 
 .hero-button:hover {
-    background-color: #341f97;
-    color: white;
+background-color: #218838;
+}
+
+.hero-image {
+max-width: 35%;
+text-align: right;
 }
 
 .hero-image img {
-    width: 100%;
-    max-width: 500px;
-    border-radius: 10px;
+max-width: 100%;
+height: auto;
+border-radius: 8px;
+}
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column; /* Stacks content and image vertically on small screens */
+        text-align: center; /* Centers text */
+    }
+
+    .hero-content, .hero-image {
+        max-width: 100%; /* Ensures both content and image take full width */
+    }
+
+    .hero-image img {
+        margin-top: 20px; /* Adds space between content and image */
+    }
 }
 
-/* Our Mission and Vision Section */
+/* Our Mission and Vision Section  */
 .mission-vision-section {
     display: flex;
     flex-wrap: wrap;

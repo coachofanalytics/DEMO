@@ -1,0 +1,632 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/home.css' %}" />
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<style>
+    .hero-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color:  #341f97;
+        padding: 60px 20px;
+        color: white;
+        height: 450px;
+    }
+    .hero-content {
+        max-width: 60%;
+    }
+    .hero-content h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+    .hero-content p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+    }
+    .hero-button {
+        display: inline-block;
+        padding: 15px 30px;
+        font-size: 1.2em;
+        color: blue;
+        background-color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .hero-button:hover {
+        background-color:blue ;
+        color: white;
+    }
+  .hero-image {
+        max-width: 35%;
+        text-align: right;
+    }
+    .hero-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+/* Our Mission and Vision Section  */
+.mission-vision-section {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 0;
+    gap: 20px; 
+}
+/* General card styling */
+.card {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+.mission ,.vision{
+    background: linear-gradient(135deg, #ff6b6b, blue);
+    color: white;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+/* Specific styles for the mission and vision cards */
+.mission i, .vision i {
+    margin-right: 10px;
+    color: white;
+}
+/* Services Section */
+.services-section {
+    padding: 50px 0;
+    /* background: linear-gradient(135deg, #f7f7f7, #e0e0e0); */
+}
+.services-section h2  {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 10px;
+    font-weight: 905;
+    color: #333;
+}
+.services-section p{
+    font-size: 18px;
+    font-family: sans-serif;
+}
+.section-divider {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.section-divider .line {
+    width: 60px;
+    height: 4px;
+
+    background: #000;
+    margin: 10px auto;
+}
+.services-carousel {    
+    display: flex;
+    gap: 20px;
+}
+.services-section .swiper-container {
+    width: 30%; /* Set this to the desired width, e.g., 100%, 80%, or a specific pixel value */
+    height: 400px; /* Adjust the height to your preference, e.g., 300px, 400px, etc. */
+    max-width: 800px; /* Optional: Set a maximum width if you want to limit the size */
+    margin: 0 auto; /* Center the swiper container */
+}
+.carousel-track {
+    display: flex;
+    animation: scroll 20s linear infinite;
+}
+.service-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+.service-card:hover .service-card-inner {
+    transform: rotateY(180deg);
+}
+.service-card-back {
+    /* Use a semi-transparent dark gradient for the back */
+    transform: rotateY(180deg);
+}
+.service-card h3, .service-card p {
+    margin: 0;
+    text-align: center;
+}
+.service-card {
+    position: relative;
+    width: 260px;
+    height: 321px;
+    margin: 0 10px;
+    flex: 0 0 auto;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+.service-card-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+.service-card-front, .service-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+}
+.service-card-front {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+.service-card-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #1b1b1b;
+    filter: blur(1px);
+    z-index: -200;  
+    opacity: 0.9;
+    border-radius: 10px;
+    padding: 4px;
+}
+.service-card-back p {
+    margin: 0 0 10px 0;
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    line-height: 1.5;
+    font-size: 14px;
+    font-weight: 600;
+}
+.read-more {
+    display: block;
+    margin-top: 10px;
+    color: #fff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .services-section .swiper-container {
+        width: 100%;
+        height: 300px;
+    } 
+    .services-section .swiper-slide {
+        width: 90%;
+    }
+}
+/* Styling for the section */
+.how-it-works-section {
+    padding: 40px 20px;
+    background-color: white;
+    text-align: center;
+    position: relative; /* For absolute positioning of the line */
+}
+/* Container inside the section */
+.how-it-works-section .container {
+    max-width: 1200px; /* Limit the width of the container */
+    margin: 0 auto; /* Center container horizontally */
+    padding: 0 20px; /* Padding inside the container */
+}
+/* Styling for the heading */
+.how-it-works-section h2 {
+    font-size: 2.5rem; /* Size of the heading */
+    color: #333; /* Dark text color for contrast */
+    margin-bottom: 20px; /* Space below the heading */
+}
+/* Styling for the section divider */
+.how-it-works-section .sec {
+    display: inline-block;
+    position: absolute; /* Absolute positioning */
+     top: 90px; 
+    left: 50%; /* Center the line horizontally */
+    transform: translateX(-50%); /* Center the line horizontally */
+}
+/* Styling for the line inside the divider */
+.how-it-works-section .line {
+    width: 80px; /* Width of the line */
+    height: 4px; /* Thickness of the line */
+    background-color: black; /* Color of the line */
+    border-radius: 2px; /* Rounded edges for a softer look */
+}
+/* Styling for the how-it-works-content section */
+.how-it-works-content {
+    display: flex;
+    justify-content: space-between; /* Distribute space between cards */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    padding: 40px 20px;
+    background-color: white; /* Light background color */
+}
+/* Styling for the individual how-it-works-card */
+.how-it-works-card {
+    background-color: transparent; /* Remove background color */
+    border: none; /* Remove border */
+    box-shadow: none; /* Remove shadow for a clean look */
+    padding: 20px;
+    text-align: center;
+    flex: 1 1 calc(33.333% - 40px); /* Three cards in a row, adjust for margins */
+    margin: 20px; /* Space around the card */
+    box-sizing: border-box; /* Include padding and border in element’s total width and height */
+    transition: transform 0.3s ease; /* Smooth transition for hover effects */
+}
+/* Hover effects for the card */
+.how-it-works-card:hover {
+    transform: scale(1.02); /* Slightly enlarge the card on hover */
+}
+/* Styling for the icon container */
+.icon-container {
+    font-size: 2rem; /* Size of the icon */
+    color: #007BFF; /* Color of the icon */
+    margin-bottom: 15px; /* Space below the icon */ 
+}
+/* Basic styling for the icon container */
+.icon-container {
+    display: flex;
+    justify-content: center; /* Center the icon horizontally */
+    align-items: center; /* Center the icon vertically */
+    width: 70px; /* Set a fixed width */
+    height: 70px; /* Set a fixed height */
+    color: #fff;
+    background-color: rgb(196, 30, 30); /* Background color of the container */
+    border-radius: 60%; /* Make the container circular */
+    margin: 0 auto; /* Center the container horizontally if needed */
+    padding: 10px; /* Add some padding inside the container */
+}
+/* Hover effect for the icon container */
+.icon-container:hover {
+    background-color: #007BFF; /* Change background color on hover */
+    color: #fff; /* Change icon color on hover */
+    transform: scale(1.1); /* Slightly enlarge the container */
+    transition: all 0.3s ease; /* Smooth transition for the hover effect */
+}
+/* Hover effect for the icon */
+.icon-container:hover i {
+    color: #fff; /* Change the icon color on hover */
+}
+/* Styling for the card heading */
+.how-it-works-card h3 {
+    font-size: 1.5rem; /* Size of the heading */
+    color: #333; /* Dark text color for contrast */
+    margin-bottom: 10px; /* Space below the heading */
+}
+/* Styling for the card content */
+.how-it-works-card p {
+    font-size: 1rem; /* Size of the paragraph text */
+    color: black; /* Slightly lighter text color for content */
+    line-height: 1.5; /* Line height for better readability */
+}
+/* Center the cta-section on the page */
+.cta-section {
+    display: flex;
+    justify-content: center; /* Centers the container horizontally */
+    align-items: center; /* Centers the container vertically */
+     color: black;
+    background-color: white; /* Example background color */
+}
+/* Center the content inside the container */
+.container {
+    max-width: 1200px; /* Maximum width of the container */
+    width: 100%; /* Make sure the container takes up full width */
+    padding: 20px; /* Padding inside the container */
+    box-sizing: border-box; /* Ensure padding is included in the container's width */
+}
+
+/* Layout for the content inside cta-content */
+.cta-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text */
+    position: relative;
+}
+/* Style for the button container and position it to the right */
+.cta-button {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+    width: 100%; /* Ensure the button container takes full width */
+    position: absolute; /* Position it absolutely within .cta-content */
+    bottom: 20px; /* Adjust bottom position as needed */
+    left: 0; /* Align it to the left edge of .cta-content */
+}
+/* Style for the button itself */
+.btn {
+    padding: 15px 30px; /* Smaller padding for a smaller button */
+    font-size: 16px; /* Smaller font size */
+    background-color: rgb(83, 10, 10); /* Example button color */
+    color: #fff; /* White text color */
+    border: none; /* Remove border */
+    text-decoration: none; /* Remove underline from the link */
+    border-radius: 5px; /* Optional: rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+.custom-heading {
+    color: black;
+    white-space: nowrap;
+    font-size: 15px; /* Adjust size as needed */
+    text-align: center; /* Optional: Center the text */
+    display: inline-block;
+}
+/* Column and image styles */
+.cmp-itl.has-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+} 
+
+.cmp-itl__image img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+/* CTA link styling */
+.hg-lightBlue.rte__18px--400 {
+    color: #007bff;
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.hg-lightBlue.rte__18px--400:hover {
+    color: #0056b3;
+}
+
+</style>
+
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Kenya’s Global Trade, Business, and Investment Hub</h1>
+        <p>Together, we will build a vibrant ecosystem that empowers entrepreneurs, attracts investments, and strengthens the bonds between Kenya and the world.</p>
+
+        <a href="{% url 'accounts:join' %}" class="hero-button">Get started</a>
+
+    
+    </div>
+    <div class="hero-image">
+        <img src="{% static 'main/img/home/her.png' %}" alt="Hiker">
+    </div>
+</div>
+
+
+<!-- Our Mission and Vision Section -->
+<div class="mission-vision-section">
+    <!-- Our Mission Card -->
+    <div class="card mission">
+        {% for item in description %}
+        {% if item.name == 'Our Mission' %}
+        <h2><i class="fas fa-bullseye"></i> {{item.name}}</h2>
+        <p>
+            {{item.content}}
+        </p>
+        {% endif %}
+        {% endfor %}
+    </div>
+    
+    <!-- Our Vision Card -->
+    <div class="card vision">
+        {% for item in description %}
+        {% if item.name == 'OUR VISION' %}
+        <h2><i class="fas fa-lightbulb"></i> {{item.name}}</h2>
+        <p>
+            {{item.content}}
+        </p>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<!-- Services Section -->
+<div class="services-section animate-on-scroll">
+    <div class="container swiper"> 
+        <h2>Our Services</h2>
+        <div class="section-divider">
+            <div class="line"></div>
+            <p>We are a full-service Trade, Training, and Investment Hub here to facilitate every aspect of your
+                transition to Ghana from A to Z</p>
+        </div>
+        <div class="slider-wrapper swiper-container">
+            <div class="card-list swiper-wrapper">
+                {% for item in service %}
+   <div class="card-item swiper-slide service-card" style="background-image: url('{{ item.image.url }}');">
+                    <div class="service-card-inner">
+                        <div class="service-card-front">
+                            <h3>{{item.title}}</h3>
+                        </div>
+                        <div class="service-card-back">
+                            <p>{{item.description|safe|truncatechars:110}}</p>
+                            <a href="#" class="read-more">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-slide-button swiper-button-prev"></div>
+            <div class="swiper-slide-button swiper-button-next"></div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+ <div class=" how-it-works-section animate-on-scroll">
+<div class="container">
+    <h2>why us</h2>
+    <div class="sec">
+        <div class="line"></div>
+    </div>
+
+</div>
+ </div>
+ <div class="how-it-works-content">
+    <div class="how-it-works-card">
+        <div class="icon-container">
+            <i class="fas fa-star"></i>
+        </div>
+        {% for item in description %}
+        {% if item.name == 'Experienced Professionals' %}
+            <h3>{{item.name}}</h3>
+            <p>{{item.content}}</p>
+        {% endif %}
+    {% endfor %}        
+
+    
+ </div>
+ <div class="how-it-works-card">
+    <div class="icon-container">
+        <i class="fas fa-globe"></i>
+    </div>
+    {% for item in description %}
+        {% if item.name == 'Global Reach' %}
+            <h3>{{item.name}}</h3>
+            <p>{{item.content}}</p>
+        {% endif %}
+    {% endfor %}      
+</div>
+<div class="how-it-works-card">
+    <div class="icon-container">
+        <i class="fas fa-shield-alt"></i>
+    </div>
+    {% for item in description %}
+    {% if item.name == 'Trustworthy Services' %}
+        <h3>{{item.name}}</h3>
+        <p>{{item.content}}</p>
+    {% endif %}
+{% endfor %}      
+         </div>
+     </div>
+    </div>
+   <div class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to get <span class="highlight">started</span></h2>
+            <p>Book your 15-minute exploratory call to custom curate your Africa plan today!</p>
+            <div class="cta-button">
+                <a href="#" class="btn">FREE DISCOVERY CALL</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<section id="hosting" data-id="section" class="pt-50 pb-50 ptMobile-25 pbMobile-25 h-centered bgp-d-tl bgp-m-cc">
+    <div class="container">
+        <!-- Responsive Columns Section -->
+        <div class="responsivecolumns">
+            <div class="row responsive-columns__row responsive-columns__row--desktop-left reg-final-price">
+                <div class="responsive-columns__column col-sm-12">
+                    <div class="rte text section">
+                        <div class="cmp-text rte --hg-darkBlue" data-sf-component="rte" data-sf-requestdata="null">
+                            <h1 style="text-align: center; color: black;">
+                                <span class="rte__36px">biashara bridges is even better with all these FREE features.</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="responsivecolumns section">
+            <div class="row responsive-columns__row responsive-columns__row--desktop-left reg-final-price">
+                <!-- Feature 1 -->
+                <div class="responsive-columns__column col-sm-12 col-md-3">
+                    <div class="itl teaser section">
+                        <div class="cmp-itl has-image cmp-itl--small cmp-itl--left valign-top">
+                            <div class="cmp-itl__image">
+                                <img src="https://newfold.scene7.com/is/content/NewfoldDigital/BandwidthIcon?ts=1701419613392&amp;dpr=off" class="cmp-image__image" alt="Unmetered bandwidth">
+                            </div>
+                            <div class="cmp-itl__content">
+                                <h4><span class="rte__24px--500">Unmetered<br>bandwidth</span></h4>
+                                <p><span class="rte__15px--300">Bring in all the traffic you want, we got ya.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="responsive-columns__column col-sm-12 col-md-3">
+                    <div class="itl teaser section">
+                        <div class="cmp-itl has-image cmp-itl--small cmp-itl--left valign-top">
+                            <div class="cmp-itl__image">
+                                <img src="https://newfold.scene7.com/is/content/NewfoldDigital/DomainIcon?ts=1701419625894&amp;dpr=off" class="cmp-image__image" alt="Domain registration">
+                            </div>
+                            <div class="cmp-itl__content">
+                                <h4><span class="rte__24px--500">Domain<br>registration</span></h4>
+                                <p><span class="rte__15px--300">Claim your name and get yourself online.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="responsive-columns__column col-sm-12 col-md-3">
+                    <div class="itl teaser section">
+                        <div class="cmp-itl has-image cmp-itl--small cmp-itl--left valign-top">
+                            <div class="cmp-itl__image">
+                                <img src="https://newfold.scene7.com/is/content/NewfoldDigital/SSLIcon?ts=1701419604267&amp;dpr=off" class="cmp-image__image" alt="SSL certificate">
+                            </div>
+                            <div class="cmp-itl__content">
+                                <h4><span class="rte__24px--500">SSL <br>certificate</span></h4>
+                                <p><span class="rte__15px--300">Show your visitors you take security seriously.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature 4 -->
+                <div class="responsive-columns__column col-sm-12 col-md-3">
+                    <div class="itl teaser section">
+                        <div class="cmp-itl has-image cmp-itl--small cmp-itl--left valign-top">
+                            <div class="cmp-itl__image">
+                                <img src="https://newfold.scene7.com/is/content/NewfoldDigital/WordPressIcon-Orange?ts=1701419595105&amp;dpr=off" class="cmp-image__image" alt="One-click installs">
+                            </div>
+                            <div class="cmp-itl__content">
+                                <h4><span class="rte__24px--500">One-click installs</span></h4>
+                                <p><span class="rte__15px--300">Integrating your apps couldn't be any easier.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="rte text">
+            <div class="cmp-text rte --hg-darkBlue" data-sf-component="rte" data-sf-requestdata="null">
+                <p style="text-align: center;">
+                    <a href="#compare-plans" class="hg-lightBlue rte__18px--400">
+                        <span class="hg-lightBlue">
+                            <a href="#">Check out the full feature list</a>
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Section -->
+
+
+
+
+{% endblock %}

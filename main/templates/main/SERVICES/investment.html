@@ -1,0 +1,326 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    
+    .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+    }
+    
+    .header {
+        text-align: center;
+        padding: 40px;
+        background-color: #6b7885;
+        color: white;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .header h1 {
+        font-size: 36px;
+        margin: 0;
+        color: white;
+    }
+    
+    .header p {
+        font-size: 18px;
+        margin: 10px 0 0;
+    }
+    
+    .hero {
+        text-align: center;
+        padding: 40px;
+        background-color:#6b7885 ;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+    
+    .hero h2 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+    
+    .hero p {
+        font-size: 18px;
+        color: #ffffff;
+    }
+    
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .card {
+        background-color: #6b7885;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        flex: 1 1 calc(25% - 20px);
+        min-width: 250px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-title {
+        font-size: 1.5em;
+        color: white;
+        margin-bottom: 10px;
+    }
+    
+    .card-text {
+        font-size: 1em;
+        color: white;
+    }
+    
+    .content {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .left-side, .right-side {
+        flex: 1;
+        padding: 20px;
+        background-color:  #6b7885;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color:white;
+    }
+    
+    .left-side {
+        max-width: 50%;
+    }
+    
+    .right-side {
+        max-width: 50%;
+    }
+    
+    .read-more {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: white;
+        color: rgb(15, 15, 228);
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .read-more:hover {
+        color:white ;
+        background-color: #053a6e;
+    }
+    
+    .video-container iframe {
+        width: 100%;
+        height: auto;
+        border: 0;
+    }
+    
+    .video-container p {
+        margin-top: 10px;
+        color: white;
+    }
+    
+    .cta {
+        text-align: center;
+        padding: 40px;
+        background-color: #6b7885;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px white(0, 0, 0, 0.1);
+    }
+    
+    .cta h2 {
+        margin: 0;
+        font-size: 28px;
+    }
+    
+    .cta p {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+    
+    .cta a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border: 2px solid white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+    
+    .cta a:hover {
+        background-color: #3983ce;
+        border-color: white;
+    } 
+    .info-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    .info-section .text {
+        flex: 1;
+        padding: 20px;
+        background-color: #6b7885;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+      
+    .info-section .image {
+        flex: 1;
+        max-width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .info-section .image img {
+        width: 100%;
+        height: auto;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) { 
+        .card {
+            flex: 1 1 calc(50% - 20px);
+        }
+        
+        .content {
+            flex-direction: column;
+        }
+        
+        .left-side, .right-side {
+            max-width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .card {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+
+<div class="header">
+    <h1>Your Investment Journey</h1>
+    <p>Discover the opportunities with us.</p>
+</div>
+
+<div class="container">
+    <div class="hero">
+        {% for item in description %}
+            {% if item.name == 'Unlock Your Financial Potential' %}
+                <h2>{{ item.name }}</h2>
+                <p>{{ item.content }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="container">
+    <div class="info-section">
+        <div class="text">
+            <h2>Investment Opportunities</h2>
+            <p>Explore a wide range of investment options tailored to your needs. Whether you're looking for high returns or a diversified portfolio, we have solutions for you. Our expert team provides guidance to help you make the most of your investments.</p>
+        </div>
+        <div class="image">
+            <img src="{% static 'main/img/investment.jpg' %}" alt="Investment Opportunities">
+        </div>
+    </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="card-body">
+                {% for item in description %}
+                    {% if item.name == 'High Returns' %}
+                        <h3 class="card-title">{{ item.name }}</h3>
+                        <p class="card-text">{{ item.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                {% for item in description %}
+                    {% if item.name == 'Diversified Portfolio' %}
+                        <h3 class="card-title">{{ item.name }}</h3>
+                        <p class="card-text">{{ item.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                {% for item in description %}
+                    {% if item.name == 'Unlock Your Financial Potential' %}
+                        <h3 class="card-title">{{ item.name }}</h3>
+                        <p class="card-text">{{ item.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                {% for item in description %}
+                    {% if item.name == 'Expert Support' %}
+                        <h3 class="card-title">{{ item.name }}</h3>
+                        <p class="card-text">{{ item.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="left-side">
+            {% for item in description %}
+                {% if item.name == 'About Services Invest' %}
+                    <h2>{{ item.name }}</h2>
+                    <p>{{ item.content }}</p>
+                {% endif %}
+            {% endfor %}
+            <a href="#" class="read-more">Read More</a>
+        </div>
+
+        <div class="right-side">
+            <div class="video-container">
+                <!-- Example YouTube video iframe. Replace src with your video URL -->
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <p>Watch this video to learn more about how our services and investment opportunities work.</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="cta">
+        <h2>Ready to Invest?</h2>
+        <p>Contact us today to start your investment journey.</p>
+        <a href="#">Get Started</a>
+    </div>
+</div>
+
+{% endblock %}

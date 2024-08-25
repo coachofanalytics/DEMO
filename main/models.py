@@ -32,6 +32,7 @@ class Content(models.Model):
         ('Newsletter', 'Newsletter'),
         ('Blog', 'Blog'),
     ]
+    
 
     section = models.CharField(max_length=50, choices=SECTION_CHOICES)
     title = models.CharField(max_length=255, blank=True, null=True)

@@ -7,6 +7,7 @@ app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
     path('about/', about_view, name='about'),
+    path('investment/', views.investment_page, name='investment'),
     path('history',views.History, name ='history'),
     path('import_training', views.Import_training , name = 'import'),
     path('export_training', views.Export_training , name = 'export'),
