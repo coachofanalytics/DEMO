@@ -13,6 +13,8 @@ from accounts.models import User
 from .utils import image_view,path_values
 from main.forms import ContactForm
 from django.contrib.auth import get_user_model
+from collections import defaultdict
+from .models import Team
 
 User=get_user_model()
 
@@ -156,11 +158,11 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
     def get_success_url(self):
         return reverse('main:images') 
     
-
-
-
     
-def Team_list(request):
-    info = Team.objects.all()
-    print("info==================", info)
-    return render(request, 'main/snippets_templates/table/globa.html', {'Team': info})
+
+def team_list(request):
+    team_members = Team.objects.all()
+    return render(request, 'main/snippets_templates/table/globa.html', {'team_members': team_members})
+
+
+
