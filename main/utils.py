@@ -1,7 +1,7 @@
 import os,openai
 import requests
 from coda_project.settings import SITEURL
-from .models import Assets
+from .models import Asset
 import datetime
 #import pdfkit
 
@@ -105,8 +105,8 @@ def download_image(url):
 
 #===============Processing Images from Database==================
 def image_view(request):
-    images= Assets.objects.all()
-    image_names=Assets.objects.values_list('name',flat=True)
+    images= Asset.objects.all()
+    image_names=Asset.objects.values_list('name',flat=True)
     return images,image_names
 
 

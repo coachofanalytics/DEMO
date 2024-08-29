@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService
+from .models import Asset,Description, News, Page, Service, SubService,Team
 from accounts.models import User
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -130,7 +130,7 @@ def History(request):
     return render(request, "main/about_templates/history.html",context)
 
 class ImageCreateView(LoginRequiredMixin, CreateView):
-    model = Assets
+    model = Asset
     success_url = "/images/"
     # fields = ["title", "description"]
     fields = ["name",'category', "description","image_url"]
@@ -140,13 +140,13 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
         
 def images(request):
-    # images = Assets.objects.all().first()
-    images = Assets.objects.all()
+    # images = Asset.objects.all().first()
+    images = Asset.objects.all()
     # print(images)
     return render(request, "main/snippets_templates/static/images.html", {"title": "pay", "images": images})
 
 class ImageUpdateView(LoginRequiredMixin,UpdateView):
-    model=Assets
+    model=Asset
     fields = ['category','name','image_url','description']
      
     def form_valid(self,form):
@@ -155,3 +155,12 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return reverse('main:images') 
+    
+
+
+
+    
+def Team_list(request):
+    info = Team.objects.all()
+    print("info==================", info)
+    return render(request, 'main/snippets_templates/table/globa.html', {'Team': info})

@@ -6,7 +6,7 @@ from . import views
 app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
-    # path('about/', views.about, name='about'),
+    path('Team_list/', views.Team_list, name='Team_list'),
     path('history',views.History, name ='history'),
     
     

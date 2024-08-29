@@ -1,5 +1,5 @@
 from django.db import models
-from main.models import Assets
+from main.models import Asset
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
@@ -30,7 +30,7 @@ class Ads(models.Model):
     description= models.TextField(null=True, blank=True)
     message= models.TextField(null=True, blank=True)
     image_name = models.ForeignKey(
-        Assets, related_name="message_image", on_delete=models.CASCADE,default=1,null=True, blank=True
+        Asset, related_name="message_image", on_delete=models.CASCADE,default=1,null=True, blank=True
     )
     link = models.CharField(max_length=500, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
