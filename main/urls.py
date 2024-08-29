@@ -2,7 +2,6 @@ from django.urls import path
 
 from . import views
 
-
 app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
@@ -12,7 +11,7 @@ urlpatterns = [
     path('export_training', views.Export_training , name = 'export'),
     path('G2B_training', views.G2B_training , name = 'G2B'),
     path('plan/<int:course_id>/', views.Plan_training, name='plan'),
-    
+     path('investment/', views.investment__page, name='investment'),
     
    #==============ERRORS==============================================
     path('400Error/', views.error400, name='400error'),

@@ -237,7 +237,8 @@
                 <div class="dropdown-content">
                     {% for service in service %}
                     <div class="sub-dropdown">
-                        <a href="#">{{ service.title }}
+                        <a href="{{service.link}}">{{ service.title }}
+                        
                             {% if service.subservices.exists %}
                             <span class="indicator-icon"></span>
                             {% endif %}

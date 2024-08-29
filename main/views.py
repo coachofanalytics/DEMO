@@ -10,9 +10,12 @@ from django.views.generic import (
 )
 from .models import Assets,Description, News, Page, Pricing, Service, SubService,Training
 
+from django.shortcuts import render
 from .utils import image_view,path_values
 from main.forms import ContactForm
 from django.contrib.auth import get_user_model
+from django.shortcuts import render
+from .models import Investment
 
 User=get_user_model()
 
@@ -182,4 +185,19 @@ def Plan_training(request, course_id):
     
     # Pass the training object and its related Pricing objects to the template
     return render(request, 'main/training/plans.html', {'training': training})
+
+
+
+
+
+def investment__page(request):
+    page_instance = Page.objects.get(page_name='Investment')
+    description = Description.objects.filter(page = page_instance)
+
+
+    context ={
+        'description':description
+    }
+    
+    return render(request, 'main/services/investment.html',context)
 

@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+
+from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
@@ -161,6 +163,15 @@ class Pricing(models.Model):
         return f"{self.training.course_title} - ${self.price}"    
     
 
+class Investment(models.Model):
+    name = models.CharField(max_length=100,null=True,blank=True)
+    description = models.TextField()
+    features = models.TextField(null=True,blank=True)  # For storing a list of features
+        
+    def __str__(self):
+            return self.name
+
+
 
 
     
@@ -171,3 +182,4 @@ class TeamMembers(models.Model):
 
     def __str__(self):
         return self.name
+    
