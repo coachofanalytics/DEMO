@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Investment
-
+from .models import business
 
 from .models import Assets,TeamMembers,Feedback,Description,Page,Team,Content,Service,SubService,News,Training,Pricing
 
@@ -19,3 +19,6 @@ admin.site.register(Pricing)
 admin.site.register(TeamMembers)
 
 admin.site.register(Investment)
+
+admin.site.register(business)
+

@@ -11,8 +11,9 @@ urlpatterns = [
     path('export_training', views.Export_training , name = 'export'),
     path('G2B_training', views.G2B_training , name = 'G2B'),
     path('plan/<int:course_id>/', views.Plan_training, name='plan'),
-     path('investment/', views.investment__page, name='investment'),
-    
+    path('investment/', views.investment__page, name='investment'),
+     path('business/', views.business_page, name='business'),  # Corrected view name
+                    
    #==============ERRORS==============================================
     path('400Error/', views.error400, name='400error'),
     path('403Error/', views.error403, name='403error'),

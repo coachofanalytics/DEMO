@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Pricing, Service, SubService,Training
+from .models import Assets,Description, News, Page, Pricing, Service, SubService,Training,business
 
 from django.shortcuts import render
 from .utils import image_view,path_values
@@ -16,6 +16,9 @@ from main.forms import ContactForm
 from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from .models import Investment
+# views.py
+
+
 
 User=get_user_model()
 
@@ -201,3 +204,16 @@ def investment__page(request):
     
     return render(request, 'main/services/investment.html',context)
 
+
+
+def business_page(request):
+    page_instance = Page.objects.get(page_name='business')
+    description = Description.objects.filter(page=page_instance)
+    businesses = business.objects.all()
+
+    context = {
+        'description': description,
+        'businesses': businesses,  
+    }
+
+    return render(request, 'main/services/business.html', context)

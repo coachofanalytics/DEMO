@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
+from django.db import models
+
 
 # from tableauhyperapi import DatabaseName
 
@@ -83,7 +85,6 @@ class Service(models.Model):
     description = models.TextField()
     link = models.URLField(null= True,blank=True)
     image = models.ImageField(upload_to='service_images/', blank=True, null=True)  # Add this line for image field
-
 
     def __str__(self):
         return self.title
@@ -170,9 +171,15 @@ class Investment(models.Model):
         
     def __str__(self):
             return self.name
+# models.py
 
+class business(models.Model):  # Ensure this matches the exact import
+    name = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField()
+    features = models.TextField(null=True, blank=True)
 
-
+    def __str__(self):
+        return self.name
 
     
 class TeamMembers(models.Model):
@@ -182,4 +189,4 @@ class TeamMembers(models.Model):
 
     def __str__(self):
         return self.name
-    
+  

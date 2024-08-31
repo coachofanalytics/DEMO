@@ -39,13 +39,13 @@
 .hero-title {
     font-size: 2.5rem; /* Adjusts the size of the title */
     margin-bottom: 20px;
-    color: #000; /* Adjust title color */
+    color:blue; /* Adjust title color */
 }
 
 .hero-text {
     font-size: 20px; /* Adjusts the size of the text */
     line-height: 1.6;
-    color: white;
+    color: blue;
     font-weight: 20px;
 }
 
@@ -331,9 +331,9 @@
 }
 h1{
   color: black;
-  font-size: 25px;
+  font-size: 35px;
   text-align: center;
-  margin-left: 10%;
+  
 }
 .card:hover .card-description {
     opacity: 1;
@@ -428,7 +428,7 @@ margin-left: 34%;
     <div class="hero-content">
       {% for item in description %}
           {% if item.name == 'investment opportunity' %}
-              <h1 style="color: white;font-size: 50px;font-weight: 700;">{{ item.name }}</h1>
+              <h1 style="color:white;font-size: 50px;font-weight: 700;">{{ item.name }}</h1>
               <p>{{ item.content }}</p>
           {% endif %}
       {% endfor %}
@@ -509,7 +509,7 @@ margin-left: 34%;
 <br><br><br>
 
 <!-- card-description -->
- <h1 style="text-align: center;color: black;">Why Invest with us?</h1>
+ <h1 style="text-align: center;color: black;font-size: 40px;font-weight: 30px;">Why Invest with us?</h1>
  <br><br><br>
 <div class="swiper -container">
     <div class="swiper-wrapper">
