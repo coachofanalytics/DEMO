@@ -349,13 +349,11 @@ h1{
         max-width: 70%; /* Full width for cards on small screens */
     }
 }
-
-/* .subscribebox */
 .subscribebox {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
-    max-width: 600px;
+    width: 200%;
+    max-width: 1000px;
     gap: 20px; /* Space between elements */
     padding: 20px;
     border-radius: 20px; /* Rounded corners */
@@ -363,7 +361,8 @@ h1{
     background-color: #6a6a8a; /* Gradient background */
     margin-top: 20px;
 justify-content: center;
-margin-left: 34%;
+margin-left: 400px;
+margin-right: 250px;
 }
 
 .subscribebox label {
@@ -378,7 +377,7 @@ margin-left: 34%;
     padding: 10px;
     border-radius: 10px;
     border: 1px solid #ccc;
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .subscribebox button[type="submit"] {
@@ -397,6 +396,25 @@ margin-left: 34%;
     color: #f9f9f9;
 }
 
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .subscribebox {
+        flex-direction: column;
+        align-items: stretch; /* Ensure items stretch to full width */
+    }
+    
+    .subscribebox input[type="text"],
+    .subscribebox button[type="submit"] {
+        width: 100%;
+        margin: 0; /* Remove margin if needed */
+        margin-top: 10px; /* Add some space between elements */
+    }
+    
+    .subscribebox button[type="submit"] {
+        margin-top: 10px; 
+    }
+}
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
@@ -676,19 +694,19 @@ margin-left: 34%;
       </div>  
     </div>
   </div>
-  <br><br><br>
+  <br><br>
   <div class="subscribebox">
     <div class="subscribebox__label">
         <label style="font-size: 40px;">Want To Stay Informed?</label>
     </div>
     <div class="subscribebox__form">
         <form method="POST" action="">
-            <input type="text" class="form-control" placeholder="Enter Your Email Address" name="emailaddress" id="emailaddress" required>
+            <input type="text" class="form-control" placeholder="Enter Your Email Address" name="emailaddress" id="emailaddress" required><br>
             <button type="submit">Subscribe</button>
         </form>
     </div>
 </div>
-<br><br>
+<br>
 
   
 {% endblock %}

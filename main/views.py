@@ -205,15 +205,20 @@ def investment__page(request):
     return render(request, 'main/services/investment.html',context)
 
 
-
 def business_page(request):
     page_instance = Page.objects.get(page_name='business')
     description = Description.objects.filter(page=page_instance)
-    businesses = business.objects.all()
+    businesses = business.objects.all()  # Ensure correct capitalization of the model name
+
+    # Process features safely within the loop
+    for item in businesses:
+        # Check if `features` is a string, and only then split
+        if isinstance(item.features, str):
+            item.features = item.features.split(',')  # Split the features into a list
 
     context = {
         'description': description,
-        'businesses': businesses,  
+        'businesses': businesses,
     }
-
     return render(request, 'main/services/business.html', context)
+

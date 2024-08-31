@@ -24,3 +24,9 @@ def split_help(value, lines_per_paragraph=1):
     formatted_paragraphs = [f'<p style="font-family: Franklin Gothic Medium, Arial Narrow, Arial, sans-serif;">{paragraph.strip()}</p>' for paragraph in paragraphs]
     # Return the formatted paragraphs joined by empty strings
     return mark_safe(''.join(formatted_paragraphs))
+
+
+@register.filter
+def split(value, delimiter=','):
+    """Splits the string by the given delimiter."""
+    return value.split(delimiter)

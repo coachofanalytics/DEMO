@@ -267,8 +267,8 @@
 .subscribebox {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
-    max-width: 600px;
+    width: 200%;
+    max-width: 1000px;
     gap: 20px; /* Space between elements */
     padding: 20px;
     border-radius: 20px; /* Rounded corners */
@@ -276,7 +276,7 @@
     background-color: #6a6a8a; /* Gradient background */
     margin-top: 20px;
 justify-content: center;
-margin-left: 34%;
+margin-left: 150px;
 }
 
 .subscribebox label {
@@ -291,7 +291,7 @@ margin-left: 34%;
     padding: 10px;
     border-radius: 10px;
     border: 1px solid #ccc;
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .subscribebox button[type="submit"] {
@@ -367,12 +367,12 @@ margin-left: 34%;
 .card h2 {
     margin: 20px 0 10px;
     font-size: 18px;
-    color: #333;
+    color: black;
 }
 
 .card p {
     font-size: 14px;
-    color: #555;
+    color: black;
     line-height: 1.5;
 }
 
@@ -395,7 +395,7 @@ margin-left: 34%;
       {% for item in description %}
           {% if item.name == 'business opportunity' %}
               <h1 style="color: #555;font-size: 50px;font-weight: 700;text-align: center;">{{ item.name }}</h1>
-              <p style="text-align: center;color:#555;">{{ item.content }}</p>
+              <p style="text-align: center;color: #555;">{{ item.content }}</p>
           {% endif %}
       {% endfor %}
   </div>
@@ -422,34 +422,34 @@ margin-left: 34%;
         </video>
     </div>
 </div>
-
- 
-
-  
 <div class="products-section">
     <div class="products-image">
         <img src="{% static 'main/img/home/k.jpg' %}" alt="Our Products">
     </div>
-        <div class="products-text">
-          <h1>
-            <span class="textEffect"></span>
-            <strong>Business typles</strong>
-            </h1><br><br>
-            <h2>RapidGrow</h2>
-            <p style="color:black;">Today, business is mostly associated with financial instruments that allow individuals or businesses to raise and deploy capital to firms. These firms then rake that capital and use it for growth or profit-generating activities.</p>
-            <ul class="product-features">
-                <li>Service Providers</li>
-                <li>Technology and Innovation</li>
-                <li>Financial Services</li>
-                <li>Real Estate</li>
-                <li style="text-decoration: none;">Short Term business</li>
-                <br>
-            </ul>
+    <div class="products-text">
+        <h1>
+          <span class="textEffect"></span>
+          <strong>Business Types</strong>
+        </h1>
+        <br><br>
+      
+        {% for item in businesses %}
+          {% if item.name == 'RapidGrow' %}
+            <h2>{{ item.name }}</h2>
+            <p style="color:black;">{{ item.description }}</p>
             
+            <ul class="product-features">
+                {% for feature in item.features %}
+                  <li>{{ feature }}</li>
+                {% endfor %}
+              </ul>
+              
+          {% endif %}
+        {% endfor %}
+        <br>
         <a href="#" class="read-more">Read more</a>
-        </div>
-        
-        
+      </div>
+      
     </div>
 </div>
 <br><br><br>
@@ -481,52 +481,76 @@ margin-left: 34%;
     <img src="{% static 'main/img/home/b.jpg' %}" alt="Our Products">
 </div>
 </div>
-<br><br><br>
+<br><br>
 <div class="cards-container">
     <!-- Card 1 -->
     <div class="card">
         <img src="{% static 'main/img/home/o2.jpeg' %}" alt="Kenyan Products" class="card-image">
-        <h2>Kenyan Products</h2>
-        <p>Showcasing unique products made in Kenya, supporting local artisans and businesses.</p>
+        {% for item in description %}
+              {% if item.name == 'Kenyan Products' %}
+                      <h1 class="card-title"> {{ item.name }}</h1>
+                      <p>{{ item.content }}</p>
+                  {% endif %}
+              {% endfor %}
     </div>
 
     <!-- Card 2 -->
     <div class="card">
         <img src="{% static 'main/img/home/o8.jpeg' %}" alt="Technology Solutions" class="card-image">
-        <h2>Technology Solutions</h2>
-        <p>Innovative tech services and products from Kenyan and Diaspora tech entrepreneurs.</p>
-    </div>
+        {% for item in description %}
+        {% if item.name == 'Technology Solutions' %}
+                <h1 class="card-title"> {{ item.name }}</h1>
+                <p>{{ item.content }}</p>
+            {% endif %}
+        {% endfor %}
+</div>
+
 
     <!-- Card 3 -->
     <div class="card">
         <img src="{% static 'main/img/home/hq720.jpg' %}" alt="" class="card-image">
-        <h2>Education and Training</h2>
-        <p>Education and training are essential pillars for personal and professional growth,  and knowledge needed to navigate an ever-evolving world.</p>
-    </div>
+        {% for item in description %}
+        {% if item.name == 'Education and Training' %}
+                <h1 class="card-title"> {{ item.name }}</h1>
+                <p>{{ item.content }}</p>
+            {% endif %}
+        {% endfor %}
+</div>
 
     <!-- Card 4 -->
     <div class="card">
         <img src="{% static 'main/img/home/o7.jpg' %}" alt="Food & Beverages" class="card-image">
-        <h2>Financial Services</h2>
-        <p>
-            Financial services encompass a wide range of offerings, including banking, investment, insurance, and wealth management, designed to help individuals and businesses manage their finances effectively.</p>
-    </div>
+        {% for item in description %}
+        {% if item.name == 'Financial Services' %}
+                <h1 class="card-title"> {{ item.name }}</h1>
+                <p>{{ item.content }}</p>
+            {% endif %}
+        {% endfor %}
+</div>
+
 
     <!-- Card 5 -->
     <div class="card">
         <img src="{% static 'main/img/home/k9.jpeg' %}" alt="Food & Beverages" class="card-image">
-        <h2> Manufacturers</h2>
-        <p>Manufacturers are companies or individuals that produce goods on a large scale by transforming raw materials into finished products through various processes.</p>
-    </div>
+        {% for item in description %}
+        {% if item.name == 'Manufacturers' %}
+                <h1 class="card-title"> {{ item.name }}</h1>
+                <p>{{ item.content }}</p>
+            {% endif %}
+        {% endfor %}
+</div>
 
     <!-- Card 6 -->
     <div class="card">
         <img src="{% static 'main/img/home/h88.jpg' %}" alt="Business Services" class="card-image">
-        <h2>Business Services</h2>
-        <p>Access to professional services that cater to the needs of the Kenyan market.</p>
-    </div>
+        {% for item in description %}
+        {% if item.name == 'Business Services' %}
+                <h1 class="card-title"> {{ item.name }}</h1>
+                <p>{{ item.content }}</p>
+            {% endif %}
+        {% endfor %}
 </div>
-    
+
   <div class="subscribebox">
     <div class="subscribebox__label">
         <label style="font-size: 40px;">Want To Stay Informed?</label>
@@ -534,6 +558,7 @@ margin-left: 34%;
     <div class="subscribebox__form">
         <form method="POST" action="">
             <input type="text" class="form-control" placeholder="Enter Your Email Address" name="emailaddress" id="emailaddress" required>
+            <br>
             <button type="submit">Subscribe</button>
         </form>
     </div>
