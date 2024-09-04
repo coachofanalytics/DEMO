@@ -26,22 +26,6 @@ class Description(models.Model):
     def __str__(self):
         return f"{self.name} for {self.page.page_name}"
 
-class Team(models.Model):
-  
-
-    name = models.CharField(max_length=255)
-    role = models.CharField(max_length=50)
-    region = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='people/')
-    bio = models.TextField()
-    facebook_link = models.URLField(blank = True, null = True)
-    linkedin_link = models.URLField(blank = True, null = True)
-    twitter_link = models.URLField(blank = True, null = True)
-
-
-    def __str__(self):
-        return self.name
-
 class Content(models.Model):
     SECTION_CHOICES = [
         ('Our Story', 'Our Story'),
@@ -144,7 +128,7 @@ class Team(models.Model):
     
 
 
-class MembershipPlans(models.Model):
+class MembershipPlan(models.Model):
     name = models.CharField(max_length=100)
     price = models.CharField(max_length=50)
 
@@ -153,7 +137,7 @@ class MembershipPlans(models.Model):
     
 
 
-class MemberRegistrations(models.Model):
+class Memberregistration(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
