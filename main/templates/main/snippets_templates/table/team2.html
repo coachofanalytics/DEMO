@@ -1,0 +1,90 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team List</title>
+    <style>
+        .team-section {
+            margin: 20px 0;
+        }
+        .team-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .team-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .team-table th, .team-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .team-table th {
+            background-color: #f2f2f2;
+        }
+        .team-table img {
+            max-width: 100px;
+            height: auto;
+        }
+        .bio-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="team-section">
+        <div class="team-title">Global Leadership</div>
+                {% for member in info %}
+                    {% if member.leadership == 'Global' %}
+                     {{ member.name }}</td>
+                            {{ member.get_leadership_display }}</td>
+                            <td>{{ member.get_role_display }}</td>
+                            <td>{{ member.region }}</td>
+                            <td><img src="{{ member.image.url }}" alt="{{ member.name }}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="bio-box">
+                                    {{ member.bio }}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+    </div>
+
+    <div class="team-section">
+        <div class="team-title">Local Leadership</div>
+        
+                {% for member in info %}
+                    {% if member.leadership == 'Local' %}
+                        <tr>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.get_leadership_display }}</td>
+                            <td>{{ member.get_role_display }}</td>
+                            <td>{{ member.region }}</td>
+                            <td><img src="{{ member.image.url }}" alt="{{ member.name }}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="bio-box">
+                                    {{ member.bio }}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+        
+</body>
+</html>
+{% endblock %}

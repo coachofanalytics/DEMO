@@ -142,3 +142,34 @@ class Team(models.Model):
     def __str__(self):
         return self.name    
     
+
+
+class MembershipPlans(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+
+
+class MemberRegistrations(models.Model):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    ]
+
+    email = models.EmailField()
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    phone_number = models.CharField(max_length=15)
+    country = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    leadership = models.CharField(max_length=100, default='default_value')
+
+    agree = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"    

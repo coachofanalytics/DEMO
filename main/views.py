@@ -164,5 +164,8 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 def team_list(request):
     teams = Team.objects.all()
     print('info=============',teams)
-    return render(request, 'main/snippets_templates/table/team.html', {'info': teams})
+    return render(request, 'main/snippets_templates/table/team2.html', {'info': teams})
+
+
+
 
