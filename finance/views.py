@@ -13,7 +13,7 @@ from requests import request
 from datetime import datetime,date
 
 import requests
-import paypalrestsdk
+
 from django.conf import settings
 from decimal import *
 from django.views.generic import (

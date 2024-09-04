@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService
+from .models import Assets,Description, News, Page, Service, SubService,Team
 from accounts.models import User
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -155,3 +155,14 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return reverse('main:images') 
+    
+
+
+
+
+
+def team_list(request):
+    teams = Team.objects.all()
+    print('info=============',teams)
+    return render(request, 'main/snippets_templates/table/team.html', {'info': teams})
+
