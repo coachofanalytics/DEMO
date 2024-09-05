@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService,Team
+from .models import Assets,Description, News, Page, Service, SubService,Team,MembershipPlan,Memberregistration
 from accounts.models import User
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -165,6 +165,21 @@ def team_list(request):
     teams = Team.objects.all()
     print('info=============',teams)
     return render(request, 'main/snippets_templates/table/team2.html', {'info': teams})
+
+from django.shortcuts import render
+from .models import Memberregistration, MembershipPlan
+
+def combined_view(request):
+    memberregistrations = Memberregistration.objects.all()
+    membership_plans = MembershipPlan.objects.all()
+    print('Member Registrations:', memberregistrations)
+    print('Membership Plans:', membership_plans)
+    
+    return render(request, 'main/snippets_templates/table/combined.html', {
+        'memberregistrations': memberregistrations,
+        'membership_plans': membership_plans
+    })
+
 
 
 
