@@ -166,19 +166,22 @@ def team_list(request):
     print('info=============',teams)
     return render(request, 'main/snippets_templates/table/team2.html', {'info': teams})
 
+# views.py
 from django.shortcuts import render
 from .models import Memberregistration, MembershipPlan
 
 def combined_view(request):
     memberregistrations = Memberregistration.objects.all()
     membership_plans = MembershipPlan.objects.all()
-    print('Member Registrations:', memberregistrations)
-    print('Membership Plans:', membership_plans)
+    print('Member Registrations:', memberregistrations)  # Debugging output
+    print('Membership Plans:', membership_plans)  # Debugging output
     
     return render(request, 'main/snippets_templates/table/combined.html', {
         'memberregistrations': memberregistrations,
         'membership_plans': membership_plans
     })
+
+    
 
 
 

@@ -126,8 +126,6 @@ class Team(models.Model):
     def __str__(self):
         return self.name    
     
-
-
 class MembershipPlan(models.Model):
     name = models.CharField(max_length=100)
     price = models.CharField(max_length=50)
@@ -135,7 +133,6 @@ class MembershipPlan(models.Model):
     def __str__(self):
         return self.name
     
-
 
 class Memberregistration(models.Model):
     GENDER_CHOICES = [
@@ -154,6 +151,10 @@ class Memberregistration(models.Model):
     leadership = models.CharField(max_length=100, default='default_value')
 
     agree = models.BooleanField()
+    
+    # Add ForeignKey to MembershipPlan
+    membership_plan = models.ForeignKey(MembershipPlan, on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"    
+        return f"{self.first_name} {self.last_name}"
+  

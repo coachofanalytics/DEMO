@@ -1,0 +1,115 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="memberregistration-section">
+    <div class="memberregistration-title">Member Registration</div>
+    <table class="memberregistration-table">
+        <style>
+            .memberregistration-section {
+                margin: 20px 0;
+            }
+            .memberregistration-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333; /* Color for title text */
+            }
+            .memberregistration-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .memberregistration-table th, .memberregistration-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                vertical-align: top;
+            }
+            .memberregistration-table th {
+                background-color: #f2f2f2;
+                color: #141313; /* Color for table headers */
+            }
+            .membershipplan-section {
+                margin: 20px 0;
+            }
+            .membershipplan-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333; /* Color for title text */
+            }
+            .membershipplan-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .membershipplan-table th, .membershipplan-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                vertical-align: top;
+            }
+            .membershipplan-table th {
+                background-color: #f2f2f2;
+            }
+            .membershipplan-table img {
+                max-width: 100px;
+                height: auto;
+            }
+            .bio-box {
+                border: 1px solid #ddd;
+                padding: 10px;
+                margin-top: 10px;
+                background-color: #f9f9f9;
+            }
+        </style>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Phone Number</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Leadership</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for memberregistration in info %}
+                <tr>
+                    <td>{{ memberregistration.email }}</td>
+                    <td>{{ memberregistration.first_name }}</td>
+                    <td>{{ memberregistration.last_name }}</td>
+                    <td>{{ memberregistration.get_gender_display }}</td>
+                    <td>{{ memberregistration.phone_number }}</td>
+                    <td>{{ memberregistration.country }}</td>
+                    <td>{{ memberregistration.city }}</td>
+                    <td>{{ memberregistration.leadership }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="membershipplan-section">
+    <div class="membershipplan-title">Membership Plans</div>
+    <table class="membershipplan-table">
+        <thead>
+            <tr>
+                <th>Membership Type</th>
+                <th>REG FEE (KENYAN SHILLINGS)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membership in info %}
+                <tr>
+                    <td>{{ membership.name }}</td>
+                    <td>{{ membership.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

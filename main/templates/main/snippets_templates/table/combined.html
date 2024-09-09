@@ -1,0 +1,185 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="membershipplan-section">
+    <div class="membershipplan-title">DC48</div>
+    <table class="membershipplan-table">
+        <thead>
+            <tr>
+                <th>Membership Type</th>
+                <th>REG FEE (KENYAN SHILLINGS)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membership_plan in membership_plans %}
+                <tr>
+                    <td>{{ membership_plan.name }}</td>
+                    <td>{{ membership_plan.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="spacer"></div> <!-- Spacer div added for separation -->
+
+<!-- User Registration Form -->
+<div class="registration-form-section">
+    <div class="form-title">Diaspora 48 County Website Registration Form</div>
+    <form method="post" action="{% url 'accounts:processing-users' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input aria-selected="text" id="name" name="name" required placeholder="First and last name">
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender *</label>
+            <select id="gender" name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone number *</label>
+            <input type="tel" id="phone" name="phone_number" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country *</label>
+            <select id="country" name="country" required>
+                <option value="">Select Country</option>
+                <option value="AF">Afghanistan</option>
+                <option value="AL">Albania</option>
+                <option value="DZ">Algeria</option>
+                <option value="AS">American Samoa</option>
+                <option value="AD">Andorra</option>
+                <option value="AO">Angola</option>
+                <option value="AI">Anguilla</option>
+                <option value="AG">Antigua and Barbuda</option>
+                <option value="AR">Argentina</option>
+                <!-- Add more countries as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="city">City *</label>
+            <input type="text" id="city" name="city" required>
+        </div>
+        <div class="form-group">
+            <label for="plan">Plan *</label>
+               <select id="Plan" name="country" required>
+                <option value="">Select plan</option>
+                <option value="AF">200</option>
+                <option value="AL">64</option>
+                <option value="DZ">1690</option>
+                <option value="AS">10000</option>
+                <option value="AD">50000</option>
+                <option value="AO">7000</option>
+                <option value="AI">90</option>
+                <option value="AG">500</option>
+                <option value="AR">140000</option>
+                <!-- Add more countries as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="acceptance">Acceptance *</label>
+            <textarea id="acceptance" name="acceptance" rows="4" readonly>
+                <!-- Predefined text for acceptance -->
+            </textarea>
+            <input type="checkbox" id="agree" name="agree" required>
+            <label for="agree">I agree</label>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="form-footer">
+        <p>After registration, you will receive an email confirmation.</p>
+    </div>
+</div>
+
+<div class="spacer"></div> <!-- Spacer div added for separation -->
+
+<style>
+    /* Styles for both sections */
+    .registration-form-section {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+    .form-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+    }
+    .form-description {
+        color: #666;
+    }
+    .form-group {
+        margin: 15px 0;
+    }
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        color: #333;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .form-group textarea {
+        background-color: #e9ecef;
+    }
+    button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    .form-footer {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
+    }
+    .membershipplan-section {
+        margin: 20px 0;
+    }
+    .membershipplan-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .membershipplan-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    .membershipplan-table th, .membershipplan-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        vertical-align: bottom;
+    }
+    .membershipplan-table th {
+        background-color: #f2f2f2;
+    }
+    .spacer {
+        height: 40px;
+    }
+</style>
+
+{% endblock %}

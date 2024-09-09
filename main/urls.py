@@ -7,7 +7,7 @@ app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
     path('team/', views.team_list, name='team_view'),
-     path('combined/', views.combined_view, name='combined_view'),
+     path('members/', views.combined_view, name='combined_view'),
     path('history',views.History, name ='history'),
     
   
