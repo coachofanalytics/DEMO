@@ -1,0 +1,122 @@
+/* Main container */
+.main-container {
+    margin: 40px;
+}
+
+/* Featured section */
+.featured-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between description and image */
+}
+
+/* Description (left side) */
+.featured-description {
+    flex: 1; /* Takes up remaining space */
+}
+
+/* Featured Image (right side) */
+.featured-image {
+    width: 40%; /* Adjust width as needed */
+    height: auto;
+}
+
+/* Title styling */
+.featured-title {
+    font-size: 24px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Date styling */
+.featured-date {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+/* Description styling */
+.featured-description p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Actions section */
+.featured-actions {
+    margin-top: 20px;
+}
+
+.featured-actions a {
+    color: #4CAF50;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px;
+    border: 1px solid #4CAF50;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.featured-actions a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Hidden section for additional content */
+.extra-content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.extra-content img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Gallery Section */
+.gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.gallery-card {
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: calc(33.33% - 20px); /* 3-column grid */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.gallery-footer {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .gallery-card {
+        width: calc(50% - 20px); /* Two-column grid for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-card {
+        width: 100%; /* Full width for mobile */
+    }
+}
