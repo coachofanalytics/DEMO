@@ -14,5 +14,6 @@ admin.site.register(SubService)
 admin.site.register(News)
 admin.site.register(MembershipPlan)
 admin.site.register(Memberregistration)
+admin.site.register(GallerysImagess)
 
 

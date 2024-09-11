@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService,Team,MembershipPlan,Memberregistration
+from .models import Assets,Description, News, Page, Service, SubService,Team,MembershipPlan,Memberregistration,GallerysImagess
 from accounts.models import User
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -183,6 +183,12 @@ def combined_view(request):
 
     
 
+
+
+def galley_list(request):
+    info = GallerysImagess.objects.all()
+    print('info=============',info)
+    return render(request, 'main/snippets_templates/table/galley.html', {'info': info})
 
 
 

@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.layout, name='layout'),
     path('team/', views.team_list, name='team_view'),
      path('members/', views.combined_view, name='combined_view'),
+     path('galley/', views.galley_list, name='galley_list'),
     path('history',views.History, name ='history'),
     
   

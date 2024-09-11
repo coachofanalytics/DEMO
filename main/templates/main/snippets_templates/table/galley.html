@@ -1,0 +1,186 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Featured and Gallery Section</title>
+    <style>
+        /* Main container */
+        .main-container {
+            margin: 40px;
+        }
+
+        /* Featured section */
+        .featured-container {
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Space between description and image */
+            flex-direction: row; /* Ensures image is on the right side */
+        }
+
+        .featured-image {
+            width: 40%; /* Adjust width as needed */
+            height: auto;
+        }
+
+        .featured-title {
+            font-size: 24px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .featured-date {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .featured-description {
+            font-size: 16px;
+            color: #555;
+            width: 60%; /* Adjust width as needed */
+        }
+
+        .featured-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .featured-actions a {
+            color: #4CAF50;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .featured-actions a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Hidden section for additional content */
+        .extra-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            background-color: #f1f1f1;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .extra-content img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Gallery Section */
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .gallery-card {
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            width: calc(33.33% - 20px); /* 3-column grid */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .gallery-footer {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .gallery-card {
+                width: calc(50% - 20px); /* Two-column grid for tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-card {
+                width: 100%; /* Full width for mobile */
+            }
+        }
+    </style>
+    <script>
+        // Function to toggle visibility of extra content
+        function toggleExtraContent() {
+            var extraContent = document.getElementById("extra-content");
+            if (extraContent.style.display === "none" || extraContent.style.display === "") {
+                extraContent.style.display = "block";
+            } else {
+                extraContent.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Featured Section -->
+    <div class="main-container">
+        {% with info.1 as featured %}
+        <div class="featured-container">
+            <!-- Description (left side) -->
+            <div class="featured-description">
+                <h2 class="featured-title">{{ featured.title }}</h2>
+                <p class="featured-date">{{ featured.event_date|date:"F d, Y" }}</p>
+                <p>{{ featured.description }}</p>
+                <div class="featured-actions">
+                    <a href="javascript:void(0);" onclick="toggleExtraContent()">Read More</a>
+                </div>
+            </div>
+
+            <!-- Featured Image (right side) -->
+            <img src="{{ featured.image.url }}" alt="{{ featured.title }}" class="featured-image">
+        </div>
+        {% endwith %}
+
+        <!-- Extra content that will be shown/hidden -->
+        <div class="extra-content" id="extra-content">
+            <img src="{% static 'path/to/fernando-prieto-liberty-hunger-desperation.jpg' %}" alt="Liberty, Hunger, and Desperation">
+            <h3>Liberty, Hunger, and Desperation</h3>
+            <p>Fernando Prieto</p>
+        </div>
+    </div>
+
+    <!-- Gallery Section for Remaining Images -->
+    <div class="gallery-container">
+        {% for info in info|slice:"0:1,2:" %}
+        <div class="gallery-card">
+            <img src="{{ info.image.url }}" alt="{{ info.title }}">
+            <div class="gallery-footer">
+                <p>{{ info.title }}</p>
+                <p>{{ info.event_date|date:"F d, Y" }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock %}
