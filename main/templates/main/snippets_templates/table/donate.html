@@ -1,0 +1,104 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Volunteers and Donations</h1>
+
+<!-- Become a Volunteer Section -->
+<div class="section">
+    <h2>Become a Volunteer</h2>
+    <p>Are you looking for a way to make a positive impact on your community and country? Look no further!</p>
+    <p>Our organization is on a mission to promote and advocate for a prosperous diaspora socially, economically, and politically. We believe in creating a conducive environment for you to thrive both abroad and back home in Kenya.</p>
+    <p>By supporting our organization, you can help safeguard the cordial relationship between the diaspora and their host communities, ensuring mutual benefit for all. Let’s work together to create a brighter future for Kenyans everywhere.</p>
+    <p>If you would love to volunteer, fill in this form, and we shall get back to you as soon as possible.</p>
+    
+    <!-- Volunteer Form -->
+    <form method="POST" action="{% url 'finance:payments' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="volunteer_name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="volunteer_name" name="volunteer_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="motivation" class="form-label">Motivation to Volunteer</label>
+            <textarea class="form-control" id="motivation" name="motivation" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="security_question" class="form-label">What is 11 + 6?</label>
+            <input type="number" class="form-control" id="security_question" name="security_question" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Donations Section -->
+<div class="section">
+    <h2>Donate to Our Cause</h2>
+    <p>You can also donate to support our cause. Every donation helps us continue our important work to assist those in need.</p>
+    
+    <!-- Donation Form -->
+    <form method="POST" action="{% url 'finance:finance-contract_form_submission' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="donor_name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="donor_name" name="donor_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="donation_amount" class="form-label">Amount</label>
+            <input type="number" class="form-control" id="donation_amount" name="donation_amount" required>
+        </div>
+        <div class="mb-3">
+            <label for="donation_message" class="form-label">Message (Optional)</label>
+            <textarea class="form-control" id="donation_message" name="donation_message" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="security_question" class="form-label">What is 7 + 8?</label>
+            <input type="number" class="form-control" id="security_question" name="security_question" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Donate</button>
+    </form>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    h1, h2 {
+        color: #333;
+    }
+    .section {
+        background-color: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .section ul li {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    .section ul li:last-child {
+        border-bottom: none;
+    }
+    .section h2 {
+        margin-bottom: 10px;
+        font-size: 1.5em;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+</style>
+{% endblock %}

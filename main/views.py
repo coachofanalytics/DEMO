@@ -176,7 +176,7 @@ def combined_view(request):
     print('Member Registrations:', memberregistrations)  # Debugging output
     print('Membership Plans:', membership_plans)  # Debugging output
     
-    return render(request, 'main/snippets_templates/table/combined.html', {
+    return render(request, '', {
         'memberregistrations': memberregistrations,
         'membership_plans': membership_plans
     })
@@ -191,5 +191,21 @@ def galley_list(request):
     return render(request, 'main/snippets_templates/table/galley.html', {'info': info})
 
 
+
+
+from django.shortcuts import render
+from .models import Volunteerdata, Donation
+
+def donate_list(request):
+    volunteers = Volunteerdata.objects.all()
+    donations = Donation.objects.all()
+    
+    print('Volunteers:', volunteers)  # Debugging output
+    print('Donations:', donations)  # Debugging output
+    
+    return render(request, 'main/snippets_templates/table/donate.html', {
+        'volunteers': volunteers,
+        'donations': donations
+    })
 
 
