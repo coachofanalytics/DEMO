@@ -1,0 +1,27 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">News and Updates</h1>
+    <div class="row">
+      {% for item in info %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            {% if item.image %}
+              <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ item.title }}</h5>
+              <p class="card-text">{{ item.content|slice:":200" }}{% if item.content|length > 200 %}...{% endif %}</p>
+              <p class="card-text"><small class="text-muted">Published on: {{ item.published_date }}</small></p>
+            
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p>No news items available.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

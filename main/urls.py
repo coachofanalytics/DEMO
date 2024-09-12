@@ -10,6 +10,7 @@ urlpatterns = [
      path('members/', views.combined_view, name='combined_view'),
      path('galley/', views.galley_list, name='galley_list'),
     path('donate/', views.donate_list, name='donate_list'),
+    path('News/', views.news_list, name='news_list'),
     path('history',views.History, name ='history'),
     
   

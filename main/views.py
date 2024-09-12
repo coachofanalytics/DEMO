@@ -209,3 +209,15 @@ def donate_list(request):
     })
 
 
+
+def news_list(request):
+    info = News.objects.all()
+    print('info=============',info)
+    return render(request, 'main/snippets_templates/table/News.html', {'info': info})
+
+
+
+
+
+
+

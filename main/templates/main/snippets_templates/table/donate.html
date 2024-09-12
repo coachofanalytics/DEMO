@@ -17,7 +17,7 @@
         
         <!-- Volunteer Form -->
         <div class="form-container">
-            <form method="POST" action="{% url 'finance:payments' %}">
+            <form method="POST" action="{% url 'main:combined_view' %}">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="volunteer_name" class="form-label">Name</label>
