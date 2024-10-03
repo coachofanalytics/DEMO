@@ -48,8 +48,8 @@ phone_number,email_info,cashapp,venmo,account_no=payment_details(request)
 #Time details
 (remaining_days, remaining_seconds, remaining_minutes, remaining_hours,now) = countdown_in_month()
 #Exchange Rate details
-usd_to_kes = get_exchange_rate('USD', 'KES')
-rate = round(Decimal(usd_to_kes), 2)
+# usd_to_kes = get_exchange_rate('USD', 'KES')
+# rate = round(Decimal(usd_to_kes), 2)
 
 def finance_report(request):
     return render(request, "finance/reports/finance.html", {"title": "Finance"})
@@ -567,7 +567,7 @@ def budget_projection(request,subtitle='summary',duration=2024):
         "budget_months": budget_months,
         "budget_years": budget_years,
         "total_amt_ksh": total,
-        "total_amt": total / rate if total else 0,
+       
         
     }
     if subtitle=='detailed':

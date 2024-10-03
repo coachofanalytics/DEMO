@@ -222,3 +222,5 @@ def business_page(request):
     }
     return render(request, 'main/services/business.html', context)
 
+def International_trade(request):
+    return render(request, 'main/services/International_trade.html')
