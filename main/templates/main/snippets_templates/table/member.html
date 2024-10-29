@@ -77,7 +77,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for memberregistration in info %}
+            {% for memberregistration in members %}
                 <tr>
                     <td>{{ memberregistration.email }}</td>
                     <td>{{ memberregistration.first_name }}</td>
@@ -103,7 +103,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for membership in info %}
+            {% for membership in membership_plans %}
                 <tr>
                     <td>{{ membership.name }}</td>
                     <td>{{ membership.price }}</td>

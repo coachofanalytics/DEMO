@@ -131,21 +131,21 @@
                 </div>
             </li>
             
-            <li><a href="/membership" class="navLin">MEMBERSHIP</a></li>
+            <li><a href="/members" class="navLin">MEMBERSHIP</a></li>
            
             <li><a href="/news" class="navLin">NEWS</a></li>
             <li><a href="/contact-us" class="navLin">CONTACT US</a></li>
             <li class="dropdown">
                 <a href="/about" class="navLin">SUPPORT</a>
                 <div class="dropdown-content">
-                    <a href="#">Donate</a>
+                    <a href="donate" class="navLin">Donate</a>
                     <a href="#">Become Volunteer</a>
                     <a href="#">Get Help</a>
                     
                 </div>
             </li>
             {% if user.is_authenticated %}
-            <li><a href="/gallery" class="navLin">GALLERY</a></li>
+            <li><a href="/galley" class="navLin">GALLERY</a></li>
             <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGOUT</a></li>
             {% else %}
             <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>

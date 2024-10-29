@@ -176,7 +176,7 @@ def combined_view(request):
     print('Member Registrations:', memberregistrations)  # Debugging output
     print('Membership Plans:', membership_plans)  # Debugging output
     
-    return render(request, '', {
+    return render(request, 'main/snippets_templates/table/combined.html', {
         'memberregistrations': memberregistrations,
         'membership_plans': membership_plans
     })

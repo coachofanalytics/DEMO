@@ -13,7 +13,7 @@ from django.db.models.signals import pre_save, post_save
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from accounts.models import Department
+from accounts.models import CustomerUser, Department
 # from finance.utils import get_exchange_rate
 User = get_user_model()
 
@@ -329,26 +329,27 @@ class BudgetSubCategory(models.Model):
 
     def __str__(self):
         return f"{self.category.name}-{self.name}"           
+
 class CodaBudget(TimeStampedModel):
-    budget_lead = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE, 
+    budget_leads = models.ManyToManyField(
+        CustomerUser,
         limit_choices_to=(Q(is_staff=True, is_active=True, category=2) | Q(is_superuser=True)),
-        related_name="lead"
+        related_name="coda_budgets_as_leads"
     )
-    #company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='company_budgets')
+    
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department_budgets')
     category = models.ForeignKey(
         BudgetCategory, 
         on_delete=models.CASCADE, 
         related_name="budgetcategory",
-        blank=True, null=True)
-    
+        blank=True, null=True
+    )
     subcategory = models.ForeignKey(
         BudgetSubCategory, 
         on_delete=models.CASCADE, 
         related_name="budget_subcategory",
-        blank=True, null=True)
+        blank=True, null=True
+    )
     
     item = models.CharField(max_length=100, null=True, default=None)
     cases = models.PositiveIntegerField(default=1, null=True, blank=True)
@@ -358,15 +359,17 @@ class CodaBudget(TimeStampedModel):
     receipt_link = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.department.name} - {self.category.name} - {self.subcategory.name}-{self.created_at}"
+        return f"{self.department.name} - {self.category.name} - {self.subcategory.name} - {self.created_at}"
 
     class Meta:
         verbose_name = _("Coda Budget")
         verbose_name_plural = _("Coda Budget")
-        ordering = ['department','created_at', 'category', 'subcategory']
+        ordering = ['department', 'created_at', 'category', 'subcategory']
 
     @property
     def amount(self):
         if self.unit_price and self.qty:
             return round(Decimal(self.unit_price) * Decimal(self.qty), 2)
-        return Decimal('0.00')    
+        return Decimal('0.00')
+  
+  
