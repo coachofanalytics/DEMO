@@ -166,3 +166,23 @@ def team_list(request):
     print('info=============',teams)
     return render(request, 'main/snippets_templates/table/team.html', {'info': teams})
 
+
+
+
+
+
+    
+
+from django.shortcuts import render
+from .models import Service,Gallery
+
+def service_list(request):
+    services = Service.objects.all()  # Fetch all services and related subservices
+    return render(request, 'main/services.html', {'services': services})
+
+
+def gallery_list(request):
+    images = Gallery.objects.all()
+    return render(request, 'main/Gallery/gallery.html', {'images': images})
+
+

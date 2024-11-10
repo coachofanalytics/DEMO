@@ -1,0 +1,32 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="{% static 'main/css/gallery.css' %}">
+</head>
+<body>
+    <h1>Gallery</h1>
+    
+    <div class="gallery-container">
+        {% for image in images %}
+            <div class="gallery-item">
+                <img src="{{ image.image.url }}" alt="{{ image.title }}" class="gallery-image">
+                <div class="gallery-info">
+                    <h2>{{ image.title }}</h2>
+                    <p>{{ image.description }}</p>
+                    <p><strong>Event Date:</strong> {{ image.event_date|date:"F j, Y" }}</p>
+                    <p><strong>Uploaded at:</strong> {{ image.uploaded_at|date:"F j, Y, g:i a" }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No images available in the gallery yet.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock %}

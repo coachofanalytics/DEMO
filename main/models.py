@@ -133,12 +133,29 @@ class Team(models.Model):
     ]
 
     name = models.CharField(max_length=255)
-    leadership = models.CharField(max_length=50, choices=LEADERSHIP_CHOICES)
+    leadership = models.CharField(max_length=50, choices=LEADERSHIP_CHOICES, default='Local')  # or another default value
+    facebook_link = models.URLField(blank=True, null=True)
     role = models.CharField(max_length=50, choices=ROLE_CHOICES)
     region = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='people/')
     bio = models.TextField()
 
     def __str__(self):
-        return self.name    
+        return self.name
+
+
+
+from django.db import models
+
+class Gallery(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='gallery/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    event_date = models.DateField()
+
+    def __str__(self):
+        return self.title
+
+
     

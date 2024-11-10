@@ -116,20 +116,74 @@
                 </div>
             </li>
             <li class="dropdown">
-                <a href="/services" class="navLin">SERVICES</a>
-                <div class="dropdown-content">
-                    {% for service in service %}
-                    <div class="sub-dropdown">
-                        <a href="#">{{ service.title }}</a>
-                        <div class="sub-dropdown-content">
-                            {% for subservice in service.subservices.all %}
-                            <a href="#">{{ subservice.title }}</a>
-                            {% endfor %}
+                <li class="dropdown">
+                    <a href="/services" class="navLin">SERVICES</a>
+                    <div class="dropdown-content">
+                        <!-- Consular Assistance -->
+                        <div class="sub-dropdown">
+                            <a href="#">Consular Assistance</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/consular-assistance/information-updates">Information and Updates</a>
+                                <a href="/services/consular-assistance/legal-immigration-guidance">Legal and Immigration Guidance</a>
+                            </div>
+                        </div>
+                
+                        <!-- Document Services -->
+                        <div class="sub-dropdown">
+                            <a href="#">Document Services</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/document-services/certificate-issuance">Issuance of Certificates</a>
+                                <a href="/services/document-services/legalization-authentication">Document Legalization and Authentication</a>
+                            </div>
+                        </div>
+                
+                        <!-- Community Support -->
+                        <div class="sub-dropdown">
+                            <a href="#">Community Support</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/community-support/forums">Forums and Networking</a>
+                                <a href="/services/community-support/events">Community Events</a>
+                            </div>
+                        </div>
+                
+                        <!-- Healthcare Information -->
+                        <div class="sub-dropdown">
+                            <a href="#">Healthcare Information</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/healthcare/healthcare-services">Healthcare Services</a>
+                                <a href="/services/healthcare/insurance-options">Health Insurance Options</a>
+                            </div>
+                        </div>
+                
+                        <!-- Financial Services -->
+                        <div class="sub-dropdown">
+                            <a href="#">Financial Services</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/financial/banking-investment">Banking and Investment</a>
+                                <a href="/services/financial/remittances">Remittances and Investments</a>
+                            </div>
+                        </div>
+                
+                        <!-- Crisis Management -->
+                        <div class="sub-dropdown">
+                            <a href="#">Crisis Management</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/crisis/emergency-response">Emergency Response</a>
+                                <a href="/services/crisis/advisories">Advisories</a>
+                            </div>
+                        </div>
+                
+                        <!-- Education and Training -->
+                        <div class="sub-dropdown">
+                            <a href="#">Education and Training</a>
+                            <div class="sub-dropdown-content">
+                                <a href="/services/education/scholarships">Scholarships</a>
+                                <a href="/services/education/training-sessions">Training Sessions</a>
+                            </div>
                         </div>
                     </div>
-                    {% endfor %}
-                </div>
-            </li>
+                </li>
+                
             
             <li><a href="/membership" class="navLin">MEMBERSHIP</a></li>
            
