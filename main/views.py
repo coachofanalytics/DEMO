@@ -174,7 +174,7 @@ def team_list(request):
     
 
 from django.shortcuts import render
-from .models import Service,Gallery
+from .models import Service,Gallery,ContactUs
 
 def service_list(request):
     services = Service.objects.all()  # Fetch all services and related subservices
@@ -184,5 +184,26 @@ def service_list(request):
 def gallery_list(request):
     images = Gallery.objects.all()
     return render(request, 'main/Gallery/gallery.html', {'images': images})
+
+
+
+
+
+
+def news_list(request):
+    news_list = News.objects.all()
+    print('info=============',news_list)
+    return render(request, 'main/snippets_templates/table/news.html', {'news_list': news_list})
+
+
+def contact_us_list(request):
+    # Fetch the list of ContactUs objects
+    contact_us_list = ContactUs.objects.all()
+
+    # Debugging print statement (if necessary)
+    print('info=============', contact_us_list)
+
+    # Render the template with the context
+    return render(request, 'main/snippets_templates/table/contact_us_list.html', {'contact_us_list': contact_us_list})
 
 

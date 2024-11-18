@@ -13,5 +13,6 @@ admin.site.register(Service)
 admin.site.register(SubService)
 admin.site.register(News)
 admin.site.register(Gallery)
+admin.site.register(ContactUs)
 
 

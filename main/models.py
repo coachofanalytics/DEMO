@@ -158,4 +158,22 @@ class Gallery(models.Model):
         return self.title
 
 
+
+
+
+
+class ContactUs(models.Model):
+    name = models.CharField(max_length=100, help_text="Full name of the user.")
+    email = models.EmailField(help_text="Email address for correspondence.")
+    phone_number = models.CharField(
+        max_length=15, blank=True, null=True, 
+        help_text="Phone number of the user (optional)."
+    )
+    message = models.TextField(help_text="Message or inquiry from the user.")
+    submitted_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the message was submitted.")
+    is_resolved = models.BooleanField(default=False, help_text="Flag to mark whether the query has been addressed.")
+
+    def __str__(self):
+        return f"Message from {self.name} ({self.email})"
+
     
