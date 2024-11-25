@@ -1,0 +1,118 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Diaspora County 48 Kenya</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        header {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: justify;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #0c0c0c8e;
+            margin-bottom: 20px;
+        }
+
+        header p {
+            margin-bottom: 15px;
+        }
+
+        /* WhatsApp Button Styling */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            background-color: #25d366;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #1da851;
+            transform: scale(1.05);
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .whatsapp-button img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Who We Are</h1>
+        <p>
+            A powerful network of Kenyans in the Diaspora, we are dedicated to creating a brighter future through unity, integrity, 
+            and accountability. Led by our Global Chairperson, Bernard Kavyu, Diaspora County 48 Kenya fosters a socially and economically 
+            prosperous community. We invite you to join us in making a lasting impact on our lives and communities.
+        </p>
+        <p>
+            Since 2014, we have identified ourselves as members of Diaspora County 48 Kenya—a registered nonprofit organization in Kenya. 
+            Our community consists of independent individuals, community-based organizations, faith-based groups, and businesses owned by 
+            Kenyans across 22 global chapters.
+        </p>
+        <p>
+            We live in small groups known as Stations, representing cities, towns, districts, or institutions. These Stations allow us to 
+            embrace, engage, and enhance our shared heritage and aspirations while working toward a better future in lands far from home.
+        </p>
+    </header>
+
+    <!-- WhatsApp Chat Button -->
+    <a 
+        href="https://web.whatsapp.com/" 
+        target="_blank" 
+        class="whatsapp-button"
+        title="Chat with us on WhatsApp"
+    >
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon">
+        Chat
+    </a>
+
+    <!-- Footer Section -->
+    <footer>
+        &copy; Diaspora County 48 Kenya 2024. All rights reserved.
+    </footer>
+</body>
+</html>
+{% endblock %}

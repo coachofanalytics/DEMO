@@ -1,114 +1,120 @@
+import os
 import calendar
 import requests
-from datetime import date, datetime
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import get_user_model
-from django.db.models import Sum, Max
-from django.shortcuts import get_object_or_404,render
-from django.contrib import messages
-from .models import  Transaction
 from datetime import datetime
-from decimal import *
+from decimal import Decimal
+from django.shortcuts import get_object_or_404, redirect
+from django.db.models import Sum
 
+
+# ===================== Category and Sub-Category =====================
 def category_subcategory(user_categories):
-    category = None
-    sub_category = None
-
+    """
+    Extract the category and sub-category from user categories.
+    """
+    category, sub_category = None, None
     for cat in user_categories:
         category = cat.category
         sub_category = cat.sub_category
-        # Process the category and sub-category here if needed
-
     return category, sub_category
 
-def check_default_fee(Default_Payment_Fees,username):
+
+# ===================== Default Fee Check =====================
+def check_default_fee(Default_Payment_Fees, username):
+    """
+    Check if a default fee exists for the given user.
+    If not, create a default payment fee.
+    """
     try:
         default_fee = get_object_or_404(Default_Payment_Fees, user=username)
-        # default_fee = Default_Payment_Fees.objects.get(id=1)
     except:
-        default_payment_fees = Default_Payment_Fees(job_down_payment_per_month=500,
-				job_plan_hours_per_month=40,
-				student_down_payment_per_month=500,
-				student_bonus_payment_per_month=100)
+        default_payment_fees = Default_Payment_Fees(
+            job_down_payment_per_month=500,
+            job_plan_hours_per_month=40,
+            student_down_payment_per_month=500,
+            student_bonus_payment_per_month=100,
+        )
         default_payment_fees.save()
         default_fee = Default_Payment_Fees.objects.get(id=1)
     return default_fee
 
-#This function obtains exchange rate information
-def get_exchange_rate(base, target):
-    # api_key = 'YOUR_APP_ID'
-    exchange_api_key = '07c439585ffa45e0a254d01fef4b0c33'
-    # api_key = exchange_api_key
-    url = f'https://openexchangerates.org/api/latest.json?app_id={exchange_api_key}&base={base}'
-    response = requests.get(url)
-    if response.status_code != 200:
-        rate=139.00
-    else:
-        data = response.json()
-        rate=data['rates'][target]
-    print(rate)
-    return rate
 
-def compute_amt(VisaService,transactions,rate,user_categories):
-    category,sub_category=category_subcategory(user_categories)
-    total_amt = Decimal(0)
-    total_paid = Decimal(0)
-    receipt_url = None
-    reg_fee = 19.99
+# ===================== Exchange Rate =====================
+def get_exchange_rate(base, target):
+    """
+    Fetch exchange rate between base and target currency.
+    Fallback to a hardcoded value if the API fails.
+    """
+    exchange_api_key = os.getenv("EXCHANGE_API_KEY", "07c439585ffa45e0a254d01fef4b0c33")
+    url = f"https://openexchangerates.org/api/latest.json?app_id={exchange_api_key}&base={base}"
     try:
-        # service = VisaService.objects.get(sub_category=sub_category)
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        rate = data["rates"].get(target, 139.00)  # Fallback to 139.00 if target not found
+    except requests.RequestException as e:
+        print(f"Error fetching exchange rate: {e}")
+        rate = 139.00  # Fallback rate
+    return round(Decimal(rate), 2)
+
+
+# ===================== Compute Amount =====================
+def compute_amt(VisaService, transactions, rate, user_categories):
+    """
+    Compute the total amount, balance, and receipt URL for a given user and service.
+    """
+    category, sub_category = category_subcategory(user_categories)
+    total_amt, total_paid, receipt_url = Decimal(0), Decimal(0), None
+    reg_fee = Decimal("19.99")
+    try:
         service = VisaService.objects.filter(sub_category=sub_category).first()
-        total_price = (service.price + reg_fee)* float(rate)
-        total_price=round(Decimal(total_price), 2)
-    except VisaService.DoesNotExist:
-        service = None
-        total_price = reg_fee
+        total_price = (service.price + reg_fee) * float(rate) if service else reg_fee
+        total_price = round(Decimal(total_price), 2)
+    except AttributeError:  # Handle if `VisaService` or `sub_category` is invalid
+        service, total_price = None, reg_fee
 
     for transact in transactions:
         total_amt += transact.total_payment
-        if transact.has_paid:
-            total_paid += transact.total_paid
-        if transact.receipturl:
-            receipt_url = transact.receipturl
-        else:
-            return redirect('main:404error')
-    balance = round(Decimal(total_price), 2)-round(Decimal(total_amt), 2)
-    balance=round(Decimal(balance), 2)
+        total_paid += transact.total_paid if transact.has_paid else Decimal(0)
+        receipt_url = transact.receipturl or receipt_url
 
-    return total_price,total_amt,balance,receipt_url
+    if not receipt_url:
+        return redirect("main:404error")
 
-# ==================================================
+    balance = round(total_price - total_amt, 2)
+    return total_price, total_amt, balance, receipt_url
+
+
+# ===================== Default Payments =====================
 def DYCDefaultPayments():
+    """
+    Provide default payment information for various user types.
+    """
     context_dict = {
-        "student": {'total_amount': 5000, 'down_payment': 500,'early_registration_bonus':100,},
-        "business": {'total_amount': 10000, 'down_payment': 500,'early_registration_bonus':100,},
-        "greencard": {'total_amount': 20000, 'down_payment': 500,'early_registration_bonus':100,},
+        "student": {"total_amount": 5000, "down_payment": 500, "early_registration_bonus": 100},
+        "business": {"total_amount": 10000, "down_payment": 500, "early_registration_bonus": 100},
+        "greencard": {"total_amount": 20000, "down_payment": 500, "early_registration_bonus": 100},
     }
     for usertype, values in context_dict.items():
-        if usertype=='student':
-            total_amount= values["total_amount"]
-            down_payment= values["down_payment"]
-            early_registration_bonus= values["early_registration_bonus"]
-            print(total_amount,down_payment,early_registration_bonus)
-    return total_amount,down_payment,early_registration_bonus
-date = datetime.now()
-budget_months = [
-    {
-        "month_num": (date.month - 1) % 12 or 12,  # Handle December (12 % 12 is 0)
-        "month_name": calendar.month_name[(date.month - 1) % 12 or 12],
-    },
-    {
-        "month_num": date.month,
-        "month_name": calendar.month_name[date.month],
-    },
-    {
-        "month_num": (date.month + 1) % 12 or 12,  # Handle December (12 + 1 % 12 is 1)
-        "month_name": calendar.month_name[(date.month + 1) % 12 or 12],
-    },
-]
+        if usertype == "student":
+            return values["total_amount"], values["down_payment"], values["early_registration_bonus"]
+    return 0, 0, 0  # Fallback values
 
-budget_years = [
-    {"budget_year": str(date.year - 1)},
-    {"budget_year": str(date.year)},
-    {"budget_year": str(date.year + 1)},
-]
+
+# ===================== Budget Months and Years =====================
+def get_budget_periods():
+    """
+    Generate the previous, current, and next month with names and years.
+    """
+    today = datetime.now()
+    budget_months = [
+        {"month_num": (today.month - 1) % 12 or 12, "month_name": calendar.month_name[(today.month - 1) % 12 or 12]},
+        {"month_num": today.month, "month_name": calendar.month_name[today.month]},
+        {"month_num": (today.month + 1) % 12 or 12, "month_name": calendar.month_name[(today.month + 1) % 12 or 12]},
+    ]
+    budget_years = [
+        {"budget_year": str(today.year - 1)},
+        {"budget_year": str(today.year)},
+        {"budget_year": str(today.year + 1)},
+    ]
+    return budget_months, budget_years

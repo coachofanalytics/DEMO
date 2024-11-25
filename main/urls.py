@@ -1,6 +1,8 @@
 from django.urls import path
+from main.views import AboutView
 
 from . import views
+
 # from .utils import convert_html_to_pdf
 
 app_name = 'main'
@@ -12,6 +14,7 @@ urlpatterns = [
     path('gallery/', views.gallery_list, name='gallery_list'),
     path('news/', views.news_list, name='news_list'),
     path('contract-us/', views.contact_us_list, name='contact_us_list'),
+    path('about/', AboutView.as_view(), name='about'),
     
   
     

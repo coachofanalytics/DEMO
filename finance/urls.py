@@ -11,7 +11,6 @@ app_name = 'finance'
 urlpatterns = [
     #=============================FINANCES=====================================
     
-    path('finance_report/', views.finance_report, name='finance_report'),
     path('transact/', views.transact, name='finance-transact'),
     path('transaction/', TransactionListView.as_view(), name='transaction-list'),
     path('transaction/<int:pk>/', TransanctionDetailView.as_view(), name='transaction-detail'),
@@ -23,8 +22,10 @@ urlpatterns = [
    
     path('pay/', views.pay, name='pay'),
     path('payment/<int:service>/', views.pay, name='service_pay'),
-    path('payment_method/<str:method>/', views.payment, name='payment_method'),
+    path('payment_method/<str:method>/', views.another_view, name='payment_method'),
     path("payment_complete/", views.paymentComplete, name="payment_complete"),
+    path('payment/create/', lambda: __import__('finance.views').views.PaymentCreateView.as_view(), name='payment-create'),
+
     path('payments/', views.payments, name='payments'),
     path('pay/<int:pk>/', views.PaymentInformationUpdateView.as_view(), name='updatepay'),
     

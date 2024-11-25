@@ -207,3 +207,9 @@ def contact_us_list(request):
     return render(request, 'main/snippets_templates/table/contact_us_list.html', {'contact_us_list': contact_us_list})
 
 
+from django.views.generic import TemplateView
+
+class AboutView(TemplateView):
+    template_name = 'main/snippets_templates/table/abour.html'
+
+
