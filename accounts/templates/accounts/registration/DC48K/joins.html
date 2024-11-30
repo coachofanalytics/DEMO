@@ -1,13 +1,21 @@
-{%extends "main/base_templates/base.html"%}
+{% extends "main/base_templates/base.html" %}
 {% block title %}Register{% endblock %}
-{%load crispy_forms_tags%}{% block content %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!-- Minified CSS and JS -->
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+crossorigin="anonymous"></script>
 
 <style>
-  /* Shared */
   .loginBtn {
     box-sizing: border-box;
     position: relative;
-    /* width: 13em;  - apply for fixed size */
     margin: 0.2em;
     padding: 0 15px 0 46px;
     border: none;
@@ -18,77 +26,39 @@
     font-size: 16px;
     color: #FFF;
   }
-  .loginBtn:before {
-    content: "";
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 34px;
-    height: 100%;
-  }
+
   .loginBtn:focus {
     outline: none;
   }
+
   .loginBtn:active {
-    box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+    box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
   }
-
-
-  /* Facebook */
-  .loginBtn--facebook {
-    background-color: #4C69BA;
-    background-image: linear-gradient(#4C69BA, #3B55A0);
-    /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
-    text-shadow: 0 -1px 0 #354C8C;
-  }
-  .loginBtn--facebook:before {
-    border-right: #364e92 1px solid;
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 6px 6px no-repeat;
-  }
-  .loginBtn--facebook:hover,
-  .loginBtn--facebook:focus {
-    background-color: #5B7BD5;
-    background-image: linear-gradient(#5B7BD5, #4864B1);
-  }
-
 
   /* Google */
   .loginBtn--google {
-    /*font-family: "Roboto", Roboto, arial, sans-serif;*/
     background: #DD4B39;
   }
-  .loginBtn--google:before {
-    border-right: #BB3F30 1px solid;
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
-  }
+
   .loginBtn--google:hover,
   .loginBtn--google:focus {
     background: #E74B37;
   }
-  input.form-control:hover {
-        border-color: #e7ad4a !important;
-        border-width: 2px !important; 
-        border-radius: 5px;
-    }
+
+  .form-control:hover {
+    border-color: #e7ad4a !important;
+    border-width: 2px !important;
+    border-radius: 5px;
+  }
 </style>
-<!-- Minified CSS and JS -->
-<link   rel="stylesheet" 
-href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
-crossorigin="anonymous">
-</script>
 
 <div class="sign-up-div">
   <form method="POST" id="signupForm" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <fieldset class="form-group">
-      <div class="row" >
-        <div class="col-lg-6 introduction-div ">
-          <div class="row" >
+      <div class="row">
+        <div class="col-lg-6 introduction-div">
+          <div class="row">
             <div class="select-div">
               <h1 class="position-relative">SIGN-UP</h1>
               <div class="content">
@@ -107,7 +77,7 @@ crossorigin="anonymous">
                         name="category"
                         class="select form-control"
                         id="id_category"
-                        onchange="toggle_sub_selection(this.value)"
+                        onchange="toggleSubSelection(this.value)"
                       >
                         <option
                           id="category_disabled"
@@ -117,11 +87,8 @@ crossorigin="anonymous">
                         >
                           Select Category
                         </option>
-                        <option value="1">Applicant</option>
-                        <option value="2">Coda Staff Member</option>
-                        <option value="3">Job Support</option>
-                        <option value="4">Student</option>
-                        <option value="5">Investor</option>
+                        <option value="1">Client</option>
+                        <option value="2">Staff Member</option>
                         <option value="6">General User</option>
                       </select>
                     </div>
@@ -129,7 +96,7 @@ crossorigin="anonymous">
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-2" id="sub_selection" style="display: none;">{{form.sub_category|as_crispy_field}}</div> -->
+            <!-- Subcategory selection -->
             <div class="col-md-6" id="sub_selection" style="display: none">
               <div id="div_id_sub_category" class="form-group">
                 <label for="id_sub_category" class="requiredField" style="color: white;">
@@ -140,7 +107,6 @@ crossorigin="anonymous">
                     name="sub_category"
                     class="select form-control"
                     id="id_sub_category"
-                    onchange="checkSubCategoryValidity()"
                   >
                     <option
                       id="subcategoryoption0"
@@ -150,13 +116,7 @@ crossorigin="anonymous">
                     >
                       Select Sub Category
                     </option>
-                    <!--Values for Clients -->
-                    <!-- <option id="subcategoryoption1" value="1" selected="">
-                      Job Support
-                    </option>
-                    <option id="subcategoryoption2" value="2">Students</option> -->
-                    <!--Values for Employees/Staff -->
-                    <option id="subcategoryoption1" value="1" selected="">Full Time</option>
+                    <option id="subcategoryoption1" value="1">Full Time</option>
                     <option id="subcategoryoption2" value="2">Contractual</option>
                     <option id="subcategoryoption3" value="3">Agent</option>
                     <option id="subcategoryoption4" value="4">Short Term</option>
@@ -168,7 +128,7 @@ crossorigin="anonymous">
             </div>        
           </div>
         </div>
-          <!-- Dont touch below this -->
+        <!-- Form fields -->
         <div class="col-lg-6 form-div">
           <p><small>* Required fields</small></p>
           <div class="row" id="first_name">
@@ -176,7 +136,7 @@ crossorigin="anonymous">
               <p class="mb-0">First Name*</p>
             </div>
             <div class="col-md-10">
-              {{form.first_name|as_crispy_field}}
+              {{ form.first_name|as_crispy_field }}
             </div>
           </div>
           <div class="row" id="last_name">
@@ -184,7 +144,7 @@ crossorigin="anonymous">
               <p class="mb-0">Last Name*</p>
             </div>
             <div class="col-md-10">
-              {{form.last_name|as_crispy_field }}
+              {{ form.last_name|as_crispy_field }}
             </div>
           </div>
           <div class="row" id="username">
@@ -192,7 +152,7 @@ crossorigin="anonymous">
               <p class="mb-0">User Name*</p>
             </div>
             <div class="col-md-10">
-              {{form.username|as_crispy_field }}
+              {{ form.username|as_crispy_field }}
             </div>
           </div>
           <div class="row" id="password">
@@ -200,7 +160,7 @@ crossorigin="anonymous">
               <p class="mb-0">Password</p>
             </div>
             <div class="col-md-10">
-              {{form.password1|as_crispy_field }}
+              {{ form.password1|as_crispy_field }}
             </div>
           </div>
           <div class="row" id="confirm_password">
@@ -208,7 +168,7 @@ crossorigin="anonymous">
               <p class="mb-0">Confirm Password</p>
             </div>
             <div class="col-md-10">
-              {{form.password2|as_crispy_field }}
+              {{ form.password2|as_crispy_field }}
             </div>
           </div>
           <div class="row" id="email">
@@ -216,79 +176,26 @@ crossorigin="anonymous">
               <p class="mb-0">Email</p>
             </div>
             <div class="col-md-10">
-              {{form.email|as_crispy_field }}
+              {{ form.email|as_crispy_field }}
             </div>
           </div>
-          <div class="row" id="gender">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">Gender</p>
-            </div>
-            <div class="col-md-10">
-              {{form.gender|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="phone">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">Phone</p>
-            </div>
-            <div class="col-md-10">
-              {{form.phone|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="address">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">Address</p>
-            </div>
-            <div class="col-md-10">
-              {{form.address|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="city">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">City</p>
-            </div>
-            <div class="col-md-10">
-              {{form.city|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="state">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">State</p>
-            </div>
-            <div class="col-md-10">
-              {{form.state|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="country">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">Country</p>
-            </div>
-            <div class="col-md-10">
-              {{form.country|as_crispy_field }}
-            </div>
-          </div>
-          
-          <div class="row" id="resume-field" style="display: none">
-            <div class="col-md-4">{{form.resume_file|as_crispy_field }}</div>
-          </div>
-          <div class="form-group row" style="margin-bottom: -60px;" >
+          <div class="form-group row" style="margin-bottom: -60px;">
             <div class="col-md-6">
-              <button class="btn btn-outline-success " style="color: black;" type="submit" id="signupBtn" tabindex="0" aria-label="Sign Up">Sign Up</button>
+              <button class="btn btn-outline-success" style="color: black;" type="submit" id="signupBtn" tabindex="0" aria-label="Sign Up">Sign Up</button>
             </div>
             <div class="col-md-6">
               <small class="text-muted text-center">
                 Already Have An Account?
-                <a class="ml-2" href="#" >Sign In</a>
+                <a class="ml-2" href="#">Sign In</a>
               </small>
             </div>
           </div>
           <p class="text-center mt-2">or</p>
           <div class="row" style="display: flex; justify-content: center; align-items: center;">
             <div class="col-md-3 d-flex justify-content-center">
-              <a id="google-signin-link" style="color: black;" href="#" onclick="return enableSocialSignInLink(event, this, 'google_login')"  class="loginBtn loginBtn--google">
+              <a id="google-signin-link" style="color: black;" href="#" onclick="return enableSocialSignInLink(event, this, 'google_login')" class="loginBtn loginBtn--google">
                 Login with Google
               </a>
-            
             </div>
           </div>
         </div>
@@ -296,272 +203,103 @@ crossorigin="anonymous">
     </fieldset>
   </form>
 </div>
-<!-- Modal -->
+
+<!-- Modals -->
+<!-- Test Modal -->
 <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="testModalLabel">Invalid Input</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>If you want to proceed with testing, please click on the "Proceed with Testing" button below.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="closeModalBtn" data-dismiss="modal">Close</button>
-        <a href="https://codamakutano.herokuapp.com/accounts/join/" class="btn btn-primary">Proceed with Testing</a>
-      </div>
-    </div>
-  </div>
+  <!-- Modal content here -->
 </div>
 
-<!-- Email Model -->
+<!-- Email Modal -->
 <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="emailModalLabel">Sending Email</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>An email will send to your registered email address with your temporary login credentials.</p>
-        <p>Please check your inbox, including the spam folder, if you don't see the email in your primary inbox.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="submitModalBtn" data-dismiss="modal">Submit</button>
-        <button type="button" class="btn btn-secondary" id="cancelModalBtn" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
+  <!-- Modal content here -->
 </div>
 
 <script>
-  function checkCategoryValidity() {
-    var p = document.getElementById("id_category");
-    if (p.value == "0") {
-      p.setCustomValidity("Please Select an option");
+  function validateField(elementId, condition, message) {
+    const element = document.getElementById(elementId);
+    element.setCustomValidity(condition ? "" : message);
+  }
+
+  function toggleVisibility(elementId, show) {
+    const element = document.getElementById(elementId);
+    element.style.display = show ? "" : "none";
+  }
+
+  function toggleRequired(elementId, required) {
+    const element = document.getElementById(elementId);
+    if (required) {
+      element.setAttribute("required", "required");
     } else {
-      p.setCustomValidity("");
-    }
-  }
-  function checkSubCategoryValidity() {
-    var p = document.getElementById("id_sub_category");
-    var q = document.getElementById("id_category");
-    if (q.value != "1") {
-      if (p.value == "0") {
-        p.setCustomValidity("Please Select an option");
-      } else {
-        p.setCustomValidity("");
-      }
+      element.removeAttribute("required");
     }
   }
 
-  checkCategoryValidity();
+  function toggleSubSelection(selectedValue) {
+    const isClient = [3, 4, 6].includes(Number(selectedValue));
+    const isStaff = selectedValue === "2";
 
-  function toggle_sub_selection(selected_value) {
-    if (selected_value == 3| selected_value == 4|selected_value == 6) {
-      //If the Value seclected is Client
-      document.getElementById("id_sub_category").style.display = "block";
-      document.getElementById("id_sub_category").disabled = false;
-      document.getElementById("resume-field").style.display = "none";
-      document.getElementById("sub_selection").style.display = "";
+    toggleVisibility("sub_selection", isClient || isStaff);
+    toggleRequired("id_sub_category", isClient || isStaff);
 
-      document.getElementById("username").style.display = "none";
-      document.getElementById("id_username").removeAttribute('required');
-      document.getElementById("password").style.display = "none";
-      document.getElementById("id_password1").removeAttribute('required');
-      document.getElementById("confirm_password").style.display = "none";
-      document.getElementById("id_password2").removeAttribute('required');
-      document.getElementById("gender").style.display = "none";
-      document.getElementById("id_gender").removeAttribute('required');
-      document.getElementById("phone").style.display = "none";
-      document.getElementById("id_phone").removeAttribute('required');
-      document.getElementById("address").style.display = "none";
-      document.getElementById("city").style.display = "none";
-      document.getElementById("state").style.display = "none";
+    toggleVisibility("username", isStaff);
+    toggleRequired("id_username", isStaff);
 
-      //Hide Full_time,Contractual,Agent
-      hideSubCategoryOption(1);
-      hideSubCategoryOption(2);
-      hideSubCategoryOption(3);
-      hideSubCategoryOption(4);
-      hideSubCategoryOption(5);
-      //Show Other and No Selection
-      selectSubCategoryOption(0);
-      showSubCategoryOption(6);
-    } 
+    toggleVisibility("password", isStaff);
+    toggleRequired("id_password1", isStaff);
+    toggleRequired("id_password2", isStaff);
 
-    else if (selected_value == 2 )  {
-      //If the Value seclected is staff
-      document.getElementById("id_sub_category").style.display = "block";
-      document.getElementById("id_sub_category").disabled = false;
-      document.getElementById("resume-field").style.display = "none";
-      document.getElementById("sub_selection").style.display = "";
+    // Additional fields
+    toggleVisibility("confirm_password", isStaff);
+    toggleVisibility("email", true); // Email is always visible
 
-
-      document.getElementById("username").style.display = "";
-      document.getElementById("password").style.display = "";
-      document.getElementById("confirm_password").style.display = "";
-      document.getElementById("gender").style.display = "";
-      document.getElementById("phone").style.display = "";
-      document.getElementById("address").style.display = "";
-      document.getElementById("city").style.display = "";
-      document.getElementById("state").style.display = "";
-
-      document.getElementById("id_username").setAttribute('required', 'required');
-      document.getElementById("id_password1").setAttribute('required', 'required');
-      document.getElementById("id_password2").setAttribute('required', 'required');
-      document.getElementById("id_gender").setAttribute('required', 'required');
-      document.getElementById("id_phone").setAttribute('required', 'required');
-
-
-      hideSubCategoryOption(4);
-      hideSubCategoryOption(5);
-
-      showSubCategoryOption(0);
-      showSubCategoryOption(1);
-      showSubCategoryOption(2);
-      showSubCategoryOption(3);
-      showSubCategoryOption(6);
-    } 
-    else if (selected_value == 5 )  {
-      //If the Value seclected is investor
-      document.getElementById("id_sub_category").style.display = "block";
-      document.getElementById("id_sub_category").disabled = false;
-      document.getElementById("resume-field").style.display = "none";
-      document.getElementById("sub_selection").style.display = "";
-
-      document.getElementById("username").style.display = "none";
-      document.getElementById("id_username").removeAttribute('required');
-      document.getElementById("password").style.display = "none";
-      document.getElementById("id_password1").removeAttribute('required');
-      document.getElementById("confirm_password").style.display = "none";
-      document.getElementById("id_password2").removeAttribute('required');
-      document.getElementById("gender").style.display = "none";
-      document.getElementById("id_gender").removeAttribute('required');
-      document.getElementById("phone").style.display = "none";
-      document.getElementById("id_phone").removeAttribute('required');
-      document.getElementById("address").style.display = "none";
-      document.getElementById("city").style.display = "none";
-      document.getElementById("state").style.display = "none";
-      
-
-      hideSubCategoryOption(1);
-      hideSubCategoryOption(2);
-      hideSubCategoryOption(3);
-
-      showSubCategoryOption(0);
-      showSubCategoryOption(4);
-      showSubCategoryOption(5);
-      showSubCategoryOption(6);
-    } 
-    else {
-      document.getElementById("resume-field").style.display = "block";
-      document.getElementById("sub_selection").style.display = "none";
-      document.getElementById("id_sub_category").disabled = true;
-      document.getElementById("id_sub_category").style.display = "none";
-
-      document.getElementById("username").style.display = "";
-      document.getElementById("password").style.display = "";
-      document.getElementById("confirm_password").style.display = "";
-      document.getElementById("gender").style.display = "";
-      document.getElementById("phone").style.display = "";
-      document.getElementById("address").style.display = "";
-      document.getElementById("city").style.display = "";
-      document.getElementById("state").style.display = "";
-
-      document.getElementById("id_username").setAttribute('required', 'required');
-      document.getElementById("id_password1").setAttribute('required', 'required');
-      document.getElementById("id_password2").setAttribute('required', 'required');
-      document.getElementById("id_gender").setAttribute('required', 'required');
-      document.getElementById("id_phone").setAttribute('required', 'required');
-
-    }
-
-    checkCategoryValidity();
-    checkSubCategoryValidity();
+    // Reset subcategory selection
+    document.getElementById("subcategoryoption0").selected = true;
   }
-
-  function hideSubCategoryOption(option) {
-    document.getElementById("subcategoryoption" + option).style.display =
-      "none";
-  }
-  function showSubCategoryOption(option) {
-    document.getElementById("subcategoryoption" + option).style.display = "";
-  }
-  function selectSubCategoryOption(option) {
-    document.getElementById("subcategoryoption" + option).selected = true;
-  }
-  document.getElementById("category_disabled").selected = true;
-  document.getElementById("subcategoryoption0").selected = true;
-
 
   document.getElementById("signupBtn").addEventListener("click", function (e) {
     const firstName = document.querySelector("#id_first_name").value.toLowerCase();
     const lastName = document.querySelector("#id_last_name").value.toLowerCase();
     const username = document.querySelector("#id_username").value.toLowerCase();
-    
-    if (firstName.includes("test") || lastName.includes("test") || username.includes("test")) {
-      e.preventDefault(); 
-      $("#testModal").modal("show");
 
-      // document.getElementById("closeModalBtn").addEventListener("click", function () {
-      // document.querySelector("form").submit();
-      // });
-    }
-    else {
-      var category = document.getElementById("id_category");
-      const submitButton = document.getElementById("submitModalBtn");
-      const cancelButton = document.getElementById("cancelModalBtn");
+    if (["test", "testing"].includes(firstName) || ["test", "testing"].includes(lastName) || ["test", "testing"].includes(username)) {
+      e.preventDefault();
+      $("#testModal").modal("show");
+    } else {
+      const category = document.getElementById("id_category").value;
       const signupForm = document.getElementById("signupForm");
-      
-      if(category.value != 1 && category.value != 2 && signupForm.checkValidity()) {
-        e.preventDefault(); 
+
+      if (category !== "1" && category !== "2" && signupForm.checkValidity()) {
+        e.preventDefault();
         $("#emailModal").modal("show");
 
-        // Function to submit the form when the user proceeds
-        submitButton.addEventListener("click", function () {
-            signupForm.submit();
+        document.getElementById("submitModalBtn").addEventListener("click", function () {
+          signupForm.submit();
         });
 
-        // Function to hide the dialog when the user cancels
-        cancelButton.addEventListener("click", function () {
+        document.getElementById("cancelModalBtn").addEventListener("click", function () {
           $("#emailModal").modal("hide");
         });
-        
       }
     }
   });
 
   function enableSocialSignInLink(event, doc, value) {
-      
-      // Get the selected category value
+    const selectedCategory = document.getElementById("id_category").value;
+    const selectedSubcategory = document.getElementById("id_sub_category").value;
 
-      var selectedSubcategory = document.getElementById("id_sub_category");
-      var selectedCategory = document.getElementById("id_category");      
-      
-      if(selectedCategory.value == "0" || (selectedCategory.value != '1' && selectedSubcategory.value == "0") ) {
-        
-        alert("Please select a category and subcategory");
-        
-        return false;
-      }
+    if (selectedCategory === "0" || (selectedCategory !== '1' && selectedSubcategory === "0")) {
+      alert("Please select a category and subcategory");
+      return false;
+    }
 
-      // Check if a category is selected
-      // Enable the Google Sign-In link
-      var currentHref = doc.getAttribute('href');
-      
-      // Add a query parameter (e.g., "?param=value") to the href
-      var newHref = currentHref + '?category='+ selectedCategory.value + '&subcategory='+ selectedSubcategory.value + '&socialPlatform=' + value;
-      
-      // Update the href attribute with the new value
-      doc.setAttribute('href', newHref);        
-      
+    const currentHref = doc.getAttribute('href');
+    const newHref = `${currentHref}?category=${selectedCategory}&subcategory=${selectedSubcategory}&socialPlatform=${value}`;
+    doc.setAttribute('href', newHref);
   }
 
+  // Initialize
+  document.getElementById("category_disabled").selected = true;
+  document.getElementById("subcategoryoption0").selected = true;
 </script>
-{% endblock content%}
+{% endblock content %}

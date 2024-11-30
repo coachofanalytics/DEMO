@@ -72,13 +72,6 @@ class CustomerUser(AbstractUser):
     last_name = models.CharField(max_length=255)
     date_joined = models.DateTimeField(default=timezone.now)
     email = models.CharField(max_length=255)
-    gender = models.IntegerField(choices=Score.choices, blank=True, null=True)
-    phone = models.CharField(default="90001",max_length=255)
-    address = models.CharField(blank=True, null=True, max_length=255)
-    city = models.CharField(blank=True, null=True, max_length=255)
-    state = models.CharField(blank=True, null=True, max_length=255)
-    zipcode = models.CharField(blank=True, null=True, max_length=255)
-    country = CountryField(blank=True, null=True)
     category = models.IntegerField(choices=CategoryChoices.choices, default=999)
     # added this column here
     sub_category = models.IntegerField(
@@ -87,12 +80,6 @@ class CustomerUser(AbstractUser):
     is_admin = models.BooleanField("Is admin", default=False)
     is_staff = models.BooleanField("Is employee", default=False)
     is_client = models.BooleanField("Is Client", default=False)
-    is_applicant = models.BooleanField("Is applicant", default=False)
-    # is_employee = models.BooleanField("Is employee", default=False)
-    is_employee_contract_signed = models.BooleanField(default=False)
-    resume_file = models.FileField(upload_to="resumes/doc/", blank=True, null=True)
-
-    # is_active = models.BooleanField('Is applicant', default=True)
     class Meta:
         # ordering = ["-date_joined"]
         ordering = ["username"]
@@ -107,9 +94,7 @@ class CustomerUser(AbstractUser):
     def user_details(self):
         user_details = (
             f"Username: {self.username}\n"
-            f"Phone Number: {self.phone}\n"
-            f"Email: {self.email}\n"
-            f"City: {self.city}\n"
+           
             # f"Country: {self.country.name if self.country else 'N/A'}"
         )
         return user_details

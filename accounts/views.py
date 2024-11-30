@@ -22,20 +22,11 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from requests import request
-from django.views.generic.edit import FormView
 from .models import CustomerUser, User
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, UserForm,LoginForm
-from .utils import agreement_data,employees,compute_default_fee
-from finance.models import Default_Payment_Fees,Payment_History
 from finance.utils import DYCDefaultPayments
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic.edit import FormMixin
-from django.forms import modelform_factory
-from finance.models import Transaction
-from django.core.exceptions import ValidationError
-from main.utils import path_values
+from django.contrib.auth import authenticate, login, get_user_model
 # Create your views here..
 
 
@@ -75,15 +66,15 @@ def join(request):
     form = UserForm()  # Define form variable with initial value
     if request.method == "POST":
         previous_user = CustomerUser.objects.filter(email=request.POST.get("email"))
-        if len(previous_user) > 0:
+        if previous_user:
             messages.success(request, f'User already exists with this email')
             return redirect("/password-reset")
         else:
-            contract_data, contract_date = agreement_data(request)
+            
             form = UserForm(request.POST)  # Assign form with request.POST data
             if form.is_valid():
-                if form.cleaned_data.get('category') in [CategoryChoices.Jobsupport,CategoryChoices.Student,CategoryChoices.investor,CategoryChoices.General_User]:
-
+                if form.cleaned_data.get('category') in [CategoryChoices.CLIENT]:
+                    form.instance.is_client = True
                     random_password = generate_random_password(8)
                     form.instance.username = form.cleaned_data.get('email')
                     form.instance.password1 = random_password
@@ -91,14 +82,11 @@ def join(request):
                     form.instance.gender = None
                     # form.instance.phone = "0000000000"
 
-                if form.cleaned_data.get("category") == CategoryChoices.Coda_Staff_Member:
+                if form.cleaned_data.get("category") == CategoryChoices.STAFF_MEMBER:
                     form.instance.is_staff = True
-                elif form.cleaned_data.get("category") == CategoryChoices.Jobsupport or form.cleaned_data.get("category") == CategoryChoices.Student or form.cleaned_data.get("category") == CategoryChoices.investor:
-                    form.instance.is_client = True
-                else:
-                    form.instance.is_applicant = True
-
+               
                 form.save()
+                return redirect('accounts:account-login')
 
     else:
         msg = "error validating form"
@@ -109,37 +97,44 @@ def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
 
-    #when error occur while login/signup with social account, we are redirecting it to login page of website
     if request.method == 'GET':
         sociallogin = request.session.pop("socialaccount_sociallogin", None)
-        
         if sociallogin is not None:
-            msg = 'Error with social login. check your credential or try to sing up manually.'
-    
+            msg = 'Error with social login. Check your credentials or try to sign up manually.'
+
     if request.method == "POST":
         if form.is_valid():
+            print('Form is valid')
             request.session["siteurl"] = settings.SITEURL
             username_or_email = form.cleaned_data.get("enter_your_username_or_email")
             enter_your_password = form.cleaned_data.get("enter_your_password")
-            account = authenticate(username=username_or_email, password=enter_your_password)
-            
-          
-        
-            
-    return render(
-        request, "accounts/registration/DC48K/login_page.html", {"form": form, "msg": msg}  )
+            print(f'Username or Email: {username_or_email}')
 
-def authenticate(email=None, password=None, **kwargs):
-    try:
-        users = User.objects.filter(email=email)
-        if users.exists():
-            user = users.first()
-            if user.check_password(password):
-                return user
-    except User.DoesNotExist:
-        return None
+            # Try to get the user by username
+            user = authenticate(request, username=username_or_email, password=enter_your_password)
+            if user is None:
+                # If authentication with username failed, try email
+                UserModel = get_user_model()
+                try:
+                    user_obj = UserModel.objects.get(email__iexact=username_or_email)
+                    user = authenticate(request, username=user_obj.username, password=enter_your_password)
+                except UserModel.DoesNotExist:
+                    pass
 
-    return None
+            if user:
+                print('User authenticated')
+                login(request, user)
+                return redirect('/')
+            else:
+                print('Authentication failed')
+                msg = 'Invalid credentials'
+        else:
+            print('Form is invalid')
+            msg = 'Error validating the form'
+
+            
+    return render(request, "accounts/registration/DC48K/login_page.html", {"form": form, "msg": msg}  )
+
 
 
 @login_required
