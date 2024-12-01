@@ -155,6 +155,17 @@ DATABASES = {
         "HOST": 'cat670aihdrkt1.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
     }
 }
+
+# Local DB
+# DATABASES = {
+#     'default': {
+#         "ENGINE": 'django.db.backends.postgresql',
+#         "NAME": 'd2l066ajig78uh',
+#         "USER": 'uf4o5nponalopo',
+#         "PASSWORD": 'p2f315d6b9430b965799ae1813941756fa47e03c99328df5d063d7049455884a1',
+#         "HOST": 'ce0lkuo944ch99.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
+#     }
+# }
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",

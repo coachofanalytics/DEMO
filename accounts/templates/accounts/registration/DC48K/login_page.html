@@ -3,6 +3,11 @@
 {%load crispy_forms_tags%}{% block content %}
 <style>
   /* Shared */
+  .login-div {
+    background-color: #03b1af !important; /* Light blue */
+    padding: 20px; /* Optional: Add padding for spacing */
+   
+  }
   .loginBtn {
     box-sizing: border-box;
     position: relative;
@@ -98,23 +103,18 @@
 							{{ form.password.errors }}
 							{{ form.enter_your_password }}
 						</div>
-						<div class="form-group">
-							<label for="">Select Your Category</label>
-							<select name="" id="" class="form-control rounded-0">
-								<option value="">Select</option>
-							</select>
-						</div>
+					
 					
 					<div class="form-group form-checkbox d-flex mb-3">
 						<input type="checkbox" name="" id="" />
 						<label for="" class="align-items-center">Remember Me</label>
 					</div>
-					
+          <button type="submit" class="btn btn-primary mb-3" style="color: black;">LOG IN</button>
 					<div class="row">
-						<button type="submit" class="btn btn-primary mb-3" style="color: black;">LOG IN</button>
+					
 						<p class="text-center mt-2 col-md-4 mb-3" style="color: #FFF;">or</p>
-						<div class="row col-md-4 mb-3" tabindex="0" style="display: flex; justify-content: center; align-items: center;" >
-							  <a id="google-signin-link" href="#" style="color: black;" type='button' class="loginBtn loginBtn--google">
+						<div class="row col-md-4 mb-3" tabindex="0" style="display: flex; justify-content: center; align-items: center;padding: 4px;" >
+							  <a id="google-signin-link" href="#" style="color: black;" type='button'  class="loginBtn loginBtn--google">
 								Login with Google
 							  </a>
 						</div>

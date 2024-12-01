@@ -92,11 +92,11 @@
     </div>
     <div class="list" id="navList">
         <ul class="navList">
-            <li><a href="/" class="navLin">HOME</a></li>
+            <li><a href="#" class="navLin">HOME</a></li>
             <li class="dropdown">
-                <a href="/about" class="navLin">ABOUT US</a>
+                <a href="#" class="navLin">ABOUT US</a>
                 <div class="dropdown-content">
-                    <a href="{% url 'main:history' %}">Our History</a>
+                    <a href="#">Our History</a>
                     <div class="sub-dropdown">
                         <a href="#">Our Team</a>
                         <div class="sub-dropdown-content">                      
@@ -117,14 +117,14 @@
             </li>
             <li class="dropdown">
                 <li class="dropdown">
-                    <a href="/services" class="navLin">SERVICES</a>
+                    <a href="#" class="navLin">SERVICES</a>
                     <div class="dropdown-content">
                         <!-- Consular Assistance -->
                         <div class="sub-dropdown">
                             <a href="#">Consular Assistance</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/consular-assistance/information-updates">Information and Updates</a>
-                                <a href="/services/consular-assistance/legal-immigration-guidance">Legal and Immigration Guidance</a>
+                                <a href="#">Information and Updates</a>
+                                <a href="#">Legal and Immigration Guidance</a>
                             </div>
                         </div>
                 
@@ -132,8 +132,8 @@
                         <div class="sub-dropdown">
                             <a href="#">Document Services</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/document-services/certificate-issuance">Issuance of Certificates</a>
-                                <a href="/services/document-services/legalization-authentication">Document Legalization and Authentication</a>
+                                <a href="#">Issuance of Certificates</a>
+                                <a href="#">Document Legalization and Authentication</a>
                             </div>
                         </div>
                 
@@ -141,8 +141,8 @@
                         <div class="sub-dropdown">
                             <a href="#">Community Support</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/community-support/forums">Forums and Networking</a>
-                                <a href="/services/community-support/events">Community Events</a>
+                                <a href="#">Forums and Networking</a>
+                                <a href="#">Community Events</a>
                             </div>
                         </div>
                 
@@ -150,8 +150,8 @@
                         <div class="sub-dropdown">
                             <a href="#">Healthcare Information</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/healthcare/healthcare-services">Healthcare Services</a>
-                                <a href="/services/healthcare/insurance-options">Health Insurance Options</a>
+                                <a href="#">Healthcare Services</a>
+                                <a href="#">Health Insurance Options</a>
                             </div>
                         </div>
                 
@@ -159,8 +159,8 @@
                         <div class="sub-dropdown">
                             <a href="#">Financial Services</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/financial/banking-investment">Banking and Investment</a>
-                                <a href="/services/financial/remittances">Remittances and Investments</a>
+                                <a href="#">Banking and Investment</a>
+                                <a href="#">Remittances and Investments</a>
                             </div>
                         </div>
                 
@@ -168,8 +168,8 @@
                         <div class="sub-dropdown">
                             <a href="#">Crisis Management</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/crisis/emergency-response">Emergency Response</a>
-                                <a href="/services/crisis/advisories">Advisories</a>
+                                <a href="#">Emergency Response</a>
+                                <a href="#">Advisories</a>
                             </div>
                         </div>
                 
@@ -177,20 +177,20 @@
                         <div class="sub-dropdown">
                             <a href="#">Education and Training</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/education/scholarships">Scholarships</a>
-                                <a href="/services/education/training-sessions">Training Sessions</a>
+                                <a href="#">Scholarships</a>
+                                <a href="#">Training Sessions</a>
                             </div>
                         </div>
                     </div>
                 </li>
                 
             
-            <li><a href="/membership" class="navLin">MEMBERSHIP</a></li>
+            <li><a href="#" class="navLin">MEMBERSHIP</a></li>
            
-            <li><a href="/news" class="navLin">NEWS</a></li>
-            <li><a href="/contract-us" class="navLin">CONTACT US</a></li>
+            <li><a href="#" class="navLin">NEWS</a></li>
+            <li><a href="#" class="navLin">CONTACT US</a></li>
             <li class="dropdown">
-                <a href="/about" class="navLin">SUPPORT</a>
+                <a href="#" class="navLin">SUPPORT</a>
                 <div class="dropdown-content">
                     <a href="#">Donate</a>
                     <a href="#">Become Volunteer</a>
@@ -199,7 +199,7 @@
                 </div>
             </li>
             {% if user.is_authenticated %}
-            <li><a href="/gallery" class="navLin">GALLERY</a></li>
+            <li><a href="#" class="navLin">GALLERY</a></li>
             <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGOUT</a></li>
             {% else %}
             <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>
