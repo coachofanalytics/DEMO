@@ -124,7 +124,7 @@ def login_view(request):
             if user:
                 print('User authenticated')
                 login(request, user)
-                return redirect('/')
+                return redirect('https://dc48k.org/')
             else:
                 print('Authentication failed')
                 msg = 'Invalid credentials'

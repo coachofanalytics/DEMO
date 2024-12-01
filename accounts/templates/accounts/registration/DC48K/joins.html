@@ -16,7 +16,6 @@ crossorigin="anonymous"></script>
    .introduction-div {
     background-color: #03b1af !important; /* Light blue */
     padding: 20px; /* Optional: Add padding for spacing */
-   
   }
   .loginBtn {
     box-sizing: border-box;
@@ -92,9 +91,9 @@ crossorigin="anonymous"></script>
                         >
                           Select Category
                         </option>
-                        <option value="1">Client</option>
-                        <option value="2">Staff Member</option>
-                        <option value="6">General User</option>
+                        <option value="1">Customer</option>
+                        <option value="2">Employee</option>
+                        <option value="6">Visitor</option>
                       </select>
                     </div>
                   </div>
@@ -162,7 +161,7 @@ crossorigin="anonymous"></script>
           </div>
           <div class="row" id="password">
             <div class="col-md-2 align-self-center">
-              <p class="mb-0">Password</p>
+              <p class="mb-0">Password*</p>
             </div>
             <div class="col-md-10">
               {{ form.password1|as_crispy_field }}
@@ -170,7 +169,7 @@ crossorigin="anonymous"></script>
           </div>
           <div class="row" id="confirm_password">
             <div class="col-md-2 align-self-center">
-              <p class="mb-0">Confirm Password</p>
+              <p class="mb-0">Confirm Password*</p>
             </div>
             <div class="col-md-10">
               {{ form.password2|as_crispy_field }}
@@ -178,7 +177,7 @@ crossorigin="anonymous"></script>
           </div>
           <div class="row" id="email">
             <div class="col-md-2 align-self-center">
-              <p class="mb-0">Email</p>
+              <p class="mb-0">Email*</p>
             </div>
             <div class="col-md-10">
               {{ form.email|as_crispy_field }}
@@ -241,25 +240,31 @@ crossorigin="anonymous"></script>
   }
 
   function toggleSubSelection(selectedValue) {
-    const isClient = [3, 4, 6].includes(Number(selectedValue));
+    const isClient = selectedValue === "1";
     const isStaff = selectedValue === "2";
+    const isGeneralUser = selectedValue === "6";
 
-    toggleVisibility("sub_selection", isClient || isStaff);
-    toggleRequired("id_sub_category", isClient || isStaff);
+    // Subcategories are only shown for Staff Members
+    toggleVisibility("sub_selection", isStaff);
+    toggleRequired("id_sub_category", isStaff);
 
-    toggleVisibility("username", isStaff);
-    toggleRequired("id_username", isStaff);
+    // For Clients and General Users, fields should be the same as for Staff Members
+    const showFields = isStaff || isClient || isGeneralUser;
+    toggleVisibility("username", showFields);
+    toggleRequired("id_username", showFields);
 
-    toggleVisibility("password", isStaff);
-    toggleRequired("id_password1", isStaff);
-    toggleRequired("id_password2", isStaff);
+    toggleVisibility("password", showFields);
+    toggleRequired("id_password1", showFields);
+    toggleRequired("id_password2", showFields);
 
     // Additional fields
-    toggleVisibility("confirm_password", isStaff);
+    toggleVisibility("confirm_password", showFields);
     toggleVisibility("email", true); // Email is always visible
 
-    // Reset subcategory selection
-    document.getElementById("subcategoryoption0").selected = true;
+    // Reset subcategory selection if subcategories are hidden
+    if (!isStaff) {
+      document.getElementById("subcategoryoption0").selected = true;
+    }
   }
 
   document.getElementById("signupBtn").addEventListener("click", function (e) {
@@ -293,7 +298,7 @@ crossorigin="anonymous"></script>
     const selectedCategory = document.getElementById("id_category").value;
     const selectedSubcategory = document.getElementById("id_sub_category").value;
 
-    if (selectedCategory === "0" || (selectedCategory !== '1' && selectedSubcategory === "0")) {
+    if (selectedCategory === "0" || (selectedCategory === '2' && selectedSubcategory === "0")) {
       alert("Please select a category and subcategory");
       return false;
     }
