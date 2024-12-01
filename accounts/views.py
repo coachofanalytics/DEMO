@@ -22,7 +22,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from .models import CustomerUser, User
+from .models import CustomerUser
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, UserForm,LoginForm
 from finance.utils import DYCDefaultPayments
 from django.shortcuts import render, redirect
@@ -139,7 +139,7 @@ def login_view(request):
 
 @login_required
 def userlist(request):
-    users = User.objects.filter(transaction_sender__amount__gte=5000).distinct()
+    users = CustomerUser.objects.filter(transaction_sender__amount__gte=5000).distinct()
     template_name = "accounts/admin/processing_users.html"
 
     context={
@@ -153,7 +153,7 @@ def userlist(request):
 
 @login_required
 def users(request):
-    users = User.objects.filter(is_active=True).order_by("-date_joined")
+    users = CustomerUser.objects.filter(is_active=True).order_by("-date_joined")
     template_name="accounts/admin/adminpage.html"
     context={
         "users": users,
@@ -166,7 +166,7 @@ def users(request):
     
 
 class SuperuserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = User
+    model = CustomerUser
     success_url = "/accounts/users"
     fields = [
         "category",
@@ -210,7 +210,7 @@ class SuperuserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = User
+    model = CustomerUser
     success_url = "/accounts/users"
     # fields=['category','address','city','state','country']
     fields = [

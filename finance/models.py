@@ -13,7 +13,7 @@ from django.db.models.signals import pre_save, post_save
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from accounts.models import Department
+from accounts.models import CustomerUser, Department
 # from finance.utils import get_exchange_rate
 User = get_user_model()
 
@@ -23,7 +23,7 @@ User = get_user_model()
 class Payment_Information(models.Model):
     # id = models.AutoField(primary_key=True)
     customer_id = models.ForeignKey(
-        "accounts.User",
+        "accounts.CustomerUser",
         verbose_name=("Client Name"),
         on_delete=models.CASCADE,
         related_name="customer")
@@ -57,7 +57,7 @@ class Payment_Information(models.Model):
 class Payment_History(models.Model):
     # id = models.AutoField(primary_key=True)
     customer = models.ForeignKey(
-        User,
+        CustomerUser,
         verbose_name=("Client Name"),
         on_delete=models.CASCADE,
         related_name="customer_payment_history")
@@ -147,7 +147,7 @@ class Transaction(models.Model):
         default="Other",
     )
     sender = models.ForeignKey(
-    "accounts.User", 
+    "accounts.CustomerUser", 
     on_delete=models.CASCADE, 
     related_name="transaction_sender",
     default=1)

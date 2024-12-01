@@ -9,7 +9,7 @@ from django.views.generic import (
     UpdateView,
 )
 from .models import Assets,Description, News, Page, Service, SubService,Team
-from accounts.models import User
+from accounts.models import CustomerUser
 from .utils import image_view,path_values
 from main.forms import ContactForm
 from django.contrib.auth import get_user_model
