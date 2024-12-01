@@ -240,16 +240,19 @@ crossorigin="anonymous"></script>
   }
 
   function toggleSubSelection(selectedValue) {
-    const isClient = selectedValue === "1";
-    const isStaff = selectedValue === "2";
-    const isGeneralUser = selectedValue === "6";
+    const isCustomer = selectedValue === "1";
+    const isEmployee = selectedValue === "2";
+    const isVisitor = selectedValue === "6";
 
-    // Subcategories are only shown for Staff Members
-    toggleVisibility("sub_selection", isStaff);
-    toggleRequired("id_sub_category", isStaff);
+    // Subcategories are only shown for Employees
+    toggleVisibility("sub_selection", isEmployee);
+    toggleRequired("id_sub_category", isEmployee);
 
-    // For Clients and General Users, fields should be the same as for Staff Members
-    const showFields = isStaff || isClient || isGeneralUser;
+    // Disable subcategory field when not needed
+    document.getElementById("id_sub_category").disabled = !isEmployee;
+
+    // For Customers and Visitors, fields should be the same as for Employees
+    const showFields = isEmployee || isCustomer || isVisitor;
     toggleVisibility("username", showFields);
     toggleRequired("id_username", showFields);
 
@@ -262,7 +265,7 @@ crossorigin="anonymous"></script>
     toggleVisibility("email", true); // Email is always visible
 
     // Reset subcategory selection if subcategories are hidden
-    if (!isStaff) {
+    if (!isEmployee) {
       document.getElementById("subcategoryoption0").selected = true;
     }
   }
@@ -279,7 +282,7 @@ crossorigin="anonymous"></script>
       const category = document.getElementById("id_category").value;
       const signupForm = document.getElementById("signupForm");
 
-      if (category !== "1" && category !== "2" && signupForm.checkValidity()) {
+      if (category !== "1" && category !== "2" && category !== "6" && signupForm.checkValidity()) {
         e.preventDefault();
         $("#emailModal").modal("show");
 
@@ -311,5 +314,7 @@ crossorigin="anonymous"></script>
   // Initialize
   document.getElementById("category_disabled").selected = true;
   document.getElementById("subcategoryoption0").selected = true;
+  // Disable subcategory field on page load
+  document.getElementById("id_sub_category").disabled = true;
 </script>
 {% endblock content %}
