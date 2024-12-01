@@ -54,6 +54,22 @@ crossorigin="anonymous"></script>
     border-width: 2px !important;
     border-radius: 5px;
   }
+  @media (max-width: 768px) {
+    .signup-button-row {
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center;
+    }
+    .signup-button-row .btn,
+    .signup-button-row .loginBtn {
+      width: 100%;
+      max-width: 300px; /* Optional: set a max-width */
+      margin-bottom: 10px;
+    }
+    .signup-button-row small {
+      margin-bottom: 10px;
+    }
+  }
 </style>
 
 <div class="sign-up-div">
