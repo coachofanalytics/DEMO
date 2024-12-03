@@ -12,12 +12,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(label="Username or E-mail")
     remember_me = forms.BooleanField(required=False, label="Keep me signed in")
-
-
 class UserForm(forms.ModelForm):
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Repeat Password", widget=forms.PasswordInput)
-
     class Meta:
         model = CustomerUser
         fields = [
@@ -25,9 +20,6 @@ class UserForm(forms.ModelForm):
             "sub_category",
             "first_name",
             "last_name",
-            "username",
-            "password1",
-            "password2",
             "email",
             "is_staff",
         ]
@@ -35,29 +27,20 @@ class UserForm(forms.ModelForm):
             "sub_category": "",
             "first_name": "",
             "last_name": "",
-            "username": "",
             "email": "",
         }
-
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["category"].initial = 1
         self.fields["sub_category"].initial = 1
         category = self.data.get('category')
         if category in ['3', '4', '5', '6']:
-            self.fields['username'].required = False
-            self.fields['password1'].required = False
-            self.fields['password2'].required = False
+            self.fields['email'].required = False  # Example, adjust as needed
 
     def clean(self):
         cleaned_data = super().clean()
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
         email = cleaned_data.get("email")
-
-        # Validate passwords match
-        if password1 and password2 and password1 != password2:
-            self.add_error("password2", "Passwords don't match.")
 
         # Validate email format
         if email:
@@ -68,19 +51,37 @@ class UserForm(forms.ModelForm):
 
         # Check for disallowed names
         disallowed_names = ["test", "testing"]
-        for field in ["first_name", "last_name", "username"]:
+        for field in ["first_name", "last_name"]:
             value = cleaned_data.get(field, "").lower()
             if value in disallowed_names:
                 self.add_error(field, f"This {field.replace('_', ' ')} is not allowed.")
-
+    
     def save(self, commit=True):
         user = super().save(commit=False)
-        password = self.cleaned_data.get('password2')
-        if password:
-            user.set_password(password)
+        
+        # Automatically generate a username if it's not provided
+        if not user.username:
+            user.username = f'{user.first_name.lower()}{user.last_name.lower()}'
+        
+        # Make sure the username is unique
+        user.username = self.generate_unique_username(user.username)
+        
         if commit:
             user.save()
         return user
+
+    def generate_unique_username(self, base_username):
+        """
+        This method will ensure that the username is unique.
+        It will append a number if the username already exists.
+        """
+        username = base_username
+        counter = 1
+        while CustomerUser.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+        return username
+
 
 
 class LoginForms(forms.Form):

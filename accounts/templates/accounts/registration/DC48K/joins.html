@@ -72,86 +72,30 @@ crossorigin="anonymous"></script>
   }
 </style>
 
+
 <div class="sign-up-div">
   <form method="POST" id="signupForm" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <fieldset class="form-group">
       <div class="row">
         <div class="col-lg-6 introduction-div">
-          <div class="row">
-            <div class="select-div">
-              <h1 class="position-relative">SIGN-UP</h1>
-              <div class="content">
-                <p class="mb-2">Welcome to CODA, Are you NEW here?</p>
-                <p>
-                  Sign-up to enjoy all the benefits and trainings CODA
-                  provides.
-                </p>
-              </div>
-              <h2>Pick your Category | Register As:</h2>
-              <div class="d-flex">
-                <div class="second-select-div">
-                  <div class="form-group">
-                    <div class="">
-                      <select
-                        name="category"
-                        class="select form-control"
-                        id="id_category"
-                        onchange="toggleSubSelection(this.value)"
-                      >
-                        <option
-                          id="category_disabled"
-                          value="0"
-                          style="display: none"
-                          selected
-                        >
-                          Select Category
-                        </option>
-                        <option value="1">Customer</option>
-                        <option value="2">Employee</option>
-                        <option value="6">Visitor</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Subcategory selection -->
-            <div class="col-md-6" id="sub_selection" style="display: none">
-              <div id="div_id_sub_category" class="form-group">
-                <label for="id_sub_category" class="requiredField" style="color: white;">
-                  Sub Category<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                  <select
-                    name="sub_category"
-                    class="select form-control"
-                    id="id_sub_category"
-                  >
-                    <option
-                      id="subcategoryoption0"
-                      value="0"
-                      style="display: none"
-                      selected
-                    >
-                      Select Sub Category
-                    </option>
-                    <option id="subcategoryoption1" value="1">Full Time</option>
-                    <option id="subcategoryoption2" value="2">Contractual</option>
-                    <option id="subcategoryoption3" value="3">Agent</option>
-                    <option id="subcategoryoption4" value="4">Short Term</option>
-                    <option id="subcategoryoption5" value="5">Long Term</option>
-                    <option id="subcategoryoption6" value="6">Other</option>
-                  </select>
-                </div>
-              </div>
-            </div>        
+          <h1 class="position-relative">SIGN-UP</h1>
+          <p>Welcome to CODA, Are you NEW here? Sign-up to enjoy all the benefits and trainings CODA provides.</p>
+          <h2>Pick your Category | Register As:</h2>
+          <div class="form-group">
+            <select name="category" class="select form-control" id="id_category">
+              <option value="0" style="display: none;" selected>Select Category</option>
+              <option value="1">Ordinary Member (Free)</option>
+              <option value="2">Active Member</option>
+              <option value="3">Executive Member</option>
+              <option value="4">FBO & Ordinary (Free)</option>
+              <option value="5">Active Organization</option>
+              <option value="6">Royal Organization</option>
+            </select>
           </div>
         </div>
-        <!-- Form fields -->
         <div class="col-lg-6 form-div">
-          <p><small>* Required fields</small></p>
-          <div class="row" id="first_name">
+          <div class="row">
             <div class="col-md-2 align-self-center">
               <p class="mb-0">First Name*</p>
             </div>
@@ -159,7 +103,7 @@ crossorigin="anonymous"></script>
               {{ form.first_name|as_crispy_field }}
             </div>
           </div>
-          <div class="row" id="last_name">
+          <div class="row">
             <div class="col-md-2 align-self-center">
               <p class="mb-0">Last Name*</p>
             </div>
@@ -167,31 +111,7 @@ crossorigin="anonymous"></script>
               {{ form.last_name|as_crispy_field }}
             </div>
           </div>
-          <div class="row" id="username">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">User Name*</p>
-            </div>
-            <div class="col-md-10">
-              {{ form.username|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="password">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">Password*</p>
-            </div>
-            <div class="col-md-10">
-              {{ form.password1|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="confirm_password">
-            <div class="col-md-2 align-self-center">
-              <p class="mb-0">Confirm Password*</p>
-            </div>
-            <div class="col-md-10">
-              {{ form.password2|as_crispy_field }}
-            </div>
-          </div>
-          <div class="row" id="email">
+          <div class="row">
             <div class="col-md-2 align-self-center">
               <p class="mb-0">Email*</p>
             </div>
@@ -199,138 +119,12 @@ crossorigin="anonymous"></script>
               {{ form.email|as_crispy_field }}
             </div>
           </div>
-          <div class="form-group row" style="margin-bottom: -60px;">
-            <div class="col-md-6">
-              <button class="btn btn-outline-success" style="color: black;" type="submit" id="signupBtn" tabindex="0" aria-label="Sign Up">Sign Up</button>
-            </div>
-            <div class="col-md-6">
-              <small class="text-muted text-center">
-                Already Have An Account?
-                <a class="ml-2" href="#">Sign In</a>
-              </small>
-            </div>
-          </div>
-          <p class="text-center mt-2">or</p>
-          <div class="row" style="display: flex; justify-content: center; align-items: center;">
-            <div class="col-md-3 d-flex justify-content-center">
-              <a id="google-signin-link" style="color: black;" href="#" onclick="return enableSocialSignInLink(event, this, 'google_login')" class="loginBtn loginBtn--google">
-                Login with Google
-              </a>
-            </div>
-          </div>
+          <button class="btn btn-outline-success" type="submit">Sign Up</button>
         </div>
       </div>
     </fieldset>
   </form>
 </div>
 
-<!-- Modals -->
-<!-- Test Modal -->
-<div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
-  <!-- Modal content here -->
-</div>
 
-<!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
-  <!-- Modal content here -->
-</div>
-
-<script>
-  function validateField(elementId, condition, message) {
-    const element = document.getElementById(elementId);
-    element.setCustomValidity(condition ? "" : message);
-  }
-
-  function toggleVisibility(elementId, show) {
-    const element = document.getElementById(elementId);
-    element.style.display = show ? "" : "none";
-  }
-
-  function toggleRequired(elementId, required) {
-    const element = document.getElementById(elementId);
-    if (required) {
-      element.setAttribute("required", "required");
-    } else {
-      element.removeAttribute("required");
-    }
-  }
-
-  function toggleSubSelection(selectedValue) {
-    const isCustomer = selectedValue === "1";
-    const isEmployee = selectedValue === "2";
-    const isVisitor = selectedValue === "6";
-
-    // Subcategories are only shown for Employees
-    toggleVisibility("sub_selection", isEmployee);
-    toggleRequired("id_sub_category", isEmployee);
-
-    // Disable subcategory field when not needed
-    document.getElementById("id_sub_category").disabled = !isEmployee;
-
-    // For Customers and Visitors, fields should be the same as for Employees
-    const showFields = isEmployee || isCustomer || isVisitor;
-    toggleVisibility("username", showFields);
-    toggleRequired("id_username", showFields);
-
-    toggleVisibility("password", showFields);
-    toggleRequired("id_password1", showFields);
-    toggleRequired("id_password2", showFields);
-
-    // Additional fields
-    toggleVisibility("confirm_password", showFields);
-    toggleVisibility("email", true); // Email is always visible
-
-    // Reset subcategory selection if subcategories are hidden
-    if (!isEmployee) {
-      document.getElementById("subcategoryoption0").selected = true;
-    }
-  }
-
-  document.getElementById("signupBtn").addEventListener("click", function (e) {
-    const firstName = document.querySelector("#id_first_name").value.toLowerCase();
-    const lastName = document.querySelector("#id_last_name").value.toLowerCase();
-    const username = document.querySelector("#id_username").value.toLowerCase();
-
-    if (["test", "testing"].includes(firstName) || ["test", "testing"].includes(lastName) || ["test", "testing"].includes(username)) {
-      e.preventDefault();
-      $("#testModal").modal("show");
-    } else {
-      const category = document.getElementById("id_category").value;
-      const signupForm = document.getElementById("signupForm");
-
-      if (category !== "1" && category !== "2" && category !== "6" && signupForm.checkValidity()) {
-        e.preventDefault();
-        $("#emailModal").modal("show");
-
-        document.getElementById("submitModalBtn").addEventListener("click", function () {
-          signupForm.submit();
-        });
-
-        document.getElementById("cancelModalBtn").addEventListener("click", function () {
-          $("#emailModal").modal("hide");
-        });
-      }
-    }
-  });
-
-  function enableSocialSignInLink(event, doc, value) {
-    const selectedCategory = document.getElementById("id_category").value;
-    const selectedSubcategory = document.getElementById("id_sub_category").value;
-
-    if (selectedCategory === "0" || (selectedCategory === '2' && selectedSubcategory === "0")) {
-      alert("Please select a category and subcategory");
-      return false;
-    }
-
-    const currentHref = doc.getAttribute('href');
-    const newHref = `${currentHref}?category=${selectedCategory}&subcategory=${selectedSubcategory}&socialPlatform=${value}`;
-    doc.setAttribute('href', newHref);
-  }
-
-  // Initialize
-  document.getElementById("category_disabled").selected = true;
-  document.getElementById("subcategoryoption0").selected = true;
-  // Disable subcategory field on page load
-  document.getElementById("id_sub_category").disabled = true;
-</script>
 {% endblock content %}

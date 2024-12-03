@@ -1,9 +1,13 @@
 from django.db import models
 
 class CategoryChoices(models.IntegerChoices):
-    CLIENT = 1, 'Client'
-    STAFF_MEMBER = 2, 'Staff Member'
-    GENERAL_USER = 6, 'General User'
+    ORDINARY_MEMBER = 1, 'Ordinary Member (Free)'
+    ACTIVE_MEMBER = 2, 'Active Member'
+    EXECUTIVE_MEMBER = 3, 'Executive Member'
+    FBO_ORDINARY = 4, 'FBO & Ordinary (Free)'
+    ACTIVE_ORGANIZATION = 5, 'Active Organization'
+    ROYAL_ORGANIZATION = 6, 'Royal Organization'
+
 
 class SubCategoryChoices(models.IntegerChoices):
     NO_SELECTION = 0, 'No selection'

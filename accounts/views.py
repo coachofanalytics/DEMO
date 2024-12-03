@@ -58,41 +58,61 @@ def register(request):
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'accounts/registration/DC48K/logins.html'
+
+
+# Function to generate a random password
 def generate_random_password(length=12):
     characters = string.ascii_letters + string.digits + "!@#$%&"
     password = ''.join(secrets.choice(characters) for _ in range(length))
     return password
+
 def join(request):
     form = UserForm()  # Define form variable with initial value
     if request.method == "POST":
         previous_user = CustomerUser.objects.filter(email=request.POST.get("email"))
-        if previous_user:
-            messages.success(request, f'User already exists with this email')
+        if previous_user.exists():
+            messages.success(request, "User already exists with this email")
             return redirect("/password-reset")
         else:
-            
             form = UserForm(request.POST)  # Assign form with request.POST data
             if form.is_valid():
-                if form.cleaned_data.get('category') in [CategoryChoices.CLIENT]:
-                    form.instance.is_client = True
-                    random_password = generate_random_password(8)
-                    form.instance.username = form.cleaned_data.get('email')
-                    form.instance.password1 = random_password
-                    form.instance.password2 = random_password
-                    form.instance.gender = None
-                    # form.instance.phone = "0000000000"
+                # Check the selected category and update the form instance accordingly
+                category = form.cleaned_data.get("category")
+                
+                if category == CategoryChoices.ORDINARY_MEMBER:
+                    form.instance.is_ordinary_member = True
+                elif category == CategoryChoices.ACTIVE_MEMBER:
+                    form.instance.is_active_member = True
+                elif category == CategoryChoices.EXECUTIVE_MEMBER:
+                    form.instance.is_executive_member = True
+                elif category == CategoryChoices.FBO_ORDINARY:
+                    form.instance.is_fbo_ordinary = True
+                elif category == CategoryChoices.ACTIVE_ORGANIZATION:
+                    form.instance.is_active_organization = True
+                elif category == CategoryChoices.ROYAL_ORGANIZATION:
+                    form.instance.is_royal_organization = True
 
-                if form.cleaned_data.get("category") == CategoryChoices.STAFF_MEMBER:
-                    form.instance.is_staff = True
-               
-                form.save()
-                return redirect('accounts:account-login')
+                # Generate a random password
+                password = generate_random_password()
 
-    else:
-        msg = "error validating form"
-        print(msg)
-    
-    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})  
+                # Save the password and username
+                user = form.save(commit=False)
+                user.set_password(password)  # Set the generated password
+                user.save()
+
+                # Optionally, print username and password (for debugging)
+                print(f"User created with username: {user.username} and password: {password}")
+
+                # Send password to user (example: email, or just redirect as below)
+                messages.success(request, "User created successfully! Username and password are printed in the console.")
+                return redirect("accounts:account-login")
+            else:
+                msg = "Error validating form"
+                print(msg)
+
+    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})
+
+
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
