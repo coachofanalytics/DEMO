@@ -19,100 +19,86 @@
             padding: 0;
         }
 
-        /* Header Styling */
-        header {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            text-align: justify;
-        }
-
-        header h1 {
-            text-align: center;
-            font-size: 2.5em;
-            color: #0c0c0c8e;
-            margin-bottom: 20px;
-        }
-
-        header p {
-            margin-bottom: 15px;
-        }
-
-        /* WhatsApp Button Styling */
-        .whatsapp-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+        /* Navigation Bar */
+        .navbar {
             display: flex;
-            align-items: center;
-            background-color: #25d366;
+            justify-content: space-between;
+            background-color: #54dae4;
+            padding: 10px 20px;
             color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 20px;
-            border-radius: 50px;
+        }
+
+        .navbar .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar .menu li {
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .navbar .menu li a {
             text-decoration: none;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
+            color: #fff;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .menu li a:hover {
+            background-color: #5ddee2;
+            border-radius: 5px;
+        }
+
+        .navbar .menu li .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
             z-index: 1000;
         }
 
-        .whatsapp-button:hover {
-            background-color: #1da851;
-            transform: scale(1.05);
-            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+        .navbar .menu li .dropdown a {
+            color: #333;
+            padding: 10px 15px;
         }
 
-        .whatsapp-button img {
-            width: 24px;
-            height: 24px;
-            margin-right: 10px;
-        }
-
-        /* Footer Styling */
-        footer {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 0.9em;
-            color: #555;
+        .navbar .menu li .dropdown a:hover {
+            background-color: #e9ecef;
         }
     </style>
 </head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <h1>Who We Are</h1>
-        <p>
-            A powerful network of Kenyans in the Diaspora, we are dedicated to creating a brighter future through unity, integrity, 
-            and accountability. Led by our Global Chairperson, Bernard Kavyu, Diaspora County 48 Kenya fosters a socially and economically 
-            prosperous community. We invite you to join us in making a lasting impact on our lives and communities.
-        </p>
-        <p>
-            Since 2014, we have identified ourselves as members of Diaspora County 48 Kenya—a registered nonprofit organization in Kenya. 
-            Our community consists of independent individuals, community-based organizations, faith-based groups, and businesses owned by 
-            Kenyans across 22 global chapters.
-        </p>
-        <p>
-            We live in small groups known as Stations, representing cities, towns, districts, or institutions. These Stations allow us to 
-            embrace, engage, and enhance our shared heritage and aspirations while working toward a better future in lands far from home.
-        </p>
-    </header>
 
-    <!-- WhatsApp Chat Button -->
-    <a 
-        href="https://web.whatsapp.com/" 
-        target="_blank" 
-        class="whatsapp-button"
-        title="Chat with us on WhatsApp"
-    >
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon">
-        Chat
-    </a>
+    
 
-    <!-- Footer Section -->
-    <footer>
-        &copy; Diaspora County 48 Kenya 2024. All rights reserved.
-    </footer>
+    <!-- JavaScript for Dropdown -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select all dropdown toggles
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent default behavior
+                    const dropdown = this.nextElementSibling;
+
+                    // Toggle dropdown visibility
+                    if (dropdown.style.display === 'block') {
+                        dropdown.style.display = 'none';
+                    } else {
+                        dropdown.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 {% endblock %}

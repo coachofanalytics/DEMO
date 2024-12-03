@@ -9,8 +9,8 @@ class Migration(migrations.Migration):
         ('main', '0001_initial'),
     ]
 
-    operations = [
-        migrations.DeleteModel(
-            name='Galleryimages',
-        ),
-    ]
+    # operations = [
+    #     migrations.DeleteModel(
+    #         name='Galleryimages',
+    #     ),
+    # ]

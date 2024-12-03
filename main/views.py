@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService,Team
+from .models import Assets,Description, News, Page, Service, SubService
 from accounts.models import User
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -82,42 +82,17 @@ def checkout(request):
 from django.shortcuts import get_object_or_404
 
 
+from django.shortcuts import render
+from .models import Page
+
 def layout(request):
-    page_instance = Page.objects.get(page_name='Home')
-    description = Description.objects.filter(page = page_instance)
-    service = Service.objects.all()
-    subservice = SubService.objects.all()
-    news = News.objects.all().order_by('-published_date')[:3] 
-    print(news)
-   
-    if request.method == "POST":
-        form = ContactForm(request.POST, request.FILES)
-        message=f'Thank You, we will get back to you within 48 hours.'
-        context={
-            "message":message,
-            # "link":SITEURL+'/management/companyagenda'
-        }
-        if form.is_valid():
-            # form.save()
-            instance=form.save(commit=False)
-            # instance.client_name='admin',
-            instance.task='NA',
-            instance.plan='NA',
-            instance.trained_by=request.user
-            instance.save()
-            # return redirect("management:assessment")
-            return render(request, "main/errors/generalerrors.html",context)
-    else:
-        form = ContactForm()
-    context={
-            # "posts":posts,
-            "form": form,
-            'description': description,
-            'service': service,
-            'news':news,
-            'subservice':subservice
-        }
-    return render(request, "main/home_templates/home.html",context)
+    try:
+        page_instance = Page.objects.first()  # Assuming you're fetching the first Page instance
+    except Page.DoesNotExist:
+        page_instance = None  # Fallback in case no page is found
+
+    return render(request, 'main/home_templates/home.html', {'page_instance': page_instance})
+  
 
 def History(request):
     page_instance = Page.objects.get(page_name='About')
@@ -161,10 +136,10 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
 
 
 
-def team_list(request):
-    teams = Team.objects.all()
-    print('info=============',teams)
-    return render(request, 'main/snippets_templates/table/team.html', {'info': teams})
+# def team_list(request):
+#     teams = Team.objects.all()
+#     print('info=============',teams)
+#     return render(request, 'main/snippets_templates/table/team.html', {'info': teams})
 
 
 

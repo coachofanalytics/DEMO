@@ -184,6 +184,7 @@ class Transaction(models.Model):
     # Computing total payment
     @property
     def receipturl(self):
+        
         if self.receipt_link is not None:
             urlreceipt = self.receipt_link
             return urlreceipt

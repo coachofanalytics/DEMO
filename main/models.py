@@ -1,47 +1,25 @@
-from django.contrib.auth.models import User
-from django.db import models
-from django.db.models import Q
-from django.urls import reverse
-from django.utils import timezone
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from accounts.models import User
-
-# from tableauhyperapi import DatabaseName
+from django.db import models
 
 User = get_user_model()
-# Create your models here.
 
 class Page(models.Model):
     page_name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.page_name
+        return self.page_names
+
 
 class Description(models.Model):
     page = models.ForeignKey(Page, related_name='descriptions', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100,null=False, blank=False) 
+    name = models.CharField(max_length=100, null=False, blank=False)
     content = models.TextField(null=False, blank=False)
 
     def __str__(self):
         return f"{self.name} for {self.page.page_name}"
 
-class Team(models.Model):
-  
 
-    name = models.CharField(max_length=255)
-    role = models.CharField(max_length=50)
-    region = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='people/')
-    bio = models.TextField()
-    facebook_link = models.URLField(blank = True, null = True)
-    linkedin_link = models.URLField(blank = True, null = True)
-    twitter_link = models.URLField(blank = True, null = True)
-
-
-    def __str__(self):
-        return self.name
-
+# Content Model
 class Content(models.Model):
     SECTION_CHOICES = [
         ('Our Story', 'Our Story'),
@@ -56,9 +34,12 @@ class Content(models.Model):
 
     def __str__(self):
         return f"{self.section} - {self.title if self.title else 'Content'}"
+
+
+# Assets Model
 class Assets(models.Model):
     name = models.CharField(max_length=200)
-    category = models.CharField(default='background',max_length=200,null=True, blank=True)
+    category = models.CharField(default='background', max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     image_url = models.CharField(max_length=1000, null=True, blank=True)
 
@@ -67,31 +48,31 @@ class Assets(models.Model):
 
     @property
     def split_name(self):
-        image_1=self.name.split("_")[0]
-        image_2=self.name.split("_")[1]
-        image_name=image_1,image_2
-
-        return image_name
+        image_1 = self.name.split("_")[0]
+        image_2 = self.name.split("_")[1]
+        return image_1, image_2
 
     def __str__(self):
         return self.name
-    
 
+
+# Feedback Model
 class Feedback(models.Model):
-    user= models.ForeignKey(
+    user = models.ForeignKey(
         User,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
     )
-    # category = models.ForeignKey(UserCategory,null=True,blank=True,on_delete=models.CASCADE)
     topic = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.title
-    
+        return self.topic  # Corrected to use 'topic'
+
+
+# Service Model
 class Service(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -99,6 +80,8 @@ class Service(models.Model):
     def __str__(self):
         return self.title
 
+
+# SubService Model
 class SubService(models.Model):
     service = models.ForeignKey(Service, related_name='subservices', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -106,47 +89,50 @@ class SubService(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.service}"
-    
-    
+
+
+# News Model
 class News(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    link = models.URLField(null=True,blank=True)
+    link = models.URLField(null=True, blank=True)
     published_date = models.DateField()
     is_event = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='news_images/', blank=True, null=True)  # Add this line for image field
+    image = models.ImageField(upload_to='news_images/', blank=True, null=True)
 
     def __str__(self):
-        return self.title    
-    
-class Team(models.Model):
-    ROLE_CHOICES = [
-        ('Governor', 'Governor'),
-        ('Deputy Governor', 'Deputy Governor'),
-        ('Regional Coordinator', 'Regional Coordinator'),
-        ('Team Member', 'Team Member'),
-    ]
-
-    LEADERSHIP_CHOICES = [
-        ('Local', 'Local'),
-        ('Global', 'Global'),
-    ]
-
-    name = models.CharField(max_length=255)
-    leadership = models.CharField(max_length=50, choices=LEADERSHIP_CHOICES, default='Local')  # or another default value
-    facebook_link = models.URLField(blank=True, null=True)
-    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
-    region = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='people/')
-    bio = models.TextField()
-
-    def __str__(self):
-        return self.name
+        return self.title
 
 
 
-from django.db import models
+# class Teams(models.Model):
+#     ROLE_CHOICES = [
+#         ('Governor', 'Governor'),
+#         ('Deputy Governor', 'Deputy Governor'),
+#         ('Regional Coordinator', 'Regional Coordinator'),
+#         ('Team Member', 'Team Member'),
+#     ]
 
+#     LEADERSHIP_CHOICES = [
+#         ('Local', 'Local'),
+#         ('Global', 'Global'),
+#     ]
+
+#     name = models.CharField(max_length=255)
+#     leadership = models.CharField(max_length=50, choices=LEADERSHIP_CHOICES, default='Local')
+#     facebook_link = models.URLField(blank=True, null=True)
+#     linkedin_link = models.URLField(blank=True, null=True)
+#     twitter_link = models.URLField(blank=True, null=True)
+#     role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+#     region = models.CharField(max_length=255, blank=True, null=True)
+#     image = models.ImageField(upload_to='people/')
+#     bio = models.TextField()
+
+#     def __str__(self):
+#         return self.name
+
+
+# Gallery Model
 class Gallery(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -158,10 +144,7 @@ class Gallery(models.Model):
         return self.title
 
 
-
-
-
-
+# ContactUs Model
 class ContactUs(models.Model):
     name = models.CharField(max_length=100, help_text="Full name of the user.")
     email = models.EmailField(help_text="Email address for correspondence.")
@@ -175,5 +158,3 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return f"Message from {self.name} ({self.email})"
-
-    

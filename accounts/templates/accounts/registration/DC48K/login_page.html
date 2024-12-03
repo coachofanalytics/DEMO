@@ -1,6 +1,8 @@
-{%extends "main/base_templates/base.html"%}
-{% block title %}Login{% endblock %}
-{%load crispy_forms_tags%}{% block content %}
+
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+{% block content %}
+
 <style>
   /* Shared */
   .loginBtn {
@@ -79,7 +81,7 @@
 			<div class="d-flex justify-content-center">
 				<font size="3"
 					color="white">
-					{{msg}}
+					{{msg|safe}}
 				</font>
 			</div>
 		<div class="row">
@@ -111,10 +113,10 @@
 					</div>
 					
 					<div class="row">
-						<button type="submit" class="btn btn-primary mb-3" style="color: black;">LOG IN</button>
+						<button id="login-btn" type="submit" class="btn btn-primary mb-3" style="color: black;" data-redirect="/profile/">LOG IN</button>
 						<p class="text-center mt-2 col-md-4 mb-3" style="color: #FFF;">or</p>
 						<div class="row col-md-4 mb-3" tabindex="0" style="display: flex; justify-content: center; align-items: center;" >
-							  <a id="google-signin-link" href="#" style="color: black;" type='button' class="loginBtn loginBtn--google">
+							  <a id="google-signin-link" href="/google-login/" style="color: black;" type='button' class="loginBtn loginBtn--google">
 								Login with Google
 							  </a>
 						</div>
@@ -128,11 +130,11 @@
 				<div class="container">
 					<h2>Need Help?</h2>
 					<h3>Forgot Your Login Detail?</h3>
-					<p class="mb-2">Rerieve your <span style="color: #e7ad4a;">USERNAME</span></p>
+					<p class="mb-3">Rerieve your <span style="color: #e7ad4a;">USERNAME</span></p>
 					<p>Rerieve your <a href="{% url 'password_reset' %}" style="color: #e7ad4a;">PASSWORD</span></a>
 					<div class="down-detail">
 						<p>NOT YET REGISTERED?</p>
-						<a href="{% url 'accounts:joins' %}" class="btn btn-primary" style="color: black;">SIGN UP</a>
+						<a href="{% url 'accounts:join' %}" class="btn btn-primary" style="color: black;">SIGN UP</a>
 					</div>
 				</div>
 			</div>

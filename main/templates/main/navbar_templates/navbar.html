@@ -94,22 +94,23 @@
         <ul class="navList">
             <li><a href="/" class="navLin">HOME</a></li>
             <li class="dropdown">
-                <a href="/about" class="navLin">ABOUT US</a>
+                <a href="#" class="navLin">ABOUT US</a>
                 <div class="dropdown-content">
                     <a href="{% url 'main:history' %}">Our History</a>
                     <div class="sub-dropdown">
                         <a href="#">Our Team</a>
                         <div class="sub-dropdown-content">                      
                             <a href="#">Local Leadership</a>
-                            <a href="#">Global Leadership</a> 
+                            <a href="https://drive.google.com/file/d/1c1zwIQPyun7SVhgxPaoMjS4BEyYQnrTW/view?usp=sharing">Global Leadership</a> 
                         </div>
                     </div>
+                    
                     <div class="sub-dropdown">
                         <a href="#">Structure</a>
                         <div class="sub-dropdown-content">                      
-                            <a href="#">Our Governance</a>
-                            <a href="#">Global Administration</a> 
-                            <a href="">Ward Administration</a>
+                            <a href="https://docs.google.com/presentation/d/1orh-74Yk10PIpMNq7TdXu7MkXv6zXDU5/edit?usp=sharing&ouid=115037154650831613074&rtpof=true&sd=true">Our Governance</a>
+                            <a href="https://drive.google.com/file/d/1c1zwIQPyun7SVhgxPaoMjS4BEyYQnrTW/view?usp=sharing">Global Administration</a> 
+                            <a href="https://drive.google.com/file/d/1o4sMxoUkF8s9tYu-GqNKd-gao8jbBOrI/view?usp=sharing">Ward Administration</a>
 
                         </div>
                     </div>
@@ -117,7 +118,7 @@
             </li>
             <li class="dropdown">
                 <li class="dropdown">
-                    <a href="/services" class="navLin">SERVICES</a>
+                    <a href="#" class="navLin">SERVICES</a>
                     <div class="dropdown-content">
                         <!-- Consular Assistance -->
                         <div class="sub-dropdown">
@@ -168,7 +169,7 @@
                         <div class="sub-dropdown">
                             <a href="#">Crisis Management</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/crisis/emergency-response">Emergency Response</a>
+                                <a href="/services/crisis/emergency-resp">Emergency Response</a>
                                 <a href="/services/crisis/advisories">Advisories</a>
                             </div>
                         </div>
@@ -177,8 +178,8 @@
                         <div class="sub-dropdown">
                             <a href="#">Education and Training</a>
                             <div class="sub-dropdown-content">
-                                <a href="/services/education/scholarships">Scholarships</a>
-                                <a href="/services/education/training-sessions">Training Sessions</a>
+                                <a href="/https://www.education.go.ke/scholarships-0">Scholarships</a>
+                                <a href="https://www.yumpu.com/en/document/view/36846043/training-session-plan-sample-business-performance">Training Sessions</a>
                             </div>
                         </div>
                     </div>
@@ -190,7 +191,7 @@
             <li><a href="/news" class="navLin">NEWS</a></li>
             <li><a href="/contract-us" class="navLin">CONTACT US</a></li>
             <li class="dropdown">
-                <a href="/about" class="navLin">SUPPORT</a>
+                <a href="#" class="navLin">SUPPORT</a>
                 <div class="dropdown-content">
                     <a href="#">Donate</a>
                     <a href="#">Become Volunteer</a>
@@ -200,10 +201,10 @@
             </li>
             {% if user.is_authenticated %}
             <li><a href="/gallery" class="navLin">GALLERY</a></li>
-            <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGOUT</a></li>
+            <li><a href="{% url 'accounts:login' %}" class="navLin">LOGOUT</a></li>
             {% else %}
-            <li><a href="{% url 'accounts:account-login' %}" class="navLin">LOGIN</a></li>
-            <li><a href="{% url 'accounts:joins' %}" class="navLin">REGISTER</a></li>
+            <li><a href="{% url 'accounts:login' %}" class="navLin">LOGIN</a></li>
+            <li><a href="{% url 'accounts:join' %}" class="navLin">REGISTER</a></li>
             {% endif %}
         </ul>
     </div>

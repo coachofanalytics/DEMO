@@ -105,29 +105,35 @@ def join(request):
         print(msg)
     
     return render(request, "accounts/registration/DC48K/joins.html", {"form": form})  
+from .forms import LoginForm
+
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
 
-    #when error occur while login/signup with social account, we are redirecting it to login page of website
-    if request.method == 'GET':
-        sociallogin = request.session.pop("socialaccount_sociallogin", None)
-        
-        if sociallogin is not None:
-            msg = 'Error with social login. check your credential or try to sing up manually.'
-    
     if request.method == "POST":
         if form.is_valid():
-            request.session["siteurl"] = settings.SITEURL
             username_or_email = form.cleaned_data.get("enter_your_username_or_email")
-            enter_your_password = form.cleaned_data.get("enter_your_password")
-            account = authenticate(username=username_or_email, password=enter_your_password)
-            
-          
-        
-            
-    return render(
-        request, "accounts/registration/DC48K/login_page.html", {"form": form, "msg": msg}  )
+            password = form.cleaned_data.get("enter_your_password")
+            user = authenticate(request, username=username_or_email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect("profile")  # Redirect to profile page after successful login
+            else:
+                msg = "Invalid credentials. Please try again."
+        else:
+            msg = "Error validating the form. Please try again."
+
+    return render(request, "accounts/registration/DC48K/login_page.html", {"form": form, "msg": msg})
+
+
+
+@login_required
+def profile(request):
+    """Displays user details and provides a home button."""
+    return render(request, "accounts/registration/profile.html", {"user": request.user})
+
 
 def authenticate(email=None, password=None, **kwargs):
     try:
@@ -273,3 +279,39 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 #     }
     
 #     return render(request, 'main/membership_registration.html', context)
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.contrib import messages
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "You have been logged out.")
+    return redirect('accounts:logout_view')  # Replace 'login' with your actual login view name
+
+
+
+
+from django.shortcuts import redirect
+from django.urls import reverse
+
+def some_view(request):
+    return redirect(reverse('accounts:login'))
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def profile(request):
+    return render(request, 'accounts/registration/profile.html', {'user': request.user})
+
+
+
+from django.shortcuts import redirect
+
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('accounts:profile')  # Redirect to profile if logged in
+    return redirect('accounts:login')  # Redirect to login if not authenticated
+
