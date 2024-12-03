@@ -5,7 +5,7 @@
 <style>
   /* Shared */
   .login-div {
-    background-color: #03b1af !important; /* Light blue */
+    background-color: white; /* Light blue */
     padding: 20px; /* Optional: Add padding for spacing */
   }
 
@@ -101,6 +101,12 @@
       max-width: 100%;
     }
   }
+  .login-div .form-div label {
+    color: black;
+    box-shadow: none; /* Removes the box shadow */
+  }
+  
+ 
 </style>
 
 <div class="login-div">
@@ -114,7 +120,7 @@
     <div class="row">
       <div class="col-md-6 form-div">
         <div class="container">
-          <h2>Login</h2>
+          <h2 style="color: #03b1af;">Login</h2>
           <form method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -132,7 +138,7 @@
               <label for="" class="align-items-center">Remember Me</label>
             </div>
             <div class="button-row">
-              <button type="submit" class="btn btn-primary" style="color: black;">LOG IN</button>
+              <button type="submit" class="btn btn-primary" style="color: black; background-color: #03b1af;border: NONE;">LOG IN</button>
               <p class="p-or" style="color: white;margin-left: 20px;margin-right: 20px;margin-top: 14px;">or</p>
               <a id="google-signin-link" href="#" class="loginBtn loginBtn--google">
                 Login with Google
@@ -143,18 +149,18 @@
       </div>
       <div class="col-md-6 other-detail">
         <div class="container">
-          <h2>Need Help?</h2>
-          <h3>Forgot Your Login Detail?</h3>
-          <p class="mb-2">
-            Retrieve your <span style="color: #e7ad4a;">USERNAME</span>
+          <h2 style="color: #03b1af;;">Need Help?</h2>
+          <h3 style="color: black;">Forgot Your Login Detail?</h3>
+          <p class="mb-2" style="color: black;">
+            Retrieve your <span style="color: #03b1af;">USERNAME</span>
           </p>
-          <p>
+           <p style="color: black;">
             Retrieve your
-            <a href="{% url 'password_reset' %}" style="color: #e7ad4a;">PASSWORD</a>
+            <a href="{% url 'password_reset' %}" style="color: #03b1af;">PASSWORD</a>
           </p>
           <div class="down-detail">
-            <p>NOT YET REGISTERED?</p>
-            <a href="{% url 'accounts:joins' %}" class="btn btn-primary" style="color: black;">SIGN UP</a>
+            <p style="color: black;">NOT YET REGISTERED?</p>
+            <a href="{% url 'accounts:joins' %}" class="btn btn-primary" style="color: black;background-color: #03b1af;border: none;">SIGN UP</a>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ crossorigin="anonymous"></script>
 
 <style>
    .introduction-div {
-    background-color: #03b1af !important; /* Light blue */
+    background-color: white; /* Light blue */
     padding: 20px; /* Optional: Add padding for spacing */
   }
   .loginBtn {
@@ -77,18 +77,18 @@ crossorigin="anonymous"></script>
     {% csrf_token %}
     <fieldset class="form-group">
       <div class="row">
-        <div class="col-lg-6 introduction-div">
+        <div class="col-lg-6 introduction-div" style="background-color: white;">
           <div class="row">
             <div class="select-div">
-              <h1 class="position-relative">SIGN-UP</h1>
+              <h1 class="position-relative"  style="color: #03b1af;">SIGN-UP</h1>
               <div class="content">
-                <p class="mb-2">Welcome to CODA, Are you NEW here?</p>
-                <p>
-                  Sign-up to enjoy all the benefits and trainings CODA
+                <p class="mb-2" style="color: black;">Welcome to DC48K, Are you NEW here?</p>
+                <p style="color: black;">
+                  Sign-up to enjoy all the benefits  DC48K
                   provides.
                 </p>
               </div>
-              <h2>Pick your Category | Register As:</h2>
+              <h2  style="color: #03b1af;">Pick your Category | Register As:</h2>
               <div class="d-flex">
                 <div class="second-select-div">
                   <div class="form-group">
@@ -201,7 +201,7 @@ crossorigin="anonymous"></script>
           </div>
           <div class="form-group row" style="margin-bottom: -60px;">
             <div class="col-md-6">
-              <button class="btn btn-outline-success" style="color: black;" type="submit" id="signupBtn" tabindex="0" aria-label="Sign Up">Sign Up</button>
+              <button class="btn btn-outline-success" style="color: black;background-color: #03b1af; border: none;" type="submit" id="signupBtn" tabindex="0" aria-label="Sign Up">Sign Up</button>
             </div>
             <div class="col-md-6">
               <small class="text-muted text-center">
