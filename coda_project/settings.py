@@ -261,14 +261,7 @@ LOGIN_URL = "accounts:account-login"
 
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# EMAIL_INFO = {
-#     'USER': 'info@codanalytics.net',
-#     'PASS': '!CM123sebe',
-#     'HOST': 'smtp.privateemail.com',
-#     'PORT': '587',
-#     'USE_TLS': 'True',
-#     'USE_SSL': 'False',
-# }
+
 EMAIL_INFO = {
     'USER': os.environ.get('EMAIL_HR_USER'),
     'PASS': os.environ.get('EMAIL_HR_PASS'),
