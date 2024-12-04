@@ -263,12 +263,12 @@ LOGIN_URL = "accounts:account-login"
 
 
 EMAIL_INFO = {
-    'USER': os.environ.get('EMAIL_HR_USER'),
-    'PASS': os.environ.get('EMAIL_HR_PASS'),
-    'HOST': os.environ.get('EMAIL_HR_HOST'),
-    'PORT': os.environ.get('EMAIL_HR_PORT'),
-    'USE_TLS': os.environ.get('EMAIL_HR_USE_TLS'),
-    'USE_SSL': os.environ.get('EMAIL_HR_USE_SSL'),
+    'USER': os.environ.get('EMAIL_INFO_USER'),
+    'PASS': os.environ.get('EMAIL_INFO_PASS'),
+    'HOST': os.environ.get('EMAIL_HOST'),
+    'PORT': os.environ.get('EMAIL_PORT'),
+    'USE_TLS': os.environ.get('EMAIL_USE_TLS'),
+    'USE_SSL': os.environ.get('EMAIL_USE_SSL'),
 }
 EMAIL_HR = {
     'USER': os.environ.get('EMAIL_HR_USER'),
