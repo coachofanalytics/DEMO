@@ -25,7 +25,7 @@ urlpatterns = [
     path('pay/', views.pay, name='pay'),
     path('payment/<int:service>/', views.pay, name='service_pay'),
     path('payment_method/<str:method>/', views.another_view, name='payment_method'),
-    path("payment_complete/", views.paymentComplete, name="payment_complete"),
+    # path("payment_complete/", views.paymentComplete, name="payment_complete"),
     path('payment/create/', lambda: __import__('finance.views').views.PaymentCreateView.as_view(), name='payment-create'),
 
     path("process-payment/", process_payment, name="process_payment"),

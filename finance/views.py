@@ -219,25 +219,25 @@ def payments(request):
 #         }
 #     return render(request, "finance/payments/pay.html", context)
 
-def paymentComplete(request):
-    if request.method == "POST":
-        user = request.user
-        membership = Membership.objects.get(member=user)
+# def paymentComplete(request):
+#     if request.method == "POST":
+#         user = request.user
+#         membership = Membership.objects.get(member=user)
 
-        # Get the amount entered by the user
-        entered_amount = request.POST.get("amount")
-        if entered_amount:
-            try:
-                # Update the membership fee with the new amount
-                membership.fee = float(entered_amount)
-                membership.save()
-                # Redirect to payment gateway or success page
-                return redirect("finance:payment_complete")
-            except ValueError:
-                # Handle invalid input
-                return redirect("finance:payment_page")  # Redirect back to payment page with error
+#         # Get the amount entered by the user
+#         entered_amount = request.POST.get("amount")
+#         if entered_amount:
+#             try:
+#                 # Update the membership fee with the new amount
+#                 membership.fee = float(entered_amount)
+#                 membership.save()
+#                 # Redirect to payment gateway or success page
+#                 return redirect("finance:payment_complete")
+#             except ValueError:
+#                 # Handle invalid input
+#                 return redirect("finance:payment_page")  # Redirect back to payment page with error
 
-    return redirect("payment_page")
+#     return redirect("payment_page")
 def process_payment(request):
     if request.method == "POST":
         user = request.user
@@ -256,7 +256,7 @@ def process_payment(request):
                 # Handle invalid input
                 return redirect("finance:payment_page")  # Redirect back to payment page with error
 
-    return redirect("finance/payments/payment_page")
+    return redirect("finance:pay")
 
 def payment_success(request):
     return render(request, "finance/payments/payment_success.html")

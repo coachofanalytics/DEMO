@@ -98,7 +98,7 @@
         }
         var csrftoken = getCookie('csrftoken');
         function completeOrder(amount) {
-            var url = "{% url 'finance:payment_complete' %}";
+            var url = "{% url 'finance:process_payment' %}";
             fetch(url, {
                 method: 'POST',
                 headers: {
