@@ -2,6 +2,7 @@
 {% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% load socialaccount %}
 <style>
   /* Shared */
   .login-div {
@@ -45,17 +46,17 @@
 
   /* Google */
   .loginBtn--google {
-    background: #DD4B39;
+    background-color: #3367D6;
   }
 
   .loginBtn--google:before {
-    border-right: #BB3F30 1px solid;
+    border-right: #3367D6 1px solid;
     background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
   }
 
   .loginBtn--google:hover,
   .loginBtn--google:focus {
-    background: #E74B37;
+    background: #265BB5; 
   }
 
   input.form-control:hover {
@@ -140,9 +141,9 @@
             <div class="button-row">
               <button type="submit" class="btn btn-primary" style="color: black; background-color: #03b1af;border: NONE;">LOG IN</button>
               <p class="p-or" style="color: white;margin-left: 20px;margin-right: 20px;margin-top: 14px;">or</p>
-              <a id="google-signin-link" href="#" class="loginBtn loginBtn--google">
-                Login with Google
-              </a>
+              <a id="google-signin-link" href="{% provider_login_url 'google' %}" style="color: black;" type='button' class="loginBtn loginBtn--google">
+								Login with Google
+							</a>
             </div>
           </form>
         </div>

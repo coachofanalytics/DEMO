@@ -20,6 +20,7 @@ from django.utils.decorators import method_decorator
 
 
 from accounts.forms import UserForm
+from accounts.models import CustomerUser, Membership
 from .forms import BudgetForm, DepartmentFilterForm, InflowForm
 from .models import (
     Budget, CodaBudget, Payment_Information, Payment_History,
@@ -60,7 +61,7 @@ def contract_form_submission(request):
             username = student_dict_data.get('username')
 
             # Retrieve customer and payment info
-            customer = User.objects.filter(username=username).first()
+            customer = CustomerUser.objects.filter(username=username).first()
             payment = Payment_Information.objects.filter(customer_id=request.user.id).first()
 
             # Handle new user form
@@ -127,10 +128,18 @@ def pay(request, service=None):
         return redirect(reverse('accounts:account-login'))
 
     payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
+    user = request.user
+    print(user)
+    membership = get_object_or_404(Membership, member=user)
+    fee_usd = membership.fee
+
+    fee_kes = fee_usd * get_exchange_rate('USD', 'KES')
+    print(fee_kes)
+
     context = {
         "title": "PAYMENT",
-        "payments": payment_info,
-        "rate": rate,
+        "membership": membership,
+        "fee_kes":fee_kes,
         "user": request.user,
         "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
     }
@@ -192,90 +201,65 @@ def payments(request):
     }
     return render(request, "finance/payments/payments.html", context)
 
-
-
-
-
-def payment_complete(request):
-    try:
-        body = json.loads(request.body)
-        payment_fees = body["payment_fees"]
-        payments = Payment_Information.objects.filter(customer_id=request.user.id).first()
-        if not payments:
-            raise ValueError("No payment information found for the user.")
-
-        payment_data = {
-            "customer": request.user,
-            "payment_fees": payment_fees,
-            "down_payment": payments.down_payment,
-            "student_bonus": payments.student_bonus,
-            "plan": payments.plan,
-            "fee_balance": payments.fee_balance,
-            "payment_method": payments.payment_method,
-            "contract_submitted_date": payments.contract_submitted_date,
-            "client_signature": payments.client_signature,
-            "company_rep": payments.company_rep,
-            "client_date": payments.client_date,
-            "rep_date": payments.rep_date,
-        }
-        Payment_History.objects.create(**payment_data)
-        return JsonResponse({"message": "Payment completed!"}, safe=False)
-    except ValueError as ve:
-        logger.error(f"Validation error in payment_complete: {ve}")
-        return JsonResponse({"error": str(ve)}, status=400)
-    except Exception as e:
-        logger.exception(f"Unexpected error in payment_complete: {e}")
-        return JsonResponse({"error": "An unexpected error occurred."}, status=500)
-
-def pay(request, service=None):
-    if not request.user.is_authenticated:
-        return redirect(reverse('accounts:account-login'))
-    payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
+# def pay(request, service=None):
+#     if not request.user.is_authenticated:
+#         return redirect(reverse('accounts:account-login'))
+#     payment_info = Payment_Information.objects.filter(customer_id=request.user).last()
 
  
-    context = {
-            "title": "PAYMENT",
-            "payments": payment_info,
-            "rate": rate,
-            'user': request.user,
+#     context = {
+#             "title": "PAYMENT",
+#             "payments": payment_info,
+#             "rate": rate,
+#             'user': request.user,
             
-            "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
+#             "message": f"Hi {request.user}, you are yet to sign the contract with us. Kindly contact us at info@codanalytics.net.",
             
-            # "service": True,
-        }
-    return render(request, "finance/payments/pay.html", context)
+#             # "service": True,
+#         }
+#     return render(request, "finance/payments/pay.html", context)
 
 def paymentComplete(request):
-    payments = Payment_Information.objects.filter(customer_id=request.user.id).first()
-    customer = request.user
-    body = json.loads(request.body)
-    payment_fees = body["payment_fees"]
-    down_payment = payments.down_payment
-    studend_bonus = payments.student_bonus
-    plan = payments.plan
-    fee_balance = payments.fee_balance
-    payment_mothod = payments.payment_method
-    contract_submitted_date = payments.contract_submitted_date
-    client_signature = payments.client_signature
-    company_rep = payments.company_rep
-    client_date = payments.client_date
-    rep_date = payments.rep_date
-    Payment_History.objects.create(
-        customer=customer,
-        payment_fees=payment_fees,
-        down_payment=down_payment,
-        student_bonus=studend_bonus,
-        plan=plan,
-        fee_balance=fee_balance,
-        payment_method=payment_mothod,
-        contract_submitted_date=contract_submitted_date,
-        client_signature=client_signature,
-        company_rep=company_rep,
-        client_date=client_date,
-        rep_date=rep_date,
-    )
-    return JsonResponse("Payment completed!", safe=False)
+    if request.method == "POST":
+        user = request.user
+        membership = Membership.objects.get(member=user)
 
+        # Get the amount entered by the user
+        entered_amount = request.POST.get("amount")
+        if entered_amount:
+            try:
+                # Update the membership fee with the new amount
+                membership.fee = float(entered_amount)
+                membership.save()
+                # Redirect to payment gateway or success page
+                return redirect("finance:payment_complete")
+            except ValueError:
+                # Handle invalid input
+                return redirect("finance:payment_page")  # Redirect back to payment page with error
+
+    return redirect("payment_page")
+def process_payment(request):
+    if request.method == "POST":
+        user = request.user
+        membership = Membership.objects.get(member=user)
+
+        # Get the amount entered by the user
+        entered_amount = request.POST.get("amount")
+        if entered_amount:
+            try:
+                # Update the membership fee with the new amount
+                membership.fee = float(entered_amount)
+                membership.status = 'PAID'  # Update the payment status if applicable
+                membership.save()
+                return redirect("finance:payment_success")  # Redirect to success page
+            except ValueError:
+                # Handle invalid input
+                return redirect("finance:payment_page")  # Redirect back to payment page with error
+
+    return redirect("finance/payments/payment_page")
+
+def payment_success(request):
+    return render(request, "finance/payments/payment_success.html")
 class DefaultPaymentListView(ListView):
     model = Default_Payment_Fees
     template_name = "finance/payments/defaultpayments.html"

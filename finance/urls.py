@@ -5,6 +5,8 @@ from .views import (
                     TransanctionDetailView,TransactionListView,
                     TransactionUpdateView,
                     DefaultPaymentUpdateView,DefaultPaymentListView,
+                    payment_success,
+                    process_payment,
                     
 )
 app_name = 'finance'
@@ -26,6 +28,8 @@ urlpatterns = [
     path("payment_complete/", views.paymentComplete, name="payment_complete"),
     path('payment/create/', lambda: __import__('finance.views').views.PaymentCreateView.as_view(), name='payment-create'),
 
+    path("process-payment/", process_payment, name="process_payment"),
+    path("payment-success/", payment_success, name="payment_success"),
     path('payments/', views.payments, name='payments'),
     path('pay/<int:pk>/', views.PaymentInformationUpdateView.as_view(), name='updatepay'),
     

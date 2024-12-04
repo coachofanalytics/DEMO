@@ -1,4 +1,5 @@
 import secrets
+import uuid
 import string, random
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login
@@ -8,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from accounts.choices import CategoryChoices
+from accounts.utils import CATEGORY_FEES, convert_kes_to_usd, get_exchange_rate, send_verification_email
 from coda_project import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -22,7 +24,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from .models import CustomerUser
+from .models import CustomerUser, Membership
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, UserForm,LoginForm
 from finance.utils import DYCDefaultPayments
 from django.shortcuts import render, redirect
@@ -58,41 +60,106 @@ def register(request):
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'accounts/registration/DC48K/logins.html'
+
+
+# Function to generate a random password
 def generate_random_password(length=12):
     characters = string.ascii_letters + string.digits + "!@#$%&"
     password = ''.join(secrets.choice(characters) for _ in range(length))
     return password
+
 def join(request):
     form = UserForm()  # Define form variable with initial value
     if request.method == "POST":
         previous_user = CustomerUser.objects.filter(email=request.POST.get("email"))
-        if previous_user:
-            messages.success(request, f'User already exists with this email')
+        if previous_user.exists():
+            messages.success(request, "User already exists with this email")
             return redirect("/password-reset")
         else:
-            
             form = UserForm(request.POST)  # Assign form with request.POST data
             if form.is_valid():
-                if form.cleaned_data.get('category') in [CategoryChoices.CLIENT]:
-                    form.instance.is_client = True
-                    random_password = generate_random_password(8)
-                    form.instance.username = form.cleaned_data.get('email')
-                    form.instance.password1 = random_password
-                    form.instance.password2 = random_password
-                    form.instance.gender = None
-                    # form.instance.phone = "0000000000"
+                # Check the selected category and update the form instance accordingly
+                category = form.cleaned_data.get("category")
+                
+                if category == CategoryChoices.ORDINARY_MEMBER:
+                    form.instance.is_ordinary_member = True
+                elif category == CategoryChoices.ACTIVE_MEMBER:
+                    form.instance.is_active_member = True
+                elif category == CategoryChoices.EXECUTIVE_MEMBER:
+                    form.instance.is_executive_member = True
+                elif category == CategoryChoices.FBO_ORDINARY:
+                    form.instance.is_fbo_ordinary = True
+                elif category == CategoryChoices.ACTIVE_ORGANIZATION:
+                    form.instance.is_active_organization = True
+                elif category == CategoryChoices.ROYAL_ORGANIZATION:
+                    form.instance.is_royal_organization = True
 
-                if form.cleaned_data.get("category") == CategoryChoices.STAFF_MEMBER:
-                    form.instance.is_staff = True
-               
-                form.save()
-                return redirect('accounts:account-login')
+                # Generate a random password
+                password = generate_random_password()
+                print(password)
 
-    else:
-        msg = "error validating form"
-        print(msg)
-    
-    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})  
+                # Save the password and username
+                token = str(uuid.uuid4())
+
+                user = form.save(commit=False)
+                user.verification_token = token
+                user.set_password(password) 
+                user.is_active = False  # Set the generated password
+                user.save()
+                print(category)
+                fee_kes = CATEGORY_FEES.get(category, 0.0)
+                
+                fee_usd = fee_kes / get_exchange_rate('USD', 'KES')  # Convert to USD
+                membership = Membership.objects.create(
+                    member=user,
+                    fee=fee_usd,
+                    currency="USD",  # Store in USD
+                    status='NOT_PAID',
+                )
+                print(f"Membership created for user {user.username} with fee {fee_usd} USD")
+
+                print(f"User {user.username} created and saved. Account is inactive until verification.")
+
+                send_verification_email(user, password=password)
+
+                
+                return redirect('accounts:email-verification-notice', user.id)
+            else:
+                msg = "Error validating form"
+                print(msg)
+
+    return render(request, "accounts/registration/DC48K/joins.html", {"form": form})
+
+def email_verification_notice(request, user_id):
+    user = get_object_or_404(CustomerUser, id=user_id)
+    messages.success(request, f"A verification email has been sent to {user.email}.")
+
+    return render(request, 'accounts/registration/email_verification_notice.html', {'user': user})
+def verify_email(request, token):
+    try:
+        # Attempt to find the user by the verification token
+        user = get_object_or_404(CustomerUser, verification_token=token)
+        if user.email_verified ==True:
+            print('email already verified')
+            return render(request, "accounts/registration/email_verification_notice.html", {
+                "verification_status": "already_verified",
+                "user": user,
+                "redirect_url": "/finance/pay/"
+            })
+        else:    
+        
+            # If the user is found, verify the email
+            user.email_verified = True
+            user.is_active = True  # Activate the account
+            user.save()
+            
+            # Render the success message
+            return render(request, "accounts/registration/email_verification_notice.html", {"verification_status": "success","redirect_url": "/finance/pay/"})
+        
+    except CustomerUser.DoesNotExist:
+        # If the user doesn't exist, render the failure message
+        return render(request, "accounts/registration/email_verification_notice.html", {"verification_status": "failed"})
+
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
@@ -124,7 +191,12 @@ def login_view(request):
             if user:
                 print('User authenticated')
                 login(request, user)
-                return redirect('https://dc48k.org/')
+                
+                membership = get_object_or_404(Membership, member=user)
+                if membership.status == 'NOT_PAID':
+                    return redirect('finance:pay')
+                else:
+                    return redirect('https://dc48k.org/')
             else:
                 print('Authentication failed')
                 msg = 'Invalid credentials'
@@ -251,20 +323,119 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 
-# def membership_registration_view(request):
-#     if request.method == 'POST':
-#         form = MemberRegistrationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('success_page')  # Redirect to a success page after registration
-#     else:
-#         form = MemberRegistrationForm()
+def select_category(request):
+    if request.method == "POST":
+        selected_category = request.POST.get("category")
+        if selected_category in [choice.value for choice in CategoryChoices]:
+            request.session['category'] = selected_category
+            return redirect("socialaccount_login", provider="google")
+        else:
+            messages.error(request, "Invalid category selected.")
+    return render(request, "accounts/select_category.html")
+
+
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from allauth.core.exceptions import ImmediateHttpResponse  
+from django.http import HttpResponseRedirect  
+class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
+    def pre_social_login(self, request, sociallogin):
+        print('Inside pre_social_login')
+
+        # Extract user information from sociallogin
+        user = sociallogin.user
+        email = user.email
+
+        # Attempt to find an existing user with the same email
+        existing_user = CustomerUser.objects.filter(email=email).first()
+        category = request.session.get('category')
+        print(category)
+
+        if existing_user:
+            print('Existing user found. Connecting social account.')
+            # Link the social login to the existing user
+            sociallogin.connect(request, existing_user)
+            target_user = existing_user
+        elif existing_user is None and category is None:
+            print('No existing user and no category in session. Redirecting to category selection.')
+           
+        else:
+            print('Creating a new user via social login.')
+            # If the user doesn't exist and a category is provided, create a new user
+            sociallogin.save(request, connect=False)
+
+            new_user = sociallogin.user
+            selected_category = request.session.pop('category', None)
+            print(selected_category)
+
+            # Assign category based on your CategoryChoices
+            if selected_category == CategoryChoices.ORDINARY_MEMBER:
+                new_user.is_ordinary_member = True
+            elif selected_category == CategoryChoices.ACTIVE_MEMBER:
+                new_user.is_active_member = True
+            elif selected_category == CategoryChoices.EXECUTIVE_MEMBER:
+                new_user.is_executive_member = True
+            elif selected_category == CategoryChoices.FBO_ORDINARY:
+                new_user.is_fbo_ordinary = True
+            elif selected_category == CategoryChoices.ACTIVE_ORGANIZATION:
+                new_user.is_active_organization = True
+            elif selected_category == CategoryChoices.ROYAL_ORGANIZATION:
+                new_user.is_royal_organization = True
+            else:
+                messages.error(request, "Invalid category selected.")
+               
+            # Assign username if not set
+            if not new_user.username:
+                new_user.username = new_user.email
+
+            # Since email is verified by Google, set user as active
+            new_user.is_active = True  # No need for verification token
+            new_user.verification_token = None  # Clear any token if previously set
+            new_user.save()
+
+            cate = int(selected_category)
+            fee_kes = CATEGORY_FEES.get(cate) 
+            print(fee_kes)
+            fee_usd = fee_kes / get_exchange_rate('USD', 'KES')  # Ensure get_exchange_rate is defined
+            membership = Membership.objects.create(
+                member=new_user,
+                fee=fee_usd,
+                currency="USD",
+                status='NOT_PAID',
+            )
+            print(f"Membership created for user {new_user.username} with fee {fee_usd} USD")
+
+            # Optionally send a welcome email
+            # self.send_welcome_email(new_user)
+
+            target_user = new_user
+
+        # After obtaining the target_user (existing or new), check Membership status
+        membership = Membership.objects.filter(member=target_user).first()
+        if membership and membership.status == 'NOT_PAID':
+            print(f"User {target_user.username} has unpaid membership. Redirecting to payment.")
+            # Redirect to finance:pay with membership ID
+            sociallogin.state['next'] = reverse('finance:pay')
+        else:
+            # Redirect based on user category
+            print('not a member')
+            
+def custom_social_login(request):   
+
+    try:
+        category = request.GET.get('category')
+
+        if category is not None :
+            request.session['category'] = request.GET.get('category')
+
+        # Redirect to the built-in Google login view with the state parameter
+        social_login_url = reverse('google_login')  # Use the name of the built-in Google login view
+        
+        if request.GET.get('socialPlatform'):
+       
+            social_login_url = reverse(request.GET.get('socialPlatform'))  # Use the name of the built-in Google login view
+
+        return redirect(social_login_url)
     
-#     membership_plans = MembershipPlan.objects.all()
+    except:
     
-#     context = {
-#         'form': form,
-#         'membership_plans': membership_plans,
-#     }
-    
-#     return render(request, 'main/membership_registration.html', context)
+        return render(request, "accounts/registration/join.html", {"form": UserForm()})        

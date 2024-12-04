@@ -45,7 +45,7 @@ def get_exchange_rate(base, target):
     Fetch exchange rate between base and target currency.
     Fallback to a hardcoded value if the API fails.
     """
-    exchange_api_key = os.getenv("EXCHANGE_API_KEY", "07c439585ffa45e0a254d01fef4b0c33")
+    exchange_api_key = '19312eb3c8014755b32a7fdad5a7b1cc'
     url = f"https://openexchangerates.org/api/latest.json?app_id={exchange_api_key}&base={base}"
     try:
         response = requests.get(url, timeout=10)

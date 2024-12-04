@@ -7,25 +7,7 @@ from accounts.choices import CategoryChoices, SubCategoryChoices
 from accounts.modelmanager import DepartmentManager
 from django_countries.fields import CountryField
 
-class MemberRegistration(models.Model):
-    GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other'),
-    ]
 
-    email = models.EmailField()
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    phone_number = models.CharField(max_length=15)
-    country = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    agree = models.BooleanField()
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-    
 
 class CustomerUser(AbstractUser):
     
@@ -48,12 +30,10 @@ class CustomerUser(AbstractUser):
     email = models.CharField(max_length=255)
     category = models.IntegerField(choices=CategoryChoices.choices, default=999)
     # added this column here
-    sub_category = models.IntegerField(
-        choices=SubCategoryChoices.choices, blank=True, null=True
-    )
     is_admin = models.BooleanField("Is admin", default=False)
-    is_staff = models.BooleanField("Is employee", default=False)
-    is_client = models.BooleanField("Is Client", default=False)
+    is_member = models.BooleanField("Is Member", default=False)
+    email_verified = models.BooleanField(default=False)
+    verification_token = models.UUIDField( unique=True, null=True, blank=True)
     class Meta:
         # ordering = ["-date_joined"]
         ordering = ["username"]
@@ -82,8 +62,25 @@ class CustomerUser(AbstractUser):
         number_days=(timezone.now().date() - self.date_joined.date()).days
         months=number_days/30
         return months
-    
-  
+class Membership(models.Model):
+    PAYMENT_STATUS = [
+        ('PAID', 'Paid'),
+        ('NOT_PAID', 'Not Paid'),
+    ]
+
+    member = models.ForeignKey(CustomerUser, on_delete=models.CASCADE, related_name='memberships')
+    fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    currency = models.CharField(max_length=10, default="KES")
+    status = models.CharField(max_length=10, choices=PAYMENT_STATUS, default='NOT_PAID')
+    paid_date = models.DateTimeField(null=True, blank=True)  # Tracks the date when payment is made
+
+    def __str__(self):
+        return f"{self.member.full_name} - {self.status}"
+
+    @property
+    def is_paid(self):
+        return self.status == 'PAID' and self.paid_date is not None
+
 
 class Department(models.Model):
     """Department Table will provide a list of the different departments in CODA"""
