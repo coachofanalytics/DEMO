@@ -236,6 +236,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # If you have a project-level static directory
     # Add other directories if necessary
 ]
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "main:layout"
