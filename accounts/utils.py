@@ -174,7 +174,7 @@ def send_verification_email(user,password=None):
     """
     verification_token = user.verification_token
    
-    verification_url = f"https://dc48k-19fc8ecbc388.herokuapp.com/{reverse('accounts:verify-email',  kwargs={'token': str(verification_token)})}"
+    verification_url = f"https://dc48k-19fc8ecbc388.herokuapp.com{reverse('accounts:verify-email',  kwargs={'token': str(verification_token)})}"
     print(verification_url)
     subject = "Email Verification"
     html_message = render_to_string('accounts/verification_email.html', {
