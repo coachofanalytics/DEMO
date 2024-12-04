@@ -410,15 +410,25 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
             target_user = new_user
 
         # After obtaining the target_user (existing or new), check Membership status
-        membership = Membership.objects.filter(member=target_user).first()
-        if membership and membership.status == 'NOT_PAID':
-            print(f"User {target_user.username} has unpaid membership. Redirecting to payment.")
-            # Redirect to finance:pay with membership ID
-            sociallogin.state['next'] = reverse('finance:pay')
+        if existing_user:
+            membership = Membership.objects.filter(member=existing_user).first()
+            if membership and membership.status == 'NOT_PAID':
+                print(f"User {target_user.username} has unpaid membership. Redirecting to payment.")
+                # Redirect to finance:pay with membership ID
+                sociallogin.state['next'] = reverse('finance:pay')
+            else:
+                # Redirect based on user category
+                print('not a member')
         else:
-            # Redirect based on user category
-            print('not a member')
-            
+            membership = Membership.objects.filter(member=new_user).first()
+            if membership and membership.status == 'NOT_PAID':
+                print(f"User {target_user.username} has unpaid membership. Redirecting to payment.")
+                # Redirect to finance:pay with membership ID
+                sociallogin.state['next'] = reverse('finance:pay')
+            else:
+                # Redirect based on user category
+                print('not a member')
+
 def custom_social_login(request):   
 
     try:
