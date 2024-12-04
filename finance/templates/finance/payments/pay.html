@@ -105,7 +105,7 @@
                     'Content-type': 'application/json',
                     'X-CSRFToken': csrftoken,
                 },
-                body: JSON.stringify({ "down_payment": amount })
+                body: JSON.stringify({ "amount": amount })
             });
         }
         paypal.Buttons({
