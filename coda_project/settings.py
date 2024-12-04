@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
 # print(BASE_DIR)
 
 SECRET_KEY = "!cxl7yhjsl00964n=#e-=xblp4u!hbajo2k8u#$v9&s6__5=xf"
@@ -229,11 +230,12 @@ USE_TZ = True
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-STATIC_ROOT = os.path.join(BASE_DIR, '..', "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR,  "staticfiles")
 STATIC_URL = "/static/"
-STATICFILES_DIR = os.path.join(BASE_DIR, "static")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # If you have a project-level static directory
+    # Add other directories if necessary
+]
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "main:layout"
