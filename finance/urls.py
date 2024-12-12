@@ -21,7 +21,8 @@ urlpatterns = [
     #=============================CLIENT CONTRACT FORM SUBMISSIONS=====================================
     path('contract_form/', views.contract_form_submission, name='finance-contract_form_submission'),
     path('mycontract/<str:username>/', views.mycontract, name='mycontract'),
-   
+    path('Payment_Review/', views.Payment_Review, name='Payment_Review'),
+
     path('pay/', views.pay, name='pay'),
     path('payment/<int:service>/', views.pay, name='service_pay'),
     # path("payment_complete/", views.paymentComplete, name="payment_complete"),

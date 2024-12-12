@@ -132,6 +132,7 @@ def pay(request, service=None):
 
     fee_kes = fee_usd * get_exchange_rate('USD', 'KES')
     print(fee_kes)
+   
 
     context = {
         "title": "PAYMENT",
@@ -175,25 +176,34 @@ def another_view(request, method):
 
 
 
+from django.shortcuts import render
 
-def payment(request,method):
-    path_list,sub_title,pre_sub_title=path_values(request)
-    subject='PAYMENT'
-    url='email/payment/payment_method.html'
+def payment(request, method):
+    path_list, sub_title, pre_sub_title = path_values(request)
+    subject = 'PAYMENT'
+    url = 'email/payment/payment_method.html'
 
-    context={
-                'subtitle': sub_title,
-                'user': request.user.first_name,
-                'cashapp':'$cmaghas',
-                'venmo':'@coda_info',
-                'email':'info@codanalytics.net',
-                'contact_message':'info@codanalytics.net',
-            }
+    # Define the account number based on the subtitle
+    account_no = None  
+    if sub_title == 'mpesa':
+        account_no = '0100008710952'  
+    
+    context = {
+        'subtitle': sub_title,
+        'user': request.user.first_name,
+        'cashapp': '$cmaghas',
+        'venmo': '@codainfo',
+        'email': 'info@codanalytics.net',
+        'contact_message': 'info@codanalytics.net',
+        'account_no': account_no,  
+    }
+    print(context)
     try:
-       
-        return render(request, "finance/payments/payment_method.html",context)
-    except:
-        return render(request, "finance/payments/payment_method.html",context)
+        return render(request, "finance/payments/payment_method.html", context)
+    except Exception as e:
+        print(f"Error: {e}")  
+        return render(request, "finance/payments/payment_method.html", context)
+
 @login_required
 def payments(request):
     # Fetch payment information for the logged-in user
@@ -470,4 +480,23 @@ def budget_projection(request,subtitle='summary',duration=2024):
 
 
 
-   
+def Payment_Review(request):
+ 
+    # Simulated payment amount (dynamic logic here)
+    pay_amount = 3500  # Replace this with your dynamic value or calculation logic
+
+    # Calculate the divided amount (used for backend processing only)
+    if 1000 < pay_amount <= 3000:
+        divided_amount = pay_amount / 3
+    elif pay_amount > 3000:
+        divided_amount = pay_amount / 4
+    else:
+        divided_amount = pay_amount
+
+    # You can still use divided_amount for other purposes if needed
+    context = {
+        'pay_amount': pay_amount,
+    }
+
+    
+    return render(request,"finance/payments/Payment_Review.html",context)
