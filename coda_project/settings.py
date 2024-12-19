@@ -14,23 +14,22 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+SITE_ID = 1   
 
 SECRET_KEY = "!cxl7yhjsl00964n=#e-=xblp4u!hbajo2k8u#$v9&s6__5=xf"
 
 DEBUG = True
-ALLOWED_HOSTS = ['biasharabridges.org', 'www.biasharabridges.org', 'biasharadev-68034baaf749.herokuapp.com','localhost']
-#ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['biasharabridges.org', 'www.biasharabridges.org', 'biasharadev-68034baaf749.herokuapp.com','localhost']
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = "accounts.CustomerUser"
 AUTHENTICATION_BACKENDS = (("accounts.custom_backend.EmailOrUsernameModelBackend"), ("django.contrib.auth.backends.ModelBackend"))
 
 
-# Application definition
 INSTALLED_APPS = [
     "main.apps.MainConfig",
-    #'users.apps.UsersConfig',
+    # 'users.apps.UsersConfig',  # Comment out or remove if not used
     "accounts.apps.AccountsConfig",
     "finance.apps.FinanceConfig",
-    "marketing.apps.MarketingConfig",
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",  # Keep only one instance of this
     "storages",
     "django_countries",
     "mathfilters",
@@ -45,10 +45,15 @@ INSTALLED_APPS = [
     "django_filters",
     "django_celery_beat",
     "django_celery_results",
-    #'dbbackup',
-    # "django_extensions",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
     "django_crontab",
+    "marketing",
 ]
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
@@ -69,6 +74,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+     'allauth.account.middleware.AccountMiddleware',
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     # 'Middleware.MiddlewareFile.MailMiddleware'

@@ -22,8 +22,23 @@ href="{% static 'main/css/homes.css' %}"/>
         <h1>Kenya’s Global Trade, Business, and Investment Hub</h1>
         <p>Together, we will build a vibrant ecosystem that empowers entrepreneurs, attracts investments, and strengthens the bonds between Kenya and the world.</p>
         {% if not user.is_authenticated %}
-        <a href="{% url 'accounts:join' %}" class="hero-button">Get started</a>
-        {% endif %}
+        <li>
+            <a href="{% url 'accounts:joins' %}" 
+               class="navLink" 
+               style="color: blue; 
+                      text-decoration: none; 
+                      font-weight: bold; 
+                      background-color: white; 
+                      border: none; 
+                      border-radius: 8px; 
+                      padding: 10px 20px; 
+                      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
+                      display: inline-block; 
+                      font-family: Arial, sans-serif;">
+               Get started
+            </a>
+          </li>
+                  {% endif %}
     </div>
     <div class="hero-image">
         <img src="{% static 'main/img/home/her.png' %}" alt="Hiker">

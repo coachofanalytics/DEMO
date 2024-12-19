@@ -21,6 +21,7 @@ from django.conf.urls import handler400
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.contrib.auth import views as auth_views
+from accounts.views import CustomLogoutView  # Import the custom view
 
 from accounts import views as account_views
 from coda_project import settings
@@ -38,12 +39,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
-    path(
+     path(
         "logout/",
-        auth_views.LogoutView.as_view(
-            template_name="accounts/registration/logout.html"
-        ),
-        name="account-logout",
+        CustomLogoutView.as_view(),
+        name="account-logout",  # Ensure this matches the template
     ),
     path(
         "password-reset/",
@@ -68,7 +67,7 @@ urlpatterns = [
     ),
   
     path("", include("main.urls", namespace="main")),
-    path("accounts/", include("accounts.urls")),
+    path('accounts/', include('accounts.urls', namespace='accounts')),  # Ensure the namespace is 'accounts'
     path("finance/", include("finance.urls"), name="finance"),
     path("marketing/", include("marketing.urls", namespace="marketing")),
 ]

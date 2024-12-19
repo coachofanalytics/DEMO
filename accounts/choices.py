@@ -1,23 +1,21 @@
 from django.db import models
 
 class CategoryChoices(models.IntegerChoices):
-    Bussines_Training = 1
-    Jobsupport = 2
-    investor = 4
-    General_User = 5
+    ORDINARY_MEMBER = 1, 'Ordinary Member (Free)'
+    ACTIVE_MEMBER = 2, 'Active Member'
+    EXECUTIVE_MEMBER = 3, 'Executive Member'
+    FBO_ORDINARY = 4, 'FBO & Ordinary (Free)'
+    ACTIVE_ORGANIZATION = 5, 'Active Organization'
+    ROYAL_ORGANIZATION = 6, 'Royal Organization'
 
-    
+
 class SubCategoryChoices(models.IntegerChoices):
-    No_selection = 0
-    #Staff category
-    Full_time = 1
-    Contractual = 2
-    Agent = 3
-    #investors category
-    Short_Term = 4
-    Long_Term = 5
-    #students/Job Support
-    current = 6
-    prospective = 7
-
-    Other = 8
+    NO_SELECTION = 0, 'No selection'
+    FULL_TIME = 1, 'Full Time'
+    CONTRACTUAL = 2, 'Contractual'
+    AGENT = 3, 'Agent'
+    SHORT_TERM = 4, 'Short Term'
+    LONG_TERM = 5, 'Long Term'
+    CURRENT = 6, 'Current'
+    PROSPECTIVE = 7, 'Prospective'
+    OTHER = 8, 'Other'

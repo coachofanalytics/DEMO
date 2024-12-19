@@ -51,7 +51,7 @@
           <ul>
             {% for item in course %}
               {% if item.training_title == 'Import' and item.level == 'Introductory' %}
-                  <li>C21u - <a href="{% url 'main:plan' %}">{{ item.course_title }}</a></li>
+              <li>C21u - <a href="{% url 'main:plan' course_id=item.id %}">{{ item.course_title }}</a></li>
               {% endif %}
             {% endfor %}
           </ul>

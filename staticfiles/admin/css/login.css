@@ -1,60 +1,67 @@
-/* LOGIN FORM */
-
-.login {
-    background: var(--darkened-bg);
-    height: auto;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
-.login #header {
-    height: auto;
-    padding: 15px 16px;
+.login-container {
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.remember-me {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-.login #header h1 {
-    font-size: 18px;
-}
-
-.login #header h1 a {
-    color: var(--header-link-color);
-}
-
-.login #content {
-    padding: 20px 20px 0;
-}
-
-.login #container {
-    background: var(--body-bg);
-    border: 1px solid var(--hairline-color);
+.login-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
     border-radius: 4px;
-    overflow: hidden;
-    width: 28em;
-    min-width: 300px;
-    margin: 100px auto;
-    height: auto;
-}
-
-.login .form-row {
-    padding: 4px 0;
-}
-
-.login .form-row label {
-    display: block;
-    line-height: 2em;
-}
-
-.login .form-row #id_username, .login .form-row #id_password {
-    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
     width: 100%;
+}
+
+.login-button:hover {
+    background-color: #45a049;
+}
+
+input, .remember-me label {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     box-sizing: border-box;
 }
 
-.login .submit-row {
-    padding: 1em 0 0 0;
-    margin: 0;
-    text-align: center;
-}
-
-.login .password-reset-link {
-    text-align: center;
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
