@@ -132,7 +132,7 @@ class Team(models.Model):
 
 from django.db import models
 
-class Gallery(models.Model):
+class Gallery_image(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='gallery/')

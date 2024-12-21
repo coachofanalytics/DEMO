@@ -174,16 +174,12 @@ def team_list(request):
     
 
 from django.shortcuts import render
-from .models import Service,Gallery,ContactUs
+from .models import Service,ContactUs
 
 def service_list(request):
     services = Service.objects.all()  # Fetch all services and related subservices
     return render(request, 'main/services.html', {'services': services})
 
-
-def gallery_list(request):
-    images = Gallery.objects.all()
-    return render(request, 'main/Gallery/gallery.html', {'images': images})
 
 
 
