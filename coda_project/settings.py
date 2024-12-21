@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "!cxl7yhjsl00964n=#e-=xblp4u!hbajo2k8u#$v9&s6__5=xf"
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 # DEBUG = os.environ.get("DEBUG_VALUE") == "True"
 
 SECURE_SSL_REDIRECT = False
@@ -121,16 +121,16 @@ TEMPLATES = [
 #  ==============DBFUNCTIONS=====================================
 def dba_values():
     if os.environ.get('ENVIRONMENT') == 'production':
-        host = os.environ.get('HEROKU_PROD_HOST')
-        dbname = os.environ.get('HEROKU_PROD_NAME')
-        user = os.environ.get('HEROKU_PROD_USER')
-        password = os.environ.get('HEROKU_PROD_PASS')
-    elif os.environ.get('ENVIRONMENT') == 'testing':
+        host = os.environ.get('HEROKU_DYCPROD_HOST')
+        dbname = os.environ.get('HEROKU_DYCPROD_NAME')
+        user = os.environ.get('HEROKU_DYCPROD_USER')
+        password = os.environ.get('HEROKU_DYCPROD_PASS')
+    elif os.environ.get('ENVIRONMENT') == 'staging':
         # In Heroku/Postgres it is Heroku_UAT
-        host = os.environ.get('HEROKU_DEV_HOST')
-        dbname = os.environ.get('HEROKU_DEV_NAME')
-        user = os.environ.get('HEROKU_DEV_USER')
-        password = os.environ.get('HEROKU_DEV_PASS')
+        host = os.environ.get('HEROKU_DYCDEV_HOST')
+        dbname = os.environ.get('HEROKU_DYCDEV_NAME')
+        user = os.environ.get('HEROKU_DYCDEV_USER')
+        password = os.environ.get('HEROKU_DYCDEV_PASS')
     else:
         host = os.environ.get('HEROKU_DEV_HOST')
         dbname = os.environ.get('HEROKU_DEV_NAME')
@@ -146,24 +146,53 @@ WSGI_APPLICATION = "coda_project.wsgi.application"
 import dj_database_url
 
 host,dbname,user,password=dba_values() #herokuprod() #herokudev() #dblocal()  #herokudev(),
-
-
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": dbname,
+#         "USER":user,
+#         "PASSWORD":password,
+#         "HOST": host
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": dbname,
-        "USER":user,
-        "PASSWORD":password,
-        "HOST": host
+    'default': {
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": 'dfcda9qs3oqmjs',
+        "USER": 'u71kn9j3d0t653',
+        "PASSWORD": 'p6f1fb28430129f031a0cbadb153c422de22a06cb843a132ec8f5ba82e9b18d7b',
+        "HOST": 'cat670aihdrkt1.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
     }
 }
-'''=========== Heroku DB ================'''
+
+# Local DB
+# DATABASES = {
+#     'default': {
+#         "ENGINE": 'django.db.backends.postgresql',
+#         "NAME": 'd2l066ajig78uh',
+#         "USER": 'uf4o5nponalopo',
+#         "PASSWORD": 'p2f315d6b9430b965799ae1813941756fa47e03c99328df5d063d7049455884a1',
+#         "HOST": 'ce0lkuo944ch99.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',  
+#     }
+# }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#     }
+# }
+
+
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES["default"].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES["default"].update(db_from_env)
+# DATABASES ={'default': dj_database_url.config(conn_max_age=600)}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)   # to update if default db already exists.
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
