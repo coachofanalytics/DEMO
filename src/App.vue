@@ -1,17 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <img alt="coda logo" src="./assets/coda_logo.jpg">
+  <h1>{{title}}</h1>
+  <div v-if="showModal">
+    <SignUp :header="header" :text="text" :theme="SignUp"/>
+  </div>
+  <div v-if="showModal">
+    <ModalComponent :header="header" :text="text" :theme="sale" @close="toggleModal"/>
+  </div>
+  <button @click="toggleModal">Sign Up</button>
+  <button @click="toggleWorld">Open Greetings</button>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SignUp from './components/SignUp.vue'
+import ModalComponent from './components/ModalComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    SignUp,
+    ModalComponent,
+  },
+  data() {
+    return{
+      title:'CODA APP',
+      header:'Sign Up for our classes!',
+      text: 'On a scale of 0-10 enter your level of understanding for technical roles',
+      showModal: true,
+      showgreetings: false
+    }
+  },
+  methods : {
+    toggleModal() {
+      this.showModal = !this.showModal
+    },
+    toggleWorld() {
+      this.showgreetings = !this.showgreetings
+    },
+  },
+  // methods : {
+  //   toggleModal() {
+  //     this.showModal = !this.showModal
+  //   }
+  // }
 }
+
 </script>
 
 <style>
