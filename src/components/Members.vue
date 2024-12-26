@@ -2,15 +2,11 @@
       <h1>Our Team</h1>
       <p>{{ description }}</p>
     <div v-for = "member in members" :key="member.id" class="TeamMember">
-      <!-- <span @click="deleteMember(member)">{{member}}</span> -->
-      <!-- <router-link :to="{ name: 'MemberDetails', params: { id: member.id }}">
+      <router-link :to="{ name: 'MemberDetails', params: { id: member.id }}">
         <h2>{{ member.id }}</h2>
         <h2>{{ member.name }}</h2>
         <h2>{{ member.title }}</h2>
-      </router-link> -->
-      <h2>{{ member.id }}</h2>
-      <h2>{{ member.name }}</h2>
-      <h2>{{ member.title }}</h2>
+      </router-link>
     </div>
   </template>
 
@@ -19,19 +15,20 @@
 export default {
   name: 'Members',
   props:['header','description','theme'],
-
   data() {
-      return {
-        members: [
-          {name:'Chris Maghas', title: 'Project Manager', id: 1, details: 'lorem',tenure:0},
-          {name:'Nane Doe', title: 'UX Designer', id: 2, details: 'lorem',tenure:0 },
-          {name:'Sera Angie',title:'Web Developer', id: 3, details: 'lorem',tenure:0 },
-          {name:'Luke Bonnie', title: 'Vue Developer', id: 4, details: 'lorem',tenure:0 }
-        ],
-        description:"The Board Members of CODA comprise a distinguished group of leaders with a broad spectrum of expertise in the IT industry and business management.",
-      };
-    },
-
+  return {
+    members: [],
+  };
+},
+mounted() {
+  fetch('http://localhost:3000/members')
+    // ✅ Call res.json() as a method
+    .then(res => res.json())
+    // ✅ Update the members array 
+    .then(data => this.members = data) 
+    // ✅ Log error messages
+    .catch(err => console.log('Fetch error:', err.message)); 
+},
     methods : {
     deleteMember() {
     //   this.members = this.members.filter((item) => {
@@ -39,7 +36,18 @@ export default {
     // });
     console.log('Member Deleted')
     }
-  }
+  },
+  // data() {
+  //     return {
+  //       members: [
+  //         {name:'Chris Maghas', title: 'Project Manager', id: 1, details: 'lorem',tenure:0},
+  //         {name:'Nane Doe', title: 'UX Designer', id: 2, details: 'lorem',tenure:0 },
+  //         {name:'Sera Angie',title:'Web Developer', id: 3, details: 'lorem',tenure:0 },
+  //         {name:'Luke Bonnie', title: 'Vue Developer', id: 4, details: 'lorem',tenure:0 }
+  //       ],
+  //       description:"The Board Members of CODA comprise a distinguished group of leaders with a broad spectrum of expertise in the IT industry and business management.",
+  //     };
+  //   },
 }
 </script>
 

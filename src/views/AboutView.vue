@@ -3,7 +3,9 @@
     <h1>{{ title }}</h1>
     <p>{{ description }}</p>
   </div>
-  <Members/>
+  <div>
+    <Members/>
+  </div>
 </template>
 
 <script>
@@ -19,7 +21,7 @@ components: {
 data() {
   return{
         title:'About US',
-        header:'This',
+        header:'This is an about page',
         description:'This is an about page',
     }
 },

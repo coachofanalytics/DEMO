@@ -1,0 +1,32 @@
+{
+    "members": [
+        {
+            "name": "Chris Maghas",
+            "title": "Project Manager",
+            "id": 1,
+            "details": "lorem",
+            "tenure": 0
+        },
+        {
+            "name": "Nane Doe",
+            "title": "UX Designer",
+            "id": 2,
+            "details": "lorem",
+            "tenure": 0
+        },
+        {
+            "name": "Sera Angie",
+            "title": "Web Developer",
+            "id": 3,
+            "details": "lorem",
+            "tenure": 0
+        },
+        {
+            "name": "Luke Bonnie",
+            "title": "Vue Developer",
+            "id": 4,
+            "details": "lorem",
+            "tenure": 0
+        }
+    ]
+}
