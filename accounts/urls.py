@@ -8,7 +8,7 @@ urlpatterns = [
     #=============================USERS VIEWS=====================================
     path('', views.home, name='home'),
     path('join/',views.join, name ='joins'),
-     path('login/', views.login_view, name='account-login'),
+     path('login_view/', views.login_view, name='account-login'),
   
     path('register/', register, name='register'),
 
