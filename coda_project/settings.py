@@ -233,7 +233,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "main:layout"
-LOGIN_URL = "accounts:account-login"
+LOGIN_URL = "main:main-layout"
 
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 # EMAIL_FILE_PATH = BASE_DIR + "/emails"
@@ -349,4 +349,4 @@ ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 
 LOGIN_REDIRECT_URL = "main:layout"
-LOGIN_URL = "accounts:account-login"
+LOGIN_URL = "main:main-layout"

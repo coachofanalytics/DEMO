@@ -1,199 +1,30 @@
 {% extends "main/base_templates/base.html" %}
 {% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
-{% load static %}
 
 {% block content %}
-<style>
-  /* Main Container */
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 90vh;
-    background-color: #1e2d4d;
-    color: #ffffff;
-  }
-
-  .login-card {
-    display: flex;
-    background: #1e2d4d;
-    border-radius: 8px;
-    overflow: hidden;
-    width: 900px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Left Section - Login Form */
-  .login-left {
-    flex: 1;
-    padding: 30px;
-    background: #1e2d4d;
-    border-right: 1px solid #d9a441;
-  }
-
-  .login-left h2 {
-    color: #f5a623;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-
-  .login-left .form-group label {
-    color: #ffffff;
-    font-weight: 600;
-    margin-top: 10px;
-  }
-
-  .login-left .form-control {
-    border-radius: 5px;
-  }
-
-  .remember-me {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-  }
-
-  .remember-me input {
-    margin-right: 10px;
-  }
-
-  .btn-login {
-    background-color: #d9a441;
-    color: #ffffff;
-    font-weight: bold;
-    width: 100%;
-    margin-top: 20px;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  .btn-login:hover {
-    background-color: #bf8c2f;
-  }
-
-  .google-login {
-    margin-top: 15px;
-    text-align: center;
-  }
-
-  .google-login .loginBtn--google {
-    background-color: #db4437;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    width: 100%;
-    padding: 10px;
-    text-decoration: none;
-  }
-
-  .google-login .loginBtn--google:hover {
-    background-color: #c1351d;
-  }
-
-  .p-or {
-    text-align: center;
-    margin: 10px 0;
-    font-size: 14px;
-    color: #ccc;
-  }
-
-  /* Right Section - Help Section */
-  .login-right {
-    flex: 1;
-    padding: 30px;
-    background: #1e2d4d;
-    color: #f5a623;
-    text-align: center;
-  }
-
-  .login-right h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-
-  .login-right p {
-    color: #ffffff;
-    margin: 5px 0;
-  }
-
-  .login-right a {
-    color: #f5a623;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .login-right a:hover {
-    text-decoration: underline;
-  }
-
-  .login-right .signup-btn {
-    display: inline-block;
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    padding: 10px 20px;
-    text-decoration: none;
-  }
-
-  .login-right .signup-btn:hover {
-    background-color: #0056b3;
-  }
-</style>
-
-<div class="login-container">
-  <div class="login-card">
-    <!-- Left Section: Login Form -->
-    <div class="login-left">
-      <h2>LOGIN</h2>
-      {% if msg %}
+<div class="container mt-5">
+    <h2 class="text-center">Login</h2>
+    {% if msg %}
         <div class="alert alert-danger">{{ msg }}</div>
-      {% endif %}
-      <form method="post">
+    {% endif %}
+    <form method="post">
         {% csrf_token %}
         <div class="form-group">
-          <label for="id_enter_your_username_or_email">Enter Your Username/Email</label>
-          {{ form.enter_your_username_or_email|as_crispy_field }}
+            <label for="id_enter_your_username_or_email">Username or Email</label>
+            {{ form.enter_your_username_or_email|as_crispy_field }}
         </div>
         <div class="form-group">
-          <label for="id_enter_your_password">Enter Your Password</label>
-          {{ form.enter_your_password|as_crispy_field }}
+            <label for="id_enter_your_password">Password</label>
+            {{ form.enter_your_password|as_crispy_field }}
         </div>
-        <div class="form-group">
-          <label for="id_category">Select Your Category</label>
-          {{ form.category|as_crispy_field }}
-        </div>
-        <div class="remember-me">
-          <input type="checkbox" name="remember_me" id="remember_me">
-          <label for="remember_me">REMEMBER ME</label>
-        </div>
-        <button type="submit" class="btn btn-login">LOG IN</button>
-      </form>
-      <p class="p-or">or</p>
-      <div class="google-login">
-        <a href="{% provider_login_url 'google' %}" class="loginBtn loginBtn--google">
-          Login with Google
-        </a>
-      </div>
-    </div>
-
-    <!-- Right Section: Help Section -->
-    <div class="login-right">
-      <h2>Need Help?</h2>
-      <p>Forgot Your Login Detail?</p>
-      <p>
-        Retrieve your <a href="#">USERNAME</a>
-      </p>
-      <p>
-        Retrieve your <a href="{% url 'password_reset' %}">PASSWORD</a>
-      </p>
-      <hr style="border-color: #d9a441;">
-      <p>NOT YET REGISTERED?</p>
-      <a href="{% url 'accounts:joins' %}" class="signup-btn">SIGN UP</a>
-    </div>
-  </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p class="mt-3">
+        Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a>
+    </p>
+    <p>
+        Don't have an account? <a href="{% url 'accounts:joins' %}">Sign up here</a>
+    </p>
 </div>
 {% endblock %}

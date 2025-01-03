@@ -81,43 +81,16 @@ def checkout(request):
 
 from django.shortcuts import get_object_or_404
 
-
 def layout(request):
-    page_instance = Page.objects.get(page_name='Home')
-    description = Description.objects.filter(page = page_instance)
-    service = Service.objects.all()
-    subservice = SubService.objects.all()
-    news = News.objects.all().order_by('-published_date')[:3] 
-    print(news)
-   
-    if request.method == "POST":
-        form = ContactForm(request.POST, request.FILES)
-        message=f'Thank You, we will get back to you within 48 hours.'
-        context={
-            "message":message,
-            # "link":SITEURL+'/management/companyagenda'
-        }
-        if form.is_valid():
-            # form.save()
-            instance=form.save(commit=False)
-            # instance.client_name='admin',
-            instance.task='NA',
-            instance.plan='NA',
-            instance.trained_by=request.user
-            instance.save()
-            # return redirect("management:assessment")
-            return render(request, "main/errors/generalerrors.html",context)
-    else:
-        form = ContactForm()
-    context={
-            # "posts":posts,
-            "form": form,
-            'description': description,
-            'service': service,
-            'news':news,
-            'subservice':subservice
-        }
-    return render(request, "main/home_templates/home.html",context)
+    try:
+        page_instance = Page.objects.first()  # Assuming you're fetching the first Page instance
+    except Page.DoesNotExist:
+        page_instance = None  # Fallback in case no page is found
+
+    return render(request, 'main/home_templates/home.html', {'page_instance': page_instance})
+
+
+
 
 def History(request):
     page_instance = Page.objects.get(page_name='About')
@@ -157,54 +130,14 @@ class ImageUpdateView(LoginRequiredMixin,UpdateView):
         return reverse('main:images') 
     
 
+  
 
-
-
-
-def team_list(request):
-    teams = Team.objects.all()
-    print('info=============',teams)
-    return render(request, 'main/snippets_templates/table/team.html', {'info': teams})
-
-
-
-
-
-
-    
 
 from django.shortcuts import render
-from .models import Service,Gallery,ContactUs
 
-def service_list(request):
-    services = Service.objects.all()  # Fetch all services and related subservices
-    return render(request, 'main/services.html', {'services': services})
+def home(request):
+    return render(request, 'main/home_templates/home.html')
 
-
-def gallery_list(request):
-    images = Gallery.objects.all()
-    return render(request, 'main/Gallery/gallery.html', {'images': images})
-
-
-
-
-
-
-def news_list(request):
-    news_list = News.objects.all()
-    print('info=============',news_list)
-    return render(request, 'main/snippets_templates/table/news.html', {'news_list': news_list})
-
-
-def contact_us_list(request):
-    # Fetch the list of ContactUs objects
-    contact_us_list = ContactUs.objects.all()
-
-    # Debugging print statement (if necessary)
-    print('info=============', contact_us_list)
-
-    # Render the template with the context
-    return render(request, 'main/snippets_templates/table/contact_us_list.html', {'contact_us_list': contact_us_list})
 
 
 from django.views.generic import TemplateView
