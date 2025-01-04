@@ -9,8 +9,7 @@ app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
     path('history',views.History, name ='history'),
-    
-    
+
     
   
     

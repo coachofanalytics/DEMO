@@ -160,57 +160,77 @@ def verify_email(request, token):
         # If the user doesn't exist, render the failure message
         return render(request, "accounts/registration/email_verification_notice.html", {"verification_status": "failed"})
 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from .forms import LoginForm
+
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
 
-    # Handle GET Request (for social login errors)
-    if request.method == 'GET':
-        sociallogin = request.session.pop("socialaccount_sociallogin", None)
-        if sociallogin:
-            msg = 'Error with social login. Check your credentials or try to sign up manually.'
+    if request.method == "POST":
+        if form.is_valid():
+            username_or_email = form.cleaned_data.get("enter_your_username_or_email")
+            password = form.cleaned_data.get("enter_your_password")
+            user = authenticate(request, username=username_or_email, password=password)
 
-    # Handle POST Request (for user authentication)
-    if request.method == "POST" and form.is_valid():
-        print('Form is valid')
-        request.session["siteurl"] = settings.SITEURL
-
-        username_or_email = form.cleaned_data.get("enter_your_username_or_email")
-        password = form.cleaned_data.get("enter_your_password")
-        print(f'Username or Email: {username_or_email}')
-
-        # Attempt to authenticate with username
-        user = authenticate(request, username=username_or_email, password=password)
-
-        if user is None:
-            # If authentication fails by username, attempt by email
-            UserModel = get_user_model()
-            try:
-                user_obj = UserModel.objects.get(email__iexact=username_or_email)
-                user = authenticate(request, username=user_obj.username, password=password)
-            except UserModel.DoesNotExist:
-                user = None
-
-        if user:
-            print('User authenticated')
-            login(request, user)
-
-            # Check Membership Status
-            membership = get_object_or_404(Membership, member=user)
-            if membership.status == 'NOT_PAID':
-                return redirect('finance:pay')
-            return redirect('https://dc48k.org/')
+            if user is not None:
+                login(request, user)
+                return redirect('accounts:profile_view')  # Redirect after successful login
+            else:
+                msg = "Invalid credentials. Please try again."
         else:
-            print('Authentication failed')
-            messages.error(request, 'Invalid username/email or password.')
-            msg = 'Invalid credentials'
-
-    elif request.method == "POST":
-        print('Form is invalid')
-        messages.error(request, 'Error validating the form.')
-        msg = 'Error validating the form'
+            msg = "Error validating the form. Please try again."
 
     return render(request, "accounts/registration/DC48K/login_page.html", {"form": form, "msg": msg})
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def profile_view(request):
+    context = {
+        "title": "Profile",
+        "username": request.user.username,
+        "email": request.user.email if request.user.email else "No Email Available",
+        "first_name": request.user.first_name,
+        "last_name": request.user.last_name,
+    }
+    return render(request, "accounts/registration/profile.html", context)
+
+
+
+
+
+
+
+from django.shortcuts import redirect
+from django.urls import reverse
+
+def some_view(request):
+    return redirect(reverse('accounts:login'))
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import redirect
+
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('accounts:profile_view')  # Redirect to profile if logged in
+    return redirect('accounts:login')  # Redirect to login if not authenticated
+
 
 
 

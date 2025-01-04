@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description, News, Page, Service, SubService,Team
+from .models import Assets,Description,Page
 from accounts.models import CustomerUser
 from .utils import image_view,path_values
 from main.forms import ContactForm
@@ -88,6 +88,9 @@ def layout(request):
         page_instance = None  # Fallback in case no page is found
 
     return render(request, 'main/home_templates/home.html', {'page_instance': page_instance})
+
+
+
 
 
 
