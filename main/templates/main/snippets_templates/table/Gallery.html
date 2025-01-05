@@ -5,28 +5,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Gallery</title>
-    <link rel="stylesheet" href="{% static 'main/css/gallery.css' %}">
-</head>
-<body>
-    <h1>Gallery</h1>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gallery Images</title>
+        <style>
+            .gallery-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
     
-    <div class="gallery-container">
-        {% for image in images %}
-            <div class="gallery-item">
-                <img src="{{ image.image.url }}" alt="{{ image.title }}" class="gallery-image">
-                <div class="gallery-info">
-                    <h2>{{ image.title }}</h2>
-                    <p>{{ image.description }}</p>
-                    <p><strong>Event Date:</strong> {{ image.event_date|date:"F j, Y" }}</p>
-                    <p><strong>Uploaded at:</strong> {{ image.uploaded_at|date:"F j, Y, g:i a" }}</p>
-                </div>
-            </div>
-        {% empty %}
-            <p>No images available in the gallery yet.</p>
-        {% endfor %}
-    </div>
-</body>
-</html>
+            .gallery-table th, .gallery-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+    
+            .gallery-table th {
+                background-color: #f4f4f4;
+            }
+    
+            .gallery-table img {
+                max-width: 100px;
+                max-height: 100px;
+            }
+    
+            .bio-box {
+                padding: 10px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                margin-top: 10px;
+                font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Gallery Images</h1>
+        <table class="gallery-table">
+            <thead>
+                <tr>
+                    <th>title</th>
+                    
+                    <th>Description</th>
+                    <th>Image</th>
+                 
+                </tr>
+            </thead>
+            <tbody>
+                {% for image in gallery_images %}
+                    <tr>
+                        <td>{{ image.title }}</td>
+                      
+                        <td>{{ image.description }}</td>
+                        
+                        <td>
+                            {% if image.image %}
+                                <img src="{{ image.image.url }}" alt="{{ image.name }}">
+                            {% else %}
+                                No image available
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div class="bio-box">
+                                Additional details about {{ image.name }}: {{ image.description }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+    </html>
+    
+
 {% endblock %}

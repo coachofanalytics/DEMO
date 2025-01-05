@@ -149,3 +149,22 @@ class AboutView(TemplateView):
     template_name = 'main/snippets_templates/table/abour.html'
 
 
+
+
+
+
+from django.shortcuts import render
+from .models import GallerysImage
+
+def gallery_image_list(request):
+    # Fetch all gallery images
+    gallery_images = GallerysImage.objects.all()
+    print('info========================', gallery_images)  # Debugging statement
+    
+    return render(request, 'main/snippets_templates/table/Gallery.html', {'gallery_images': gallery_images})
+
+
+
+
+
+
