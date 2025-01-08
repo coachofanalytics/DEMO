@@ -168,3 +168,17 @@ def gallery_image_list(request):
 
 
 
+from .models import Volunteers
+
+def Volunteers_list(request):
+    # Fetch all gallery images
+    Volunteerss = Volunteers.objects.all()
+    print('info========================', Volunteerss)  # Debugging statement
+    
+    return render(request, 'main/snippets_templates/table/voluntear.html', {'Volunteerss': Volunteerss})
+
+
+
+
+
+
