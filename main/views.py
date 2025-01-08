@@ -11,7 +11,7 @@ from django.views.generic import (
 from .models import Assets,Description,Page
 from accounts.models import CustomerUser
 from .utils import image_view,path_values
-from main.forms import ContactForm
+from main.forms import ContactForm,Volunteersform
 from django.contrib.auth import get_user_model
 
 User=get_user_model()
@@ -178,6 +178,15 @@ def Volunteers_list(request):
     return render(request, 'main/snippets_templates/table/voluntear.html', {'Volunteerss': Volunteerss})
 
 
+def volunteer_create(request):
+    if request.method == 'POST':
+        form = Volunteersform(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:Volunteers_list')
+    else:
+        form = Volunteersform()
+    return render(request, 'main/snippets_templates/table/voluntear_creat.html', {'form': form})
 
 
 
