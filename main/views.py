@@ -205,3 +205,17 @@ def volunteer_update(request, pk):
     else:
         form = Volunteersform(instance=volunteer)
     return render(request, 'main/snippets_templates/table/voluntear_update.html', {'form': form})
+
+
+
+
+
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Volunteers
+
+def volunteer_delete(request, pk):
+    volunteer = get_object_or_404(Volunteers, pk=pk)
+    if request.method == 'POST':
+        volunteer.delete()
+        return redirect('main:Volunteers_list')  # Redirect to the volunteers list page
+    return render(request, 'main/snippets_templates/table/volunter_delet.html', {'volunteer': volunteer})
