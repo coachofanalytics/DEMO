@@ -8,6 +8,7 @@ admin.site.register(Feedback)
 admin.site.register(Description)
 admin.site.register(Page)
 admin.site.register(GallerysImage)
+admin.site.register(Volunteers)
 
 
 
