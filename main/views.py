@@ -219,3 +219,14 @@ def volunteer_delete(request, pk):
         volunteer.delete()
         return redirect('main:Volunteers_list')  # Redirect to the volunteers list page
     return render(request, 'main/snippets_templates/table/volunter_delet.html', {'volunteer': volunteer})
+
+
+
+
+
+from django.shortcuts import get_object_or_404, render
+from .models import Volunteers
+
+def volunteer_detail(request, pk):
+    volunteer = get_object_or_404(Volunteers, pk=pk)
+    return render(request, 'main/snippets_templates/table/volunter_detail.html', {'volunteer': volunteer})
