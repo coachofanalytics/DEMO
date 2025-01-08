@@ -191,3 +191,17 @@ def volunteer_create(request):
 
 
 
+from django.shortcuts import get_object_or_404, render, redirect
+from .models import Volunteers
+from .forms import Volunteersform
+
+def volunteer_update(request, pk):
+    volunteer = get_object_or_404(Volunteers, pk=pk)
+    if request.method == 'POST':
+        form = Volunteersform(request.POST, instance=volunteer)
+        if form.is_valid():
+            form.save()
+            return redirect('main:Volunteers_list')  # Redirect to the volunteers list view
+    else:
+        form = Volunteersform(instance=volunteer)
+    return render(request, 'main/snippets_templates/table/voluntear_update.html', {'form': form})
