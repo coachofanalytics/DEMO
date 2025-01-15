@@ -9,6 +9,7 @@ admin.site.register(Description)
 admin.site.register(Page)
 admin.site.register(GallerysImage)
 admin.site.register(Volunteers)
+admin.site.register(Donationmain)
 
 
 
