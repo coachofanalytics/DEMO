@@ -122,3 +122,16 @@ class News(models.Model):
     def __str__(self):
         return self.title
         
+class membershirp_registration(models.Model):
+    email = models.EmailField(null=False, blank=False)
+    first_name = models.CharField(max_length=50, null=False, blank=False)
+    last_name = models.CharField(max_length=50, null=False, blank=False)
+    gender = models.CharField(max_length=1, null=False, blank=False, choices=[('M', 'Male'), ('F', 'Female')])
+    phone_number = models.CharField(max_length=15, null=False, blank=False)
+    country = models.CharField(max_length=50, null=False, blank=False)
+    city = models.CharField(max_length=50, null=False, blank=False)
+    
+    agree = models.BooleanField(null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
