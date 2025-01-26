@@ -1,0 +1,68 @@
+{% extends "main/base_templates/base.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Registrations List</title>
+    <style>
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">List of Membership Registrations</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Phone Number</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Agree</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if info %}
+                {% for registration in info %}
+                    <tr>
+                        <td>{{ registration.email }}</td>
+                        <td>{{ registration.first_name }}</td>
+                        <td>{{ registration.last_name }}</td>
+                        <td>{{ registration.gender }}</td>
+                        <td>{{ registration.phone_number }}</td>
+                        <td>{{ registration.country }}</td>
+                        <td>{{ registration.city }}</td>
+                        <td>{{ registration.agree }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8" style="text-align: center;">No Membership Registrations Found</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% endblock %}

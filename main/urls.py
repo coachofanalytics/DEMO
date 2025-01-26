@@ -17,6 +17,7 @@ urlpatterns = [
     path('volunteers/<int:pk>/update/', volunteer_update, name='volunteer_update'),
     path('volunteers/<int:pk>/delete/', volunteer_delete, name='volunteer_delete'),
     path('volunteers/<int:pk>/', volunteer_detail, name='volunteer_detail'),
+    path('registration',views.registration_list, name ='registration_list'),
 
     
   

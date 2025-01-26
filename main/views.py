@@ -230,3 +230,19 @@ from .models import Volunteers
 def volunteer_detail(request, pk):
     volunteer = get_object_or_404(Volunteers, pk=pk)
     return render(request, 'main/snippets_templates/table/volunter_detail.html', {'volunteer': volunteer})
+
+
+
+
+
+
+
+from django.shortcuts import render
+from .models import membershirp_registration
+
+def registration_list(request):
+    # Fetch all membership registrations
+    info = membershirp_registration.objects.all()
+    print('info========================', info)  # Debugging statement (remove in production)
+    
+    return render(request, 'main/snippets_templates/table/regestration.html', {'info': info})
