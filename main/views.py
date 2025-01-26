@@ -11,7 +11,7 @@ from django.views.generic import (
 from .models import Assets,Description,Page
 from accounts.models import CustomerUser
 from .utils import image_view,path_values
-from main.forms import ContactForm,Volunteersform
+from main.forms import ContactForm,Volunteersform,registrationform
 from django.contrib.auth import get_user_model
 
 User=get_user_model()
@@ -246,3 +246,19 @@ def registration_list(request):
     print('info========================', info)  # Debugging statement (remove in production)
     
     return render(request, 'main/snippets_templates/table/regestration.html', {'info': info})
+
+
+
+
+
+
+
+def registration_create(request):
+    if request.method == 'POST':
+        form = registrationform(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:registration_list')
+    else:
+        form = registrationform()
+    return render(request, 'main/snippets_templates/table/regestration_create.html', {'form': form})
