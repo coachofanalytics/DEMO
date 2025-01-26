@@ -281,3 +281,24 @@ def registration_update(request, pk):
     else:
         form = registrationform(instance=membershirps_registration)
     return render(request, 'main/snippets_templates/table/registrations_update.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
+
+
+
+from .models import membershirp_registration
+
+def membershirp_registration_delete(request, pk):
+    volunteer = get_object_or_404(membershirp_registration, pk=pk)
+    if request.method == 'POST':
+        volunteer.delete()
+        return redirect('main:registration_list')  # Redirect to the volunteers list page
+    return render(request, 'main/snippets_templates/table/regritration_delete.html', {'membershirp_registrations': membershirp_registration})
