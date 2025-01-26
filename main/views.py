@@ -83,7 +83,7 @@ from django.shortcuts import get_object_or_404
 
 def layout(request):
     try:
-        page_instance = Page.objects.get(page_name='Home')
+        Page.objects.create(page_name='Home', other_field='Value') 
         description = Description.objects.filter(page=page_instance)
     except Page.DoesNotExist:
         page_instance = None
