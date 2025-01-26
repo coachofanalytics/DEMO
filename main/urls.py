@@ -1,12 +1,11 @@
 from django.urls import path
 from main.views import AboutView
-from main.views import volunteer_update,volunteer_delete,volunteer_detail
+from main.views import volunteer_update,volunteer_delete,volunteer_detail ,registration_update
 
 
 from . import views
 
-# from .utils import convert_html_to_pdf
-
+ 
 app_name = 'main'
 urlpatterns = [
     path('', views.layout, name='layout'),
@@ -19,7 +18,7 @@ urlpatterns = [
     path('volunteers/<int:pk>/', volunteer_detail, name='volunteer_detail'),
     path('registration',views.registration_list, name ='registration_list'),
     path('registration_create',views.registration_create, name ='registration_create'),
-
+    path('registration/<int:pk>/update/', registration_update, name='registration_update'),  
     
   
     

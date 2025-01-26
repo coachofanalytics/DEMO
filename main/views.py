@@ -262,3 +262,22 @@ def registration_create(request):
     else:
         form = registrationform()
     return render(request, 'main/snippets_templates/table/regestration_create.html', {'form': form})
+
+
+
+
+
+
+from .models import membershirp_registration
+from .forms import registrationform
+
+def registration_update(request, pk):
+    membershirps_registration = get_object_or_404(membershirp_registration, pk=pk)
+    if request.method == 'POST':
+        form = registrationform(request.POST, instance=membershirps_registration)
+        if form.is_valid():
+            form.save()
+            return redirect('main:registration_list')  
+    else:
+        form = registrationform(instance=membershirps_registration)
+    return render(request, 'main/snippets_templates/table/registrations_update.html', {'form': form})
