@@ -83,11 +83,35 @@ from django.shortcuts import get_object_or_404
 
 def layout(request):
     try:
-        page_instance = Page.objects.first()  # Assuming you're fetching the first Page instance
+        page_instance = Page.objects.get(page_name='Home')
+        description = Description.objects.filter(page=page_instance)
     except Page.DoesNotExist:
-        page_instance = None  # Fallback in case no page is found
+        page_instance = None
+        description = None
+    
+    if request.method == "POST":
+        form = ContactForm(request.POST, request.FILES)
+        message = 'Thank You, we will get back to you within 48 hours.'
+        context = {
+            'form': form,
+            'message': message,
+            'description': description,
+        }
+        return render(request, 'main/home_templates/home.html', context)
+    
+    return render(request, 'main/home_templates/home.html', {'description': description})
 
-    return render(request, 'main/home_templates/home.html', {'page_instance': page_instance})
+
+
+
+
+# def layout(request):
+#     try:
+#         page_instance = Page.objects.first()  # Assuming you're fetching the first Page instance
+#     except Page.DoesNotExist:
+#         page_instance = None  # Fallback in case no page is found
+
+#     return render(request, 'main/home_templates/home.html', {'page_instance': page_instance})
 
 
 
