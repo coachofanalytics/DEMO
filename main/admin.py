@@ -12,6 +12,7 @@ admin.site.register(Volunteers)
 admin.site.register(Donationmain)
 admin.site.register(News)
 admin.site.register(membershirp_registration)
+admin.site.register(MembershipPlan)
 
 
 
