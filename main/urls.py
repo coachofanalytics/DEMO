@@ -20,7 +20,7 @@ urlpatterns = [
     path('registration_create',views.registration_create, name ='registration_create'),
     path('registration/<int:pk>/update/', registration_update, name='registration_update'), 
     path('registration/<int:pk>/delete/', membershirp_registration_delete, name='membershirp_registration_delete'), 
-    
+    path('MembershipPlan_list',views.MembershipPlan_list, name ='MembershipPlan_list'),
   
     
     

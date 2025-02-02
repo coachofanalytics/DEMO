@@ -8,7 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
 )
-from .models import Assets,Description,Page
+from .models import Assets,Description,Page,MembershipPlan
 from accounts.models import CustomerUser
 from .utils import image_view,path_values
 from main.forms import ContactForm,Volunteersform,registrationform
@@ -314,3 +314,15 @@ def membershirp_registration_delete(request, pk):
         volunteer.delete()
         return redirect('main:registration_list')  # Redirect to the volunteers list page
     return render(request, 'main/snippets_templates/table/regritration_delete.html', {'membershirp_registrations': membershirp_registration})
+
+
+
+
+
+
+def MembershipPlan_list(request):
+    # Fetch all membershipplan
+    info = MembershipPlan.objects.all()
+    print('info========================', info)  # Debugging statement (remove in production)
+    
+    return render(request, 'main/snippets_templates/table/plan.html', {'info': info})
