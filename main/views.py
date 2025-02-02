@@ -358,3 +358,13 @@ def membershipplan_update(request, pk):
     else:
         form = MembershipPlanform(instance=info)
     return render(request, 'main/snippets_templates/table/plan_update.html', {'form': form})
+
+
+
+def delete_membershipplan(request, pk):
+    info = get_object_or_404(MembershipPlan, pk=pk)
+    if request.method == 'POST':
+        info.delete()
+        return redirect('main:MembershipPlan_list')  # Ensure this URL exists
+    return render(request, 'mainsnippets_templates/table/plan_delet.html', {'info': info})
+
