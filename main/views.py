@@ -281,7 +281,7 @@ def registration_create(request):
 
 
 from .models import membershirp_registration
-from .forms import registrationform
+from .forms import registrationform,MembershipPlanform
 
 def registration_update(request, pk):
     membershirps_registration = get_object_or_404(membershirp_registration, pk=pk)
@@ -326,3 +326,18 @@ def MembershipPlan_list(request):
     print('info========================', info)  # Debugging statement (remove in production)
     
     return render(request, 'main/snippets_templates/table/plan.html', {'info': info})
+
+
+
+
+
+
+def membershipplan_create(request):
+    if request.method == 'POST':
+        form = MembershipPlanform(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:MembershipPlan_list')
+    else:
+        form = MembershipPlanform()
+    return render(request, 'main/snippets_templates/table/plan_creat.html', {'form': form})    
