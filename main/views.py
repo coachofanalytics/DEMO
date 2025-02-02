@@ -341,3 +341,20 @@ def membershipplan_create(request):
     else:
         form = MembershipPlanform()
     return render(request, 'main/snippets_templates/table/plan_creat.html', {'form': form})    
+
+
+
+
+
+from .forms import MembershipPlanform  # Ensure the correct import
+
+def membershipplan_update(request, pk):
+    info = get_object_or_404(MembershipPlan, pk=pk)
+    if request.method == 'POST':
+        form = MembershipPlanform(request.POST, instance=info)  # Correct form name
+        if form.is_valid():
+            form.save()
+            return redirect('main:MembershipPlan_list')  # Ensure this URL name exists
+    else:
+        form = MembershipPlanform(instance=info)
+    return render(request, 'main/snippets_templates/table/plan_update.html', {'form': form})
